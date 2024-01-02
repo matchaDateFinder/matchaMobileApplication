@@ -38,7 +38,7 @@ class RequestContactAccessScreen
                           height: 145.v,
                           width: 168.h,
                           alignment: Alignment.center),
-                      SizedBox(height: 59.v),
+                      SizedBox(height: 40.v),
                       Padding(
                           padding: EdgeInsets.only(left: 22.h),
                           child: Row(children: [
@@ -54,7 +54,7 @@ class RequestContactAccessScreen
                                             decoration:
                                                 TextDecoration.underline)))
                           ])),
-                      SizedBox(height: 20.v),
+                      SizedBox(height: 10.v),
                       CustomElevatedButton(
                           text: "msg_i_agree_find_my".tr,
                           margin: EdgeInsets.only(left: 22.h, right: 26.h),

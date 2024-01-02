@@ -3,12 +3,19 @@ import 'package:matchaapplication/presentation/input_phone_number_screen/models/
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:matchaapplication/service/isar_service.dart';
 
 /// A controller class for the InputPhoneNumberScreen.
 ///
 /// This class manages the state of the InputPhoneNumberScreen, including the
 /// current inputPhoneNumberModelObj
 class InputPhoneNumberController extends GetxController {
+  late final IsarService _isar;
+
+  InputPhoneNumberController() {
+    _isar = IsarService();
+  }
+
   TextEditingController phoneNumberController = TextEditingController();
 
   Rx<InputPhoneNumberModel> inputPhoneNumberModelObj =
@@ -43,5 +50,15 @@ class InputPhoneNumberController extends GetxController {
     fullPhoneNumber = fullPhoneNumber + phoneNumberController.value.text;
     userDetail['userPhoneNumber'] = fullPhoneNumber;
     return true;
+  }
+
+  Future<bool> checkForExistingUser() async{
+    final user = await _isar.getUserByPhoneNumber(fullPhoneNumber);
+    if (user != null) { // user exists
+      return true;
+    }else{ // user does not exist
+      return false;
+    }
+
   }
 }

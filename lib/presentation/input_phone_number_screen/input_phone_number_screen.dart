@@ -39,12 +39,19 @@ class InputPhoneNumberScreen extends GetWidget<InputPhoneNumberController> {
   }
 
   /// Navigates to the explanationOfMatchaScreen when the action is triggered.
-  onTapGetStarted() {
+  onTapGetStarted() async{
     if(controller.validateForm()){
-      Get.toNamed(
-        AppRoutes.explanationOfMatchaScreen,
-        arguments: controller.userDetail
-      );
+      if(await controller.checkForExistingUser()){ // existing user means login
+        Get.toNamed(
+            AppRoutes.userProfileScreen,
+            arguments: controller.userDetail['userPhoneNumber']
+        );
+      }else{ // non existing user means register
+        Get.toNamed(
+            AppRoutes.explanationOfMatchaScreen,
+            arguments: controller.userDetail['userPhoneNumber']
+        );
+      }
     }
   }
 }

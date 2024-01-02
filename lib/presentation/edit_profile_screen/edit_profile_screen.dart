@@ -206,6 +206,7 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
   onTapProfession() {
     Get.toNamed(
       AppRoutes.editProfileTwoScreen,
+      arguments: controller.userPhoneNumber
     );
   }
 

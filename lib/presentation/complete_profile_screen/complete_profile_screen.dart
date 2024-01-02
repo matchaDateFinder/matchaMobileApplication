@@ -8,7 +8,6 @@ class CompleteProfileScreen extends GetWidget<CompleteProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    print(Get.arguments);
     return SafeArea(
         child: Scaffold(
             body: Container(
@@ -76,6 +75,7 @@ class CompleteProfileScreen extends GetWidget<CompleteProfileController> {
   onTapCompleteMyProfile() {
     Get.toNamed(
       AppRoutes.editProfileTwoScreen,
+      arguments: controller.userDetail['userPhoneNumber'],
     );
   }
 
@@ -83,6 +83,7 @@ class CompleteProfileScreen extends GetWidget<CompleteProfileController> {
   onTapTxtSkipForNow() {
     Get.toNamed(
       AppRoutes.userProfileScreen,
+      arguments: controller.userDetail['userPhoneNumber'],
     );
   }
 }

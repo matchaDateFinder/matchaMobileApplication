@@ -31,8 +31,6 @@ class InputAgeController extends GetxController {
   }
 
   bool validateForm(){
-    print(inputAgeModelObj.value);
-    print(selectedDropDownValue);
     userDetail['birthday'] = selectedDate.value;
     return true;
   }

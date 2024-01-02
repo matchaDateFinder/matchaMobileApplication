@@ -29,11 +29,13 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
         height: 360.adaptSize,
         width: double.maxFinite,
         child: Stack(alignment: Alignment.topCenter, children: [
-          CustomImageView(
-              imagePath: ImageConstant.imgImage360x360,
-              height: 360.adaptSize,
-              width: 360.adaptSize,
-              alignment: Alignment.center),
+          Obx(() =>
+              CustomImageView(
+                  imagePath: controller.userPhotoPath.value, //photo path
+                  height: 360.adaptSize,
+                  width: 360.adaptSize,
+                  alignment: Alignment.center),
+          ),
           CustomAppBar(
               leadingWidth: double.maxFinite,
               leading: AppbarLeadingIconbutton(
@@ -75,8 +77,8 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
               padding: EdgeInsets.only(left: 1.h),
-              child: Text("lbl_name_age".tr,
-                  style: CustomTextStyles.headlineSmallSemiBold)),
+              child: Obx(() => Text(controller.nameAge.value, // name and age
+                  style: CustomTextStyles.headlineSmallSemiBold))),
           SizedBox(height: 5.v),
           Padding(
               padding: EdgeInsets.only(left: 1.h),
@@ -91,9 +93,9 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
                     child: Text("lbl_profession".tr,
                         style: theme.textTheme.bodyMedium))
               ])),
-          SizedBox(height: 26.v),
+          // SizedBox(height: 5.v),
           _buildColumn(),
-          SizedBox(height: 80.v),
+          SizedBox(height: 15.v),
           CustomElevatedButton(
               text: "lbl_edit_my_profile".tr,
               margin: EdgeInsets.symmetric(horizontal: 25.h),
@@ -101,7 +103,7 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
                 onTapEditMyProfile();
               },
               alignment: Alignment.center),
-          SizedBox(height: 7.v)
+          // SizedBox(height: 7.v)
         ]));
   }
 
@@ -145,6 +147,7 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
   onTapEditMyProfile() {
     Get.toNamed(
       AppRoutes.editProfileScreen,
+      arguments: controller.phoneNumber
     );
   }
 }

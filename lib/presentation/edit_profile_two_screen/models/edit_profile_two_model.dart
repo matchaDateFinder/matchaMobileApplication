@@ -12,23 +12,35 @@ class EditProfileTwoModel {
     "lbl_doctorates"
   ]);
 
-  Rx<List<SelectionPopupModel>> dropdownItemList = Rx([
+  Rx<List<SelectionPopupModel>> religionDropdownItemList = Rx([
     SelectionPopupModel(
       id: 1,
-      title: "Item One",
+      title: "Islam",
       isSelected: true,
     ),
     SelectionPopupModel(
       id: 2,
-      title: "Item Two",
+      title: "Kristen",
     ),
     SelectionPopupModel(
       id: 3,
-      title: "Item Three",
+      title: "Katholik",
+    ),
+    SelectionPopupModel(
+      id: 4,
+      title: "Hindu",
+    ),
+    SelectionPopupModel(
+      id: 5,
+      title: "Buddha",
+    ),
+    SelectionPopupModel(
+      id: 6,
+      title: "Kong Hu Cu",
     )
   ]);
 
-  Rx<List<SelectionPopupModel>> dropdownItemList1 = Rx([
+  Rx<List<SelectionPopupModel>> dropdownItemList1 = Rx([ // should be a text numeric field
     SelectionPopupModel(
       id: 1,
       title: "Item One",
@@ -48,19 +60,71 @@ class EditProfileTwoModel {
 
   Rx<List<String>> radioList2 = Rx(["lbl_yes", "lbl_socially", "lbl_no"]);
 
-  Rx<List<SelectionPopupModel>> dropdownItemList2 = Rx([
+  Rx<List<SelectionPopupModel>> mbtiDropdownItemList = Rx([
     SelectionPopupModel(
       id: 1,
-      title: "Item One",
+      title: "INTJ",
       isSelected: true,
     ),
     SelectionPopupModel(
       id: 2,
-      title: "Item Two",
+      title: "INTP",
     ),
     SelectionPopupModel(
       id: 3,
-      title: "Item Three",
+      title: "ENTJ",
+    ),
+    SelectionPopupModel(
+      id: 4,
+      title: "ENTP",
+    ),
+    SelectionPopupModel(
+      id: 5,
+      title: "INFJ",
+    ),
+    SelectionPopupModel(
+      id: 6,
+      title: "INFP",
+    ),
+    SelectionPopupModel(
+      id: 7,
+      title: "ENFJ",
+    ),
+    SelectionPopupModel(
+      id: 8,
+      title: "ENFP",
+    ),
+    SelectionPopupModel(
+      id: 9,
+      title: "ISTJ",
+    ),
+    SelectionPopupModel(
+      id: 10,
+      title: "ISFJ",
+    ),
+    SelectionPopupModel(
+      id: 11,
+      title: "ESTJ",
+    ),
+    SelectionPopupModel(
+      id: 12,
+      title: "ESFJ",
+    ),
+    SelectionPopupModel(
+      id: 13,
+      title: "ISTP",
+    ),
+    SelectionPopupModel(
+      id: 14,
+      title: "ISFP",
+    ),
+    SelectionPopupModel(
+      id: 15,
+      title: "ESTP",
+    ),
+    SelectionPopupModel(
+      id: 16,
+      title: "ESFP",
     )
   ]);
 }

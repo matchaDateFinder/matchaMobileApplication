@@ -26,6 +26,7 @@ class UploadProfilePictureController extends GetxController {
   bool validateForm(){
     userDetail['photoPath'] = selectedImagePath.value;
     userDetail['photoSize'] = selectedImageSize.value;
+    userDetail['photoFile'] = File(selectedImagePath.value);
     return true;
   }
 

@@ -7,4 +7,6 @@ import 'package:matchaapplication/presentation/edit_profile_screen/models/edit_p
 /// current editProfileModelObj
 class EditProfileController extends GetxController {
   Rx<EditProfileModel> editProfileModelObj = EditProfileModel().obs;
+
+  final userPhoneNumber = Get.arguments;
 }
