@@ -60,12 +60,13 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
           Obx(() => Wrap(
               runSpacing: 8.v,
               spacing: 8.h,
+              alignment: WrapAlignment.center,
               children: List<Widget>.generate(
-                  controller.userProfileModelObj.value.tag2ItemList.value
+                  controller.userProfileModelObj.value.userTagItemList.value
                       .length, (index) {
-                Tag2ItemModel model = controller
-                    .userProfileModelObj.value.tag2ItemList.value[index];
-                return Tag2ItemWidget(model);
+                UserTagItemModel model = controller
+                    .userProfileModelObj.value.userTagItemList.value[index];
+                return UserTagItemWidget(model);
               })))
         ]));
   }

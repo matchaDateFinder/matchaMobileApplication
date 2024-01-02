@@ -156,21 +156,22 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text("msg_what_is_your_religion".tr, style: theme.textTheme.bodyLarge),
       SizedBox(height: 29.v),
-      CustomDropDown(
+      Obx(() => CustomDropDown(
           icon: Container(
               margin: EdgeInsets.fromLTRB(30.h, 12.v, 16.h, 12.v),
               decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(10.h)),
+              BoxDecoration(borderRadius: BorderRadius.circular(10.h)),
               child: CustomImageView(
                   imagePath: ImageConstant.imgArrowdown,
                   height: 24.adaptSize,
                   width: 24.adaptSize)),
-          hintText: "lbl_religion".tr,
+          hintText: controller.religionDropDownValue.value == "" ? "lbl_religion".tr
+              : controller.religionDropDownValue.value,
           items:
-              controller.editProfileTwoModelObj.value.religionDropdownItemList!.value,
+          controller.editProfileTwoModelObj.value.religionDropdownItemList!.value,
           onChanged: (value) {
             controller.onSelectReligion(value);
-          })
+          }))
     ]);
   }
 
@@ -300,7 +301,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text("msg_what_is_your_mbti".tr, style: theme.textTheme.bodyLarge),
       SizedBox(height: 30.v),
-      CustomDropDown(
+      Obx(() => CustomDropDown(
           icon: Container(
               margin: EdgeInsets.fromLTRB(30.h, 12.v, 16.h, 12.v),
               decoration:
@@ -309,12 +310,14 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                   imagePath: ImageConstant.imgArrowdown,
                   height: 24.adaptSize,
                   width: 24.adaptSize)),
-          hintText: "lbl_mbti".tr,
+          hintText: controller.mbtiDropDownValue.value == "" ? "lbl_mbti".tr
+              : controller.mbtiDropDownValue.value,
           items:
               controller.editProfileTwoModelObj.value.mbtiDropdownItemList!.value,
           onChanged: (value) {
             controller.onSelectMBTI(value);
           })
+      )
     ]);
   }
 

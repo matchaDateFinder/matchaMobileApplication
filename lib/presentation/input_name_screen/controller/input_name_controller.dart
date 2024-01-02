@@ -15,7 +15,7 @@ class InputNameController extends GetxController {
 
   @override
   void onInit(){
-    userDetail = Get.arguments;
+    userDetail['userPhoneNumber'] = Get.arguments;
   }
 
   @override

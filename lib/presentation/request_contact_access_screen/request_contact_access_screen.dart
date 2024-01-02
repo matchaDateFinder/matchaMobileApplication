@@ -72,10 +72,15 @@ class RequestContactAccessScreen
   }
 
   /// Navigates to the inputNameScreen when the action is triggered.
-  onTapIAgreefindMyMatcha() {
-    Get.toNamed(
-      AppRoutes.inputNameScreen,
-      arguments: Get.arguments,
-    );
+  onTapIAgreefindMyMatcha() async {
+    if (await controller.askPermissions()){
+      Get.toNamed(
+        AppRoutes.inputNameScreen,
+        arguments: Get.arguments,
+      );
+    }else{
+      print('permission denied');
+    }
+
   }
 }

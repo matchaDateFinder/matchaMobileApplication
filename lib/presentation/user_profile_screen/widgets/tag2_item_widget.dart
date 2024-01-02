@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
 
 // ignore: must_be_immutable
-class Tag2ItemWidget extends StatelessWidget {
-  Tag2ItemWidget(
+class UserTagItemWidget extends StatelessWidget {
+  UserTagItemWidget(
     this.tag2ItemModelObj, {
     Key? key,
   }) : super(
           key: key,
         );
 
-  Tag2ItemModel tag2ItemModelObj;
+  UserTagItemModel tag2ItemModelObj;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class Tag2ItemWidget extends StatelessWidget {
         showCheckmark: false,
         labelPadding: EdgeInsets.zero,
         label: Text(
-          tag2ItemModelObj.iconacademiccap!.value,
+          tag2ItemModelObj.attributevalue!.value,
           style: TextStyle(
             color: theme.colorScheme.primary,
             fontSize: 14.fSize,
@@ -34,12 +34,11 @@ class Tag2ItemWidget extends StatelessWidget {
           ),
         ),
         avatar: CustomImageView(
-          imagePath: ImageConstant.imgIcon16Academiccap,
+          imagePath: tag2ItemModelObj.attributeIcon!.value,
           height: 15.v,
           width: 16.h,
           margin: EdgeInsets.only(right: 8.h),
         ),
-        selected: (tag2ItemModelObj.isSelected?.value ?? false),
         backgroundColor: appTheme.lightGreen200,
         selectedColor: appTheme.lightGreen200,
         shape: (tag2ItemModelObj.isSelected?.value ?? false)
@@ -58,9 +57,6 @@ class Tag2ItemWidget extends StatelessWidget {
                   12.h,
                 ),
               ),
-        onSelected: (value) {
-          tag2ItemModelObj.isSelected!.value = value;
-        },
       ),
     );
   }

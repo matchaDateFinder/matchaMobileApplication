@@ -17,3 +17,4 @@ export 'package:matchaapplication/widgets/custom_image_view.dart';
 export 'package:get/get.dart';
 export '../theme/custom_button_style.dart';
 export 'package:matchaapplication/core/utils/date_time_utils.dart';
+export 'package:matchaapplication/service/isar_service.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:matchaapplication/service/isar_service.dart';
 import 'core/app_export.dart';
 
 Future<void> main() async {

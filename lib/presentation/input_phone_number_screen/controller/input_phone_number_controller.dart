@@ -3,7 +3,6 @@ import 'package:matchaapplication/presentation/input_phone_number_screen/models/
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:matchaapplication/service/isar_service.dart';
 
 /// A controller class for the InputPhoneNumberScreen.
 ///

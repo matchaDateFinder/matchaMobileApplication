@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/data/models/userModel/user.dart';
 import 'package:matchaapplication/presentation/complete_profile_screen/models/complete_profile_model.dart';
-import 'package:matchaapplication/service/isar_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 /// A controller class for the CompleteProfileScreen.

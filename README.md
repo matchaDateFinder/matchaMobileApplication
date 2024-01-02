@@ -1,5 +1,20 @@
 
 # matchaapplication
+
+## list of todo doubts and question
+1. rapihin applikasi (error message ketika ada field yang kosong padahal wajib, adjustment tampilan agak lebih mendekati dengan figma)
+2. apakah akan ada attribute "liked stuffs yang nyangkut di tiap user nya"
+3. tombol back di profile itu larinya kemana?
+4. di halaman dengan list of attribute apakah kata2 "add" akan berubah menjadi sesuai isinya sudah diisi
+5. ketika isi phone number, country code nya mau di kunci indonesia aja atau gimana?
+6. bikin mapping antara lbl dan makna aslinya
+7. kayaknya untuk request access harus dibikin jadi 2 entry point (both login dan register)
+8. minta tolong manda bikinin page untuk OTP
+9. minta tolong manda untuk bikin page kalau network error
+10. kalau network error gimana handle nya? apakah bisa ngecek profile tapi gk bisa access kemana2 atau otomatis lempar ke halaman error nya
+11. cek permission buat gallery/camera buat photo profile
+12. minta tolong manda bikinin page untuk nge stop activity kalau ada permission yang permanently denied
+
 ### Table of contents
 - [System requirements](#system-requirements)
 - [Figma design guidelines for better UI accuracy](#figma-design-guideline-for-better-accuracy)
