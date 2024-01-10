@@ -4,7 +4,7 @@ import '../../../core/app_export.dart';
 /// This class defines the variables used in the [edit_profile_two_screen],
 /// and is typically used to hold data that is passed between different parts of the application.
 class EditProfileTwoModel {
-  Rx<List<String>> radioList = Rx([
+  Rx<List<String>> educationRadioList = Rx([
     "lbl_highschools",
     "lbl_associates",
     "lbl_bachelors",
@@ -40,25 +40,7 @@ class EditProfileTwoModel {
     )
   ]);
 
-  Rx<List<SelectionPopupModel>> dropdownItemList1 = Rx([ // should be a text numeric field
-    SelectionPopupModel(
-      id: 1,
-      title: "Item One",
-      isSelected: true,
-    ),
-    SelectionPopupModel(
-      id: 2,
-      title: "Item Two",
-    ),
-    SelectionPopupModel(
-      id: 3,
-      title: "Item Three",
-    )
-  ]);
-
-  Rx<List<String>> radioList1 = Rx(["lbl_yes", "lbl_socially", "lbl_no"]);
-
-  Rx<List<String>> radioList2 = Rx(["lbl_yes", "lbl_socially", "lbl_no"]);
+  Rx<List<String>> smokingDrinkingRadioList = Rx(["lbl_yes", "lbl_socially", "lbl_no"]);
 
   Rx<List<SelectionPopupModel>> mbtiDropdownItemList = Rx([
     SelectionPopupModel(

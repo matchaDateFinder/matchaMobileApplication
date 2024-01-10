@@ -18,7 +18,7 @@ class InputGenderController extends GetxController {
   }
 
   bool validateForm(){
-    userDetail['gender'] = radioGroup.value;
+    userDetail['gender'] = radioGroup.value.tr;
     return true;
   }
 

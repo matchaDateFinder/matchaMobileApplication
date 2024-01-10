@@ -22,7 +22,7 @@ class UserProfileModel {
       }
       if(user.height != 0){
         UserTagItemModel heightTag = new UserTagItemModel();
-        heightTag.attributevalue?.value = user.height.toString();
+        heightTag.attributevalue?.value = user.height.toString() + "cm";
         heightTag.attributeIcon?.value = ImageConstant.imgIcon16Ruler;
         userTagItemList.value.add(heightTag);
       }

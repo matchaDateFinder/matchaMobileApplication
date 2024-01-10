@@ -8,7 +8,6 @@ class PrefUtils {
   static SharedPreferences? _sharedPreferences;
 
   PrefUtils() {
-    // init();
     SharedPreferences.getInstance().then((value) {
       _sharedPreferences = value;
     });
@@ -17,6 +16,7 @@ class PrefUtils {
   Future<void> init() async {
     _sharedPreferences ??= await SharedPreferences.getInstance();
     print('SharedPreference Initialized');
+    _sharedPreferences?.setBool("isLogin", false);
   }
 
   ///will clear all the data stored in preference
@@ -34,5 +34,13 @@ class PrefUtils {
     } catch (e) {
       return 'primary';
     }
+  }
+
+  bool? getLogInStatus() {
+    return _sharedPreferences?.getBool("isLogin");
+  }
+
+  void setLoginStatus(bool value){
+    _sharedPreferences?.setBool("isLogin", value);
   }
 }

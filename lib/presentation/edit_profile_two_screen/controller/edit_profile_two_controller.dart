@@ -1,4 +1,5 @@
 import 'package:matchaapplication/core/app_export.dart';
+import 'package:matchaapplication/data/models/userModel/user.dart';
 import 'package:matchaapplication/presentation/edit_profile_two_screen/models/edit_profile_two_model.dart';
 import 'package:flutter/material.dart';
 /// A controller class for the EditProfileTwoScreen.
@@ -8,12 +9,19 @@ import 'package:flutter/material.dart';
 class EditProfileTwoController extends GetxController {
 
   late final IsarService _isar;
+  late final FirestoreService _firestore;
+
+  late UserModel userData;
 
   EditProfileTwoController() {
     _isar = IsarService();
+    _firestore = FirestoreService();
+    userData = new UserModel();
   }
 
   TextEditingController answerProfessionController = TextEditingController();
+
+  TextEditingController answerHeightController = TextEditingController();
 
   Rx<EditProfileTwoModel> editProfileTwoModelObj = EditProfileTwoModel().obs;
 
@@ -29,28 +37,30 @@ class EditProfileTwoController extends GetxController {
 
   final phoneNumber = Get.arguments;
 
-  var userData;
-
   @override
   void onInit() async{
-    userData = await _isar.getUserByPhoneNumber(phoneNumber);
+    userData = (await _isar.getUserByPhoneNumber(phoneNumber))!;
     if (userData != null){
       await setDefaultValue();
     }
   }
 
   @override
+  void onReady() async {
+
+  }
+
+  @override
   void onClose() {
     super.onClose();
-    answerProfessionController.dispose();
   }
 
   Future<void> setDefaultValue() async{
     if(userData.profession != ""){
-      answerProfessionController.text = userData.profession;
+      answerProfessionController.text = userData.profession!;
     }
     if(userData.education != ""){
-      educationRadioGroup.value = userData.education;
+      educationRadioGroup.value = translateFromDBtoLabel(userData.education!, "education");
     }
     if(userData.religion != ""){
       for (var element in editProfileTwoModelObj.value.religionDropdownItemList.value) {
@@ -62,14 +72,14 @@ class EditProfileTwoController extends GetxController {
         }
       }
     }
-    // if(userData.height != 0){
-    //   educationRadioGroup = userData.education;
-    // }
+    if(userData.height != 0){
+      answerHeightController.text = userData.height!.toString();
+    }
     if(userData.smoking != ""){
-      smokingRadioGroup.value = userData.smoking;
+      smokingRadioGroup.value = translateFromDBtoLabel(userData.smoking!, "smoking");
     }
     if(userData.drinking != ""){
-      drinkingRadioGroup.value = userData.drinking;
+      drinkingRadioGroup.value = translateFromDBtoLabel(userData.drinking!, "drinking");
     }
     if(userData.mbti != ""){
       for (var element in editProfileTwoModelObj.value.mbtiDropdownItemList.value) {
@@ -94,16 +104,6 @@ class EditProfileTwoController extends GetxController {
     editProfileTwoModelObj.value.religionDropdownItemList.refresh();
   }
 
-  onSelected1(dynamic value) { // need change to text field
-    for (var element in editProfileTwoModelObj.value.dropdownItemList1.value) {
-      element.isSelected = false;
-      if (element.id == value.id) {
-        element.isSelected = true;
-      }
-    }
-    editProfileTwoModelObj.value.dropdownItemList1.refresh();
-  }
-
   onSelectMBTI(dynamic value) {
     for (var element in editProfileTwoModelObj.value.mbtiDropdownItemList.value) {
       element.isSelected = false;
@@ -115,27 +115,59 @@ class EditProfileTwoController extends GetxController {
     editProfileTwoModelObj.value.mbtiDropdownItemList.refresh();
   }
 
-  void saveUserProfile() async{
+  Future<void> saveUserProfile() async{
     if (answerProfessionController.value.text == null || answerProfessionController.value.text == ""){
       userData.profession = "";
     }else{
       userData.profession = answerProfessionController.value.text;
     }
-    userData.education = educationRadioGroup.value;
+    userData.education = educationRadioGroup.value.tr;
     if (religionDropDownValue.value == null || religionDropDownValue.value == ""){
       userData.religion = "";
     }else{
       userData.religion = religionDropDownValue.value;
     }
-    userData.height = 100;
-    userData.smoking = smokingRadioGroup.value;
-    userData.drinking = drinkingRadioGroup.value;
+    if (answerHeightController.value.text == null || answerHeightController.value.text == ""){
+      userData.height = 0;
+    }else{
+      userData.height = int.parse(answerHeightController.value.text);
+    }
+    userData.smoking = smokingRadioGroup.value.tr;
+    userData.drinking = drinkingRadioGroup.value.tr;
     if (mbtiDropDownValue.value == null){
       userData.mbti = "";
     }else{
       userData.mbti = mbtiDropDownValue.value;
     }
-    await _isar.saveUser(userData);
+    await _saveUserProfileToIsarDB();
+    await _saveUserProfileToFireStoreDB();
+    Get.delete<EditProfileTwoController>();
+  }
+
+  Future<void> _saveUserProfileToIsarDB() async {
+    await _isar.saveUser(userData!);
+  }
+
+  Future<void> _saveUserProfileToFireStoreDB() async {
+    await _firestore.updateUserProfileFromFireStoreByPhoneNumber(phoneNumber, userData!);
+  }
+
+  String translateFromDBtoLabel(String dbTerm, String fromWhich) {
+    String result = '';
+    if(fromWhich == "education"){
+      editProfileTwoModelObj.value.educationRadioList.value.forEach((element) {
+        if(element.tr == dbTerm){
+          result = element;
+        }
+      });
+    }else if(fromWhich == "drinking" || fromWhich == "smoking"){
+      editProfileTwoModelObj.value.smokingDrinkingRadioList.value.forEach((element){
+        if(element.tr == dbTerm){
+          result = element;
+        }
+      });
+    }
+    return result;
   }
 
 }

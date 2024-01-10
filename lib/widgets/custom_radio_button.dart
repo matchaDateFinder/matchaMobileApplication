@@ -116,6 +116,7 @@ class CustomRadioButton extends StatelessWidget {
           onChanged: (value) {
             onChange(value!);
           },
+          activeColor: theme.colorScheme.onSecondary,
         ),
       );
   BoxDecoration get radioButtonDecoration =>

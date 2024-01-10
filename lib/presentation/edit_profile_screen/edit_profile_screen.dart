@@ -38,78 +38,91 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
                             alignment: Alignment.center)
                       ])),
                   SizedBox(height: 47.v),
-                  Padding(
-                      padding: EdgeInsets.only(right: 1.h),
-                      child: _buildEducation(
-                          userImage: ImageConstant.imgFrameBlack90016x16,
-                          educationText: "lbl_profession".tr,
-                          addText: "lbl_add".tr,
-                          onTapEducation: () {
-                            onTapProfession();
-                          })),
+                  Obx(() => Padding(
+                        padding: EdgeInsets.only(right: 1.h),
+                        child: _buildEducation(
+                            userImage: ImageConstant.imgFrameBlack90016x16,
+                            educationText: "lbl_profession".tr,
+                            addText: controller.userProfession.value =='' ? "lbl_add".tr : controller.userProfession.value,
+                            onTabUserTag: () {
+                              onTapAttributeTag();
+                            }))
+                  ),
                   SizedBox(height: 16.v),
-                  Padding(
+                  Obx(() => Padding(
                       padding: EdgeInsets.only(right: 1.h),
                       child: _buildEducation(
                           userImage: ImageConstant.imgFrame16x16,
                           educationText: "lbl_education".tr,
-                          addText: "lbl_add".tr,
-                          onTapEducation: () {
-                            onTapEducation();
-                          })),
+                          addText: controller.userEducation.value =='' ? "lbl_add".tr : controller.userEducation.value,
+                          onTabUserTag: () {
+                            onTapAttributeTag();
+                          }))
+                  ),
                   SizedBox(height: 16.v),
-                  Padding(
+                  Obx(() => Padding(
                       padding: EdgeInsets.only(right: 1.h),
                       child: _buildEducation(
                           userImage: ImageConstant.imgIcon16Pray,
                           educationText: "lbl_religion".tr,
-                          addText: "lbl_add".tr,
-                          onTapEducation: () {
-                            onTapReligion();
-                          })),
+                          addText: controller.userReligion.value =='' ? "lbl_add".tr : controller.userReligion.value,
+                          onTabUserTag: () {
+                            onTapAttributeTag();
+                          }))
+                  ),
                   SizedBox(height: 14.v),
-                  Padding(
+                  Obx(() => Padding(
                       padding: EdgeInsets.only(right: 1.h),
                       child: _buildEducation(
                           userImage: ImageConstant.imgIcon16Ruler,
                           educationText: "lbl_height".tr,
-                          addText: "lbl_add".tr,
-                          onTapEducation: () {
-                            onTapHeight();
-                          })),
+                          addText: controller.userHeight.value =='' ? "lbl_add".tr : controller.userHeight.value,
+                          onTabUserTag: () {
+                            onTapAttributeTag();
+                          }))
+                  ),
                   SizedBox(height: 14.v),
-                  Padding(
+                  Obx(() => Padding(
                       padding: EdgeInsets.only(right: 1.h),
                       child: _buildEducation(
                           userImage: ImageConstant.imgIcon16Drink,
                           educationText: "lbl_drinking".tr,
-                          addText: "lbl_add".tr,
-                          onTapEducation: () {
-                            onTapDrinking();
-                          })),
+                          addText: controller.userDrinking.value =='' ? "lbl_add".tr : controller.userDrinking.value,
+                          onTabUserTag: () {
+                            onTapAttributeTag();
+                          }))
+                  ),
                   SizedBox(height: 14.v),
-                  Padding(
+                  Obx(() => Padding(
                       padding: EdgeInsets.only(right: 1.h),
                       child: _buildEducation(
                           userImage: ImageConstant.imgIcon16Smoking,
                           educationText: "lbl_smoking".tr,
-                          addText: "lbl_add".tr,
-                          onTapEducation: () {
-                            onTapSmoking();
-                          })),
+                          addText: controller.userSmoking.value =='' ? "lbl_add".tr : controller.userSmoking.value,
+                          onTabUserTag: () {
+                            onTapAttributeTag();
+                          }))
+                  ),
                   SizedBox(height: 14.v),
-                  Padding(
+                  Obx(() => Padding(
                       padding: EdgeInsets.only(right: 1.h),
                       child: _buildEducation(
                           userImage: ImageConstant.imgFrame1,
                           educationText: "lbl_mbti".tr,
-                          addText: "lbl_add".tr,
-                          onTapEducation: () {
-                            onTapMbti();
-                          })),
+                          addText: controller.userMBTI.value =='' ? "lbl_add".tr : controller.userMBTI.value,
+                          onTabUserTag: () {
+                            onTapAttributeTag();
+                          }))
+                  ),
                   Spacer(),
-                  Text("lbl_log_out_account".tr,
-                      style: CustomTextStyles.bodyLargeOnPrimaryContainer)
+                  InkWell(
+                      child :
+                      Text("lbl_log_out_account".tr,
+                          style: CustomTextStyles.bodyLargeOnPrimaryContainer),
+                      onTap: (){
+                        onTapSignOutText();
+                      }
+                  ),
                 ])),
             bottomNavigationBar: _buildBottomBar()));
   }
@@ -142,11 +155,11 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
     required String userImage,
     required String educationText,
     required String addText,
-    Function? onTapEducation,
+    Function? onTabUserTag,
   }) {
     return GestureDetector(
         onTap: () {
-          onTapEducation!.call();
+          onTabUserTag!.call();
         },
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           CustomImageView(
@@ -198,57 +211,29 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
   }
 
   /// Navigates to the previous screen.
-  onTapArrowLeft() {
-    Get.back();
+  onTapArrowLeft() async{
+    await controller.manuallyKillConstructor();
+    Get.toNamed(
+        AppRoutes.userProfileScreen,
+        arguments: controller.userPhoneNumber
+    );
   }
 
   /// Navigates to the editProfileTwoScreen when the action is triggered.
-  onTapProfession() {
+  onTapAttributeTag() async {
+    await controller.manuallyKillConstructor();
     Get.toNamed(
       AppRoutes.editProfileTwoScreen,
       arguments: controller.userPhoneNumber
     );
   }
 
-  /// Navigates to the editProfileTwoScreen when the action is triggered.
-  onTapEducation() {
+  onTapSignOutText() async {
+    await controller.logOutFromTheApp();
+    await controller.manuallyKillConstructor();
     Get.toNamed(
-      AppRoutes.editProfileTwoScreen,
-    );
-  }
-
-  /// Navigates to the editProfileTwoScreen when the action is triggered.
-  onTapReligion() {
-    Get.toNamed(
-      AppRoutes.editProfileTwoScreen,
-    );
-  }
-
-  /// Navigates to the editProfileTwoScreen when the action is triggered.
-  onTapHeight() {
-    Get.toNamed(
-      AppRoutes.editProfileTwoScreen,
-    );
-  }
-
-  /// Navigates to the editProfileTwoScreen when the action is triggered.
-  onTapDrinking() {
-    Get.toNamed(
-      AppRoutes.editProfileTwoScreen,
-    );
-  }
-
-  /// Navigates to the editProfileTwoScreen when the action is triggered.
-  onTapSmoking() {
-    Get.toNamed(
-      AppRoutes.editProfileTwoScreen,
-    );
-  }
-
-  /// Navigates to the editProfileTwoScreen when the action is triggered.
-  onTapMbti() {
-    Get.toNamed(
-      AppRoutes.editProfileTwoScreen,
+      AppRoutes.loginSignupScreen
     );
   }
 }
+

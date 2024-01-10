@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:isar/isar.dart';
 
 import 'package:matchaapplication/data/models/chatModel/chat.dart';
@@ -13,19 +14,6 @@ class IsarService {
     db = openDB();
   }
 
-  Future<void> saveUser(User newUser) async {
-    final isar = await db;
-    isar.writeTxnSync<int>(() => isar.users.putSync(newUser));
-  }
-
-  Future<User?> getUserByPhoneNumber(String phoneNumber) async {
-    final isar = await db;
-    return await isar.users.
-    filter().
-    phoneNumberMatches(phoneNumber).
-    findFirst();
-  }
-
   Future<void> cleanDb() async {
     final isar = await db;
     await isar.writeTxn(() => isar.clear());
@@ -35,12 +23,42 @@ class IsarService {
     final dir = await getApplicationDocumentsDirectory();
     if (Isar.instanceNames.isEmpty) {
       return await Isar.open(
-        [ChatSchema, UserSchema, MatchSchema],
+        [ChatSchema, UserModelSchema, MatchSchema],
         inspector: true,
         directory: dir.path
       );
     }
-
     return Future.value(Isar.getInstance());
   }
+
+
+  Future<void> saveUser(UserModel newUser) async {
+    final isar = await db;
+    isar.writeTxnSync<int>(() => isar.userModels.putSync(newUser));
+  }
+
+  Future<UserModel?> getUserByPhoneNumber(String phoneNumber) async {
+    final isar = await db;
+    return await isar.userModels.
+    filter().
+    phoneNumberMatches(phoneNumber).
+    findFirst();
+  }
+
+  Future<String> getOnlyEntryInIsarDB() async {
+    final isar = await db;
+    List<UserModel> user = await isar.userModels.where().findAll();
+    return user[0].phoneNumber;
+  }
+
+  Future<void> clearAllDataFromIsarDB() async {
+    // TODO
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.userModels.clear();
+      await isar.matchs.clear();
+      await isar.chats.clear();
+    });
+  }
+
 }

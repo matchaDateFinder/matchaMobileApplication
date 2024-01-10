@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/app_export.dart';
 
 Future<void> main() async {
@@ -9,7 +10,13 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]).then((value) async {
     Logger.init(kReleaseMode ? LogMode.live : LogMode.debug);
-    final isar = await IsarService();
+    await IsarService();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await FirebaseAuth.instance.signInAnonymously();
+    await FirestoreService();
+    await PrefUtils();
     runApp(MyApp());
   });
 }

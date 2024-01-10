@@ -1,19 +1,20 @@
 
 # matchaapplication
+## Terjawab 
 
 ## list of todo doubts and question
 1. rapihin applikasi (error message ketika ada field yang kosong padahal wajib, adjustment tampilan agak lebih mendekati dengan figma)
 2. apakah akan ada attribute "liked stuffs yang nyangkut di tiap user nya"
-3. tombol back di profile itu larinya kemana?
-4. di halaman dengan list of attribute apakah kata2 "add" akan berubah menjadi sesuai isinya sudah diisi
-5. ketika isi phone number, country code nya mau di kunci indonesia aja atau gimana?
-6. bikin mapping antara lbl dan makna aslinya
 7. kayaknya untuk request access harus dibikin jadi 2 entry point (both login dan register)
-8. minta tolong manda bikinin page untuk OTP
-9. minta tolong manda untuk bikin page kalau network error
 10. kalau network error gimana handle nya? apakah bisa ngecek profile tapi gk bisa access kemana2 atau otomatis lempar ke halaman error nya
 11. cek permission buat gallery/camera buat photo profile
-12. minta tolong manda bikinin page untuk nge stop activity kalau ada permission yang permanently denied
+14. jika belum ada attribute maka akan ada notification untuk lengkapin profile nya, kalau di halaman match di kosongin bener2 di kosongin
+15. perlu menjamin format penyimpanan nomor di hp sama semua e.g. 628xxxxxxxxxx
+16. cara handle orang yang gk punya temen sama sekali?
+17. perlu bikin mekanisme untuk nahan contact list yang ada di hp tapi tidak ada di system
+18. perlu bikin mekanisme untuk recheck hal diatas HANYA untuk yang belum ada di contact list user nya
+19. di dashboard notice 2, jika pencet skip, maka di chat list user yang terakhir me-like match tersebut akan ada timer untuk match tersebut(24jam) jika tidak chat sampe timer habis maka match akan hangus
+20. 
 
 ### Table of contents
 - [System requirements](#system-requirements)

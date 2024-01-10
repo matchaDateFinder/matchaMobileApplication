@@ -26,11 +26,11 @@ class InputNameController extends GetxController {
 
   bool validateForm(){
     if(inputPlaceholderController == null){
-      print("missing");
+      print("name is missing");
       return false;
     }
     if(inputPlaceholderController.value.text.length == 0){
-      print("missing");
+      print("name length cannot be 0");
       return false;
     }
     userDetail['fullName'] = inputPlaceholderController.value.text;

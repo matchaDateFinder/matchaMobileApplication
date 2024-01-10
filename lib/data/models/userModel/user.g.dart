@@ -9,11 +9,11 @@ part of 'user.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetUserCollection on Isar {
-  IsarCollection<User> get users => this.collection();
+extension GetUserModelCollection on Isar {
+  IsarCollection<UserModel> get userModels => this.collection();
 }
 
-const UserSchema = CollectionSchema(
+const UserModelSchema = CollectionSchema(
   name: r'User',
   id: -7838171048429979076,
   properties: {
@@ -88,10 +88,10 @@ const UserSchema = CollectionSchema(
       type: IsarType.string,
     )
   },
-  estimateSize: _userEstimateSize,
-  serialize: _userSerialize,
-  deserialize: _userDeserialize,
-  deserializeProp: _userDeserializeProp,
+  estimateSize: _userModelEstimateSize,
+  serialize: _userModelSerialize,
+  deserialize: _userModelDeserialize,
+  deserializeProp: _userModelDeserializeProp,
   idName: r'userId',
   indexes: {
     r'phoneNumber': IndexSchema(
@@ -110,14 +110,14 @@ const UserSchema = CollectionSchema(
   },
   links: {},
   embeddedSchemas: {},
-  getId: _userGetId,
-  getLinks: _userGetLinks,
-  attach: _userAttach,
+  getId: _userModelGetId,
+  getLinks: _userModelGetLinks,
+  attach: _userModelAttach,
   version: '3.1.0+1',
 );
 
-int _userEstimateSize(
-  User object,
+int _userModelEstimateSize(
+  UserModel object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -178,8 +178,8 @@ int _userEstimateSize(
   return bytesCount;
 }
 
-void _userSerialize(
-  User object,
+void _userModelSerialize(
+  UserModel object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -200,13 +200,13 @@ void _userSerialize(
   writer.writeString(offsets[13], object.smoking);
 }
 
-User _userDeserialize(
+UserModel _userModelDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = User();
+  final object = UserModel();
   object.age = reader.readDateTime(offsets[0]);
   object.contactList = reader.readStringList(offsets[1]);
   object.drinking = reader.readStringOrNull(offsets[2]);
@@ -224,7 +224,7 @@ User _userDeserialize(
   return object;
 }
 
-P _userDeserializeProp<P>(
+P _userModelDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -264,22 +264,22 @@ P _userDeserializeProp<P>(
   }
 }
 
-Id _userGetId(User object) {
+Id _userModelGetId(UserModel object) {
   return object.userId;
 }
 
-List<IsarLinkBase<dynamic>> _userGetLinks(User object) {
+List<IsarLinkBase<dynamic>> _userModelGetLinks(UserModel object) {
   return [];
 }
 
-void _userAttach(IsarCollection<dynamic> col, Id id, User object) {}
+void _userModelAttach(IsarCollection<dynamic> col, Id id, UserModel object) {}
 
-extension UserByIndex on IsarCollection<User> {
-  Future<User?> getByPhoneNumber(String phoneNumber) {
+extension UserModelByIndex on IsarCollection<UserModel> {
+  Future<UserModel?> getByPhoneNumber(String phoneNumber) {
     return getByIndex(r'phoneNumber', [phoneNumber]);
   }
 
-  User? getByPhoneNumberSync(String phoneNumber) {
+  UserModel? getByPhoneNumberSync(String phoneNumber) {
     return getByIndexSync(r'phoneNumber', [phoneNumber]);
   }
 
@@ -291,12 +291,12 @@ extension UserByIndex on IsarCollection<User> {
     return deleteByIndexSync(r'phoneNumber', [phoneNumber]);
   }
 
-  Future<List<User?>> getAllByPhoneNumber(List<String> phoneNumberValues) {
+  Future<List<UserModel?>> getAllByPhoneNumber(List<String> phoneNumberValues) {
     final values = phoneNumberValues.map((e) => [e]).toList();
     return getAllByIndex(r'phoneNumber', values);
   }
 
-  List<User?> getAllByPhoneNumberSync(List<String> phoneNumberValues) {
+  List<UserModel?> getAllByPhoneNumberSync(List<String> phoneNumberValues) {
     final values = phoneNumberValues.map((e) => [e]).toList();
     return getAllByIndexSync(r'phoneNumber', values);
   }
@@ -311,34 +311,37 @@ extension UserByIndex on IsarCollection<User> {
     return deleteAllByIndexSync(r'phoneNumber', values);
   }
 
-  Future<Id> putByPhoneNumber(User object) {
+  Future<Id> putByPhoneNumber(UserModel object) {
     return putByIndex(r'phoneNumber', object);
   }
 
-  Id putByPhoneNumberSync(User object, {bool saveLinks = true}) {
+  Id putByPhoneNumberSync(UserModel object, {bool saveLinks = true}) {
     return putByIndexSync(r'phoneNumber', object, saveLinks: saveLinks);
   }
 
-  Future<List<Id>> putAllByPhoneNumber(List<User> objects) {
+  Future<List<Id>> putAllByPhoneNumber(List<UserModel> objects) {
     return putAllByIndex(r'phoneNumber', objects);
   }
 
-  List<Id> putAllByPhoneNumberSync(List<User> objects,
+  List<Id> putAllByPhoneNumberSync(List<UserModel> objects,
       {bool saveLinks = true}) {
     return putAllByIndexSync(r'phoneNumber', objects, saveLinks: saveLinks);
   }
 }
 
-extension UserQueryWhereSort on QueryBuilder<User, User, QWhere> {
-  QueryBuilder<User, User, QAfterWhere> anyUserId() {
+extension UserModelQueryWhereSort
+    on QueryBuilder<UserModel, UserModel, QWhere> {
+  QueryBuilder<UserModel, UserModel, QAfterWhere> anyUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension UserQueryWhere on QueryBuilder<User, User, QWhereClause> {
-  QueryBuilder<User, User, QAfterWhereClause> userIdEqualTo(Id userId) {
+extension UserModelQueryWhere
+    on QueryBuilder<UserModel, UserModel, QWhereClause> {
+  QueryBuilder<UserModel, UserModel, QAfterWhereClause> userIdEqualTo(
+      Id userId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: userId,
@@ -347,7 +350,8 @@ extension UserQueryWhere on QueryBuilder<User, User, QWhereClause> {
     });
   }
 
-  QueryBuilder<User, User, QAfterWhereClause> userIdNotEqualTo(Id userId) {
+  QueryBuilder<UserModel, UserModel, QAfterWhereClause> userIdNotEqualTo(
+      Id userId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -369,7 +373,8 @@ extension UserQueryWhere on QueryBuilder<User, User, QWhereClause> {
     });
   }
 
-  QueryBuilder<User, User, QAfterWhereClause> userIdGreaterThan(Id userId,
+  QueryBuilder<UserModel, UserModel, QAfterWhereClause> userIdGreaterThan(
+      Id userId,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -378,7 +383,8 @@ extension UserQueryWhere on QueryBuilder<User, User, QWhereClause> {
     });
   }
 
-  QueryBuilder<User, User, QAfterWhereClause> userIdLessThan(Id userId,
+  QueryBuilder<UserModel, UserModel, QAfterWhereClause> userIdLessThan(
+      Id userId,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -387,7 +393,7 @@ extension UserQueryWhere on QueryBuilder<User, User, QWhereClause> {
     });
   }
 
-  QueryBuilder<User, User, QAfterWhereClause> userIdBetween(
+  QueryBuilder<UserModel, UserModel, QAfterWhereClause> userIdBetween(
     Id lowerUserId,
     Id upperUserId, {
     bool includeLower = true,
@@ -403,7 +409,7 @@ extension UserQueryWhere on QueryBuilder<User, User, QWhereClause> {
     });
   }
 
-  QueryBuilder<User, User, QAfterWhereClause> phoneNumberEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterWhereClause> phoneNumberEqualTo(
       String phoneNumber) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
@@ -413,7 +419,7 @@ extension UserQueryWhere on QueryBuilder<User, User, QWhereClause> {
     });
   }
 
-  QueryBuilder<User, User, QAfterWhereClause> phoneNumberNotEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterWhereClause> phoneNumberNotEqualTo(
       String phoneNumber) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
@@ -449,8 +455,10 @@ extension UserQueryWhere on QueryBuilder<User, User, QWhereClause> {
   }
 }
 
-extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
-  QueryBuilder<User, User, QAfterFilterCondition> ageEqualTo(DateTime value) {
+extension UserModelQueryFilter
+    on QueryBuilder<UserModel, UserModel, QFilterCondition> {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> ageEqualTo(
+      DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'age',
@@ -459,7 +467,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> ageGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> ageGreaterThan(
     DateTime value, {
     bool include = false,
   }) {
@@ -472,7 +480,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> ageLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> ageLessThan(
     DateTime value, {
     bool include = false,
   }) {
@@ -485,7 +493,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> ageBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> ageBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
@@ -502,7 +510,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListIsNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'contactList',
@@ -510,7 +519,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListIsNotNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'contactList',
@@ -518,7 +528,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListElementEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListElementEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -531,7 +542,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListElementGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListElementGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -546,7 +558,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListElementLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListElementLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -561,7 +574,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListElementBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListElementBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -580,7 +594,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListElementStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListElementStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -593,7 +608,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListElementEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListElementEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -606,9 +622,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListElementContains(
-      String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListElementContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'contactList',
@@ -618,9 +633,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListElementMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListElementMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'contactList',
@@ -630,7 +644,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListElementIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListElementIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'contactList',
@@ -639,7 +654,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition>
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
       contactListElementIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -649,8 +664,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListLengthEqualTo(
-      int length) {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'contactList',
@@ -662,7 +677,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'contactList',
@@ -674,7 +690,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'contactList',
@@ -686,7 +703,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListLengthLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListLengthLessThan(
     int length, {
     bool include = false,
   }) {
@@ -701,7 +719,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListLengthGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
@@ -716,7 +735,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> contactListLengthBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      contactListLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -733,7 +753,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingIsNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'drinking',
@@ -741,7 +761,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingIsNotNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      drinkingIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'drinking',
@@ -749,7 +770,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -762,7 +783,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -777,7 +798,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -792,7 +813,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -811,7 +832,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -824,7 +845,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -837,7 +858,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingContains(String value,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -848,7 +870,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingMatches(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -860,7 +882,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> drinkingIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'drinking',
@@ -869,7 +891,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> drinkingIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      drinkingIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'drinking',
@@ -878,7 +901,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationIsNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> educationIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'education',
@@ -886,7 +909,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationIsNotNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      educationIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'education',
@@ -894,7 +918,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> educationEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -907,7 +931,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      educationGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -922,7 +947,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> educationLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -937,7 +962,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> educationBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -956,7 +981,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> educationStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -969,7 +994,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> educationEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -982,7 +1007,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationContains(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> educationContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -994,7 +1019,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationMatches(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> educationMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1006,7 +1031,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> educationIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'education',
@@ -1015,7 +1040,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> educationIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      educationIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'education',
@@ -1024,7 +1050,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1037,7 +1063,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1052,7 +1078,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1067,7 +1093,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1086,7 +1112,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1099,7 +1125,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1112,7 +1138,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderContains(String value,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1123,7 +1150,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderMatches(String pattern,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderMatches(
+      String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -1134,7 +1162,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'gender',
@@ -1143,7 +1171,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> genderIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> genderIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'gender',
@@ -1152,7 +1180,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> heightIsNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> heightIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'height',
@@ -1160,7 +1188,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> heightIsNotNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> heightIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'height',
@@ -1168,7 +1196,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> heightEqualTo(int? value) {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> heightEqualTo(
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'height',
@@ -1177,7 +1206,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> heightGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> heightGreaterThan(
     int? value, {
     bool include = false,
   }) {
@@ -1190,7 +1219,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> heightLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> heightLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -1203,7 +1232,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> heightBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> heightBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -1220,7 +1249,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiIsNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'mbti',
@@ -1228,7 +1257,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiIsNotNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'mbti',
@@ -1236,7 +1265,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -1249,7 +1278,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1264,7 +1293,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1279,7 +1308,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1298,7 +1327,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1311,7 +1340,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1324,7 +1353,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiContains(String value,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1335,7 +1365,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiMatches(String pattern,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiMatches(
+      String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -1346,7 +1377,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'mbti',
@@ -1355,7 +1386,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> mbtiIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> mbtiIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'mbti',
@@ -1364,7 +1395,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1377,7 +1408,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1392,7 +1423,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1407,7 +1438,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1426,7 +1457,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1439,7 +1470,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1452,7 +1483,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameContains(String value,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1463,7 +1495,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameMatches(String pattern,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameMatches(
+      String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -1474,7 +1507,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'name',
@@ -1483,7 +1516,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> nameIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> nameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
@@ -1492,7 +1525,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> phoneNumberEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1505,7 +1538,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      phoneNumberGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1520,7 +1554,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> phoneNumberLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1535,7 +1569,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> phoneNumberBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1554,7 +1588,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      phoneNumberStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1567,7 +1602,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> phoneNumberEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1580,7 +1615,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberContains(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> phoneNumberContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1592,7 +1627,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberMatches(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> phoneNumberMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1604,7 +1639,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      phoneNumberIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'phoneNumber',
@@ -1613,7 +1649,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> phoneNumberIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      phoneNumberIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'phoneNumber',
@@ -1622,7 +1659,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoLinkEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1635,7 +1672,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      photoLinkGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1650,7 +1688,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoLinkLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1665,7 +1703,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoLinkBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1684,7 +1722,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoLinkStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1697,7 +1735,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoLinkEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1710,7 +1748,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkContains(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoLinkContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1722,7 +1760,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkMatches(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoLinkMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1734,7 +1772,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoLinkIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'photoLink',
@@ -1743,7 +1781,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoLinkIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      photoLinkIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'photoLink',
@@ -1752,7 +1791,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoSizeEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1765,7 +1804,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      photoSizeGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1780,7 +1820,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoSizeLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1795,7 +1835,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoSizeBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1814,7 +1854,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoSizeStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1827,7 +1867,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoSizeEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1840,7 +1880,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeContains(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoSizeContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1852,7 +1892,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeMatches(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoSizeMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1864,7 +1904,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> photoSizeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'photoSize',
@@ -1873,7 +1913,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> photoSizeIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      photoSizeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'photoSize',
@@ -1882,7 +1923,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionIsNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> professionIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'profession',
@@ -1890,7 +1931,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionIsNotNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      professionIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'profession',
@@ -1898,7 +1940,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> professionEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -1911,7 +1953,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      professionGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1926,7 +1969,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> professionLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1941,7 +1984,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> professionBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1960,7 +2003,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      professionStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1973,7 +2017,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> professionEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1986,7 +2030,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionContains(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> professionContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1998,7 +2042,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionMatches(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> professionMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2010,7 +2054,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      professionIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'profession',
@@ -2019,7 +2064,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> professionIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      professionIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'profession',
@@ -2028,7 +2074,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionIsNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'religion',
@@ -2036,7 +2082,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionIsNotNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      religionIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'religion',
@@ -2044,7 +2091,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -2057,7 +2104,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2072,7 +2119,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2087,7 +2134,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -2106,7 +2153,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2119,7 +2166,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2132,7 +2179,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionContains(String value,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -2143,7 +2191,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionMatches(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2155,7 +2203,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> religionIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'religion',
@@ -2164,7 +2212,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> religionIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      religionIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'religion',
@@ -2173,7 +2222,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingIsNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'smoking',
@@ -2181,7 +2230,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingIsNotNull() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'smoking',
@@ -2189,7 +2238,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingEqualTo(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -2202,7 +2251,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2217,7 +2266,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2232,7 +2281,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -2251,7 +2300,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingStartsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2264,7 +2313,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingEndsWith(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2277,7 +2326,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingContains(String value,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -2288,7 +2338,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingMatches(String pattern,
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingMatches(
+      String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -2299,7 +2350,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingIsEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> smokingIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'smoking',
@@ -2308,7 +2359,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> smokingIsNotEmpty() {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      smokingIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'smoking',
@@ -2317,7 +2369,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> userIdEqualTo(Id value) {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userIdEqualTo(
+      Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'userId',
@@ -2326,7 +2379,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> userIdGreaterThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userIdGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -2339,7 +2392,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> userIdLessThan(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userIdLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -2352,7 +2405,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
-  QueryBuilder<User, User, QAfterFilterCondition> userIdBetween(
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userIdBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -2370,428 +2423,432 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
   }
 }
 
-extension UserQueryObject on QueryBuilder<User, User, QFilterCondition> {}
+extension UserModelQueryObject
+    on QueryBuilder<UserModel, UserModel, QFilterCondition> {}
 
-extension UserQueryLinks on QueryBuilder<User, User, QFilterCondition> {}
+extension UserModelQueryLinks
+    on QueryBuilder<UserModel, UserModel, QFilterCondition> {}
 
-extension UserQuerySortBy on QueryBuilder<User, User, QSortBy> {
-  QueryBuilder<User, User, QAfterSortBy> sortByAge() {
+extension UserModelQuerySortBy on QueryBuilder<UserModel, UserModel, QSortBy> {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByAge() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'age', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByAgeDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByAgeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'age', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByDrinking() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByDrinking() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'drinking', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByDrinkingDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByDrinkingDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'drinking', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByEducation() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByEducation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'education', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByEducationDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByEducationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'education', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByGender() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByGender() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByGenderDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByGenderDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByHeight() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByHeight() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'height', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByHeightDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByHeightDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'height', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByMbti() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByMbti() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mbti', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByMbtiDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByMbtiDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mbti', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByName() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByNameDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByPhoneNumber() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByPhoneNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'phoneNumber', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByPhoneNumberDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByPhoneNumberDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'phoneNumber', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByPhotoLink() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByPhotoLink() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoLink', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByPhotoLinkDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByPhotoLinkDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoLink', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByPhotoSize() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByPhotoSize() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoSize', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByPhotoSizeDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByPhotoSizeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoSize', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByProfession() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByProfession() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'profession', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByProfessionDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByProfessionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'profession', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByReligion() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByReligion() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'religion', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortByReligionDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByReligionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'religion', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortBySmoking() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortBySmoking() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'smoking', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> sortBySmokingDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortBySmokingDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'smoking', Sort.desc);
     });
   }
 }
 
-extension UserQuerySortThenBy on QueryBuilder<User, User, QSortThenBy> {
-  QueryBuilder<User, User, QAfterSortBy> thenByAge() {
+extension UserModelQuerySortThenBy
+    on QueryBuilder<UserModel, UserModel, QSortThenBy> {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByAge() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'age', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByAgeDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByAgeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'age', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByDrinking() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByDrinking() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'drinking', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByDrinkingDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByDrinkingDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'drinking', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByEducation() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByEducation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'education', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByEducationDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByEducationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'education', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByGender() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByGender() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByGenderDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByGenderDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByHeight() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByHeight() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'height', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByHeightDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByHeightDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'height', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByMbti() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByMbti() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mbti', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByMbtiDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByMbtiDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mbti', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByName() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByNameDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByPhoneNumber() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByPhoneNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'phoneNumber', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByPhoneNumberDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByPhoneNumberDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'phoneNumber', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByPhotoLink() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByPhotoLink() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoLink', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByPhotoLinkDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByPhotoLinkDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoLink', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByPhotoSize() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByPhotoSize() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoSize', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByPhotoSizeDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByPhotoSizeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoSize', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByProfession() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByProfession() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'profession', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByProfessionDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByProfessionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'profession', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByReligion() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByReligion() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'religion', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByReligionDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByReligionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'religion', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenBySmoking() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenBySmoking() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'smoking', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenBySmokingDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenBySmokingDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'smoking', Sort.desc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByUserId() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.asc);
     });
   }
 
-  QueryBuilder<User, User, QAfterSortBy> thenByUserIdDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByUserIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.desc);
     });
   }
 }
 
-extension UserQueryWhereDistinct on QueryBuilder<User, User, QDistinct> {
-  QueryBuilder<User, User, QDistinct> distinctByAge() {
+extension UserModelQueryWhereDistinct
+    on QueryBuilder<UserModel, UserModel, QDistinct> {
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByAge() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'age');
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByContactList() {
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByContactList() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'contactList');
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByDrinking(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByDrinking(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'drinking', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByEducation(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByEducation(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'education', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByGender(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByGender(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'gender', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByHeight() {
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByHeight() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'height');
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByMbti(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByMbti(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'mbti', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByName(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByPhoneNumber(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByPhoneNumber(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'phoneNumber', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByPhotoLink(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByPhotoLink(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'photoLink', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByPhotoSize(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByPhotoSize(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'photoSize', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByProfession(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByProfession(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'profession', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctByReligion(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByReligion(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'religion', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<User, User, QDistinct> distinctBySmoking(
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctBySmoking(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'smoking', caseSensitive: caseSensitive);
@@ -2799,92 +2856,94 @@ extension UserQueryWhereDistinct on QueryBuilder<User, User, QDistinct> {
   }
 }
 
-extension UserQueryProperty on QueryBuilder<User, User, QQueryProperty> {
-  QueryBuilder<User, int, QQueryOperations> userIdProperty() {
+extension UserModelQueryProperty
+    on QueryBuilder<UserModel, UserModel, QQueryProperty> {
+  QueryBuilder<UserModel, int, QQueryOperations> userIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'userId');
     });
   }
 
-  QueryBuilder<User, DateTime, QQueryOperations> ageProperty() {
+  QueryBuilder<UserModel, DateTime, QQueryOperations> ageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'age');
     });
   }
 
-  QueryBuilder<User, List<String>?, QQueryOperations> contactListProperty() {
+  QueryBuilder<UserModel, List<String>?, QQueryOperations>
+      contactListProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'contactList');
     });
   }
 
-  QueryBuilder<User, String?, QQueryOperations> drinkingProperty() {
+  QueryBuilder<UserModel, String?, QQueryOperations> drinkingProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'drinking');
     });
   }
 
-  QueryBuilder<User, String?, QQueryOperations> educationProperty() {
+  QueryBuilder<UserModel, String?, QQueryOperations> educationProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'education');
     });
   }
 
-  QueryBuilder<User, String, QQueryOperations> genderProperty() {
+  QueryBuilder<UserModel, String, QQueryOperations> genderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'gender');
     });
   }
 
-  QueryBuilder<User, int?, QQueryOperations> heightProperty() {
+  QueryBuilder<UserModel, int?, QQueryOperations> heightProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'height');
     });
   }
 
-  QueryBuilder<User, String?, QQueryOperations> mbtiProperty() {
+  QueryBuilder<UserModel, String?, QQueryOperations> mbtiProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'mbti');
     });
   }
 
-  QueryBuilder<User, String, QQueryOperations> nameProperty() {
+  QueryBuilder<UserModel, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
     });
   }
 
-  QueryBuilder<User, String, QQueryOperations> phoneNumberProperty() {
+  QueryBuilder<UserModel, String, QQueryOperations> phoneNumberProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'phoneNumber');
     });
   }
 
-  QueryBuilder<User, String, QQueryOperations> photoLinkProperty() {
+  QueryBuilder<UserModel, String, QQueryOperations> photoLinkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'photoLink');
     });
   }
 
-  QueryBuilder<User, String, QQueryOperations> photoSizeProperty() {
+  QueryBuilder<UserModel, String, QQueryOperations> photoSizeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'photoSize');
     });
   }
 
-  QueryBuilder<User, String?, QQueryOperations> professionProperty() {
+  QueryBuilder<UserModel, String?, QQueryOperations> professionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'profession');
     });
   }
 
-  QueryBuilder<User, String?, QQueryOperations> religionProperty() {
+  QueryBuilder<UserModel, String?, QQueryOperations> religionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'religion');
     });
   }
 
-  QueryBuilder<User, String?, QQueryOperations> smokingProperty() {
+  QueryBuilder<UserModel, String?, QQueryOperations> smokingProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'smoking');
     });

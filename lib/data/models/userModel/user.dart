@@ -3,7 +3,7 @@ part 'user.g.dart';
 
 @collection
 @Name("User")
-class User {
+class UserModel {
   final Id userId = Isar.autoIncrement;
   late String name;
   @Index(unique: true, replace: true)

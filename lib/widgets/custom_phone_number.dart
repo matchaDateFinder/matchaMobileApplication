@@ -1,9 +1,8 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';
-import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/widgets/custom_text_form_field.dart';
+import 'package:matchaapplication/widgets/custom_numeric_form_field.dart';
 
 // ignore: must_be_immutable
 class CustomPhoneNumber extends StatelessWidget {
@@ -49,7 +48,7 @@ class CustomPhoneNumber extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: EdgeInsets.only(left: 16.h),
-            child: CustomTextFormField(
+            child: CustomNumericFormField(
               width: 189.h,
               controller: controller,
               hintText: "lbl_890_0000_0000".tr,

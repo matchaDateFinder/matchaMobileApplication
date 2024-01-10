@@ -7,6 +7,7 @@ import 'package:matchaapplication/widgets/custom_drop_down.dart';
 import 'package:matchaapplication/widgets/custom_elevated_button.dart';
 import 'package:matchaapplication/widgets/custom_radio_button.dart';
 import 'package:matchaapplication/widgets/custom_text_form_field.dart';
+import 'package:matchaapplication/widgets/custom_numeric_form_field.dart';
 
 class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
   const EditProfileTwoScreen({Key? key}) : super(key: key);
@@ -39,7 +40,15 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                           SizedBox(height: 66.v),
                           _buildReligion(),
                           SizedBox(height: 66.v),
-                          _buildHeight(),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("msg_what_is_your_height".tr,
+                                  style: theme.textTheme.bodyLarge)),
+                          SizedBox(height: 30.v),
+                          CustomNumericFormField(
+                              controller: controller.answerHeightController,
+                              hintText: "lbl_height_in_cm".tr,
+                              textInputAction: TextInputAction.done),
                           SizedBox(height: 65.v),
                           _buildDrinking(),
                           SizedBox(height: 65.v),
@@ -84,7 +93,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                 width: 264.h,
                 text: "lbl_highschools".tr,
                 value:
-                    controller.editProfileTwoModelObj.value.radioList.value[0],
+                    controller.editProfileTwoModelObj.value.educationRadioList.value[0],
                 groupValue: controller.educationRadioGroup.value,
                 padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 12.v),
                 isRightCheck: true,
@@ -97,7 +106,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                     width: 264.h,
                     text: "lbl_associates".tr,
                     value: controller
-                        .editProfileTwoModelObj.value.radioList.value[1],
+                        .editProfileTwoModelObj.value.educationRadioList.value[1],
                     groupValue: controller.educationRadioGroup.value,
                     padding:
                         EdgeInsets.symmetric(horizontal: 15.h, vertical: 12.v),
@@ -111,7 +120,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                     width: 264.h,
                     text: "lbl_bachelors".tr,
                     value: controller
-                        .editProfileTwoModelObj.value.radioList.value[2],
+                        .editProfileTwoModelObj.value.educationRadioList.value[2],
                     groupValue: controller.educationRadioGroup.value,
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.h, vertical: 12.v),
@@ -125,7 +134,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                     width: 264.h,
                     text: "lbl_masters".tr,
                     value: controller
-                        .editProfileTwoModelObj.value.radioList.value[3],
+                        .editProfileTwoModelObj.value.educationRadioList.value[3],
                     groupValue: controller.educationRadioGroup.value,
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.h, vertical: 12.v),
@@ -139,7 +148,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                     width: 264.h,
                     text: "lbl_doctorates".tr,
                     value: controller
-                        .editProfileTwoModelObj.value.radioList.value[4],
+                        .editProfileTwoModelObj.value.educationRadioList.value[4],
                     groupValue: controller.educationRadioGroup.value,
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.h, vertical: 12.v),
@@ -176,29 +185,6 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
   }
 
   /// Section Widget
-  Widget _buildHeight() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text("msg_what_is_your_height".tr, style: theme.textTheme.bodyLarge),
-      SizedBox(height: 29.v),
-      CustomDropDown(
-          icon: Container(
-              margin: EdgeInsets.fromLTRB(30.h, 12.v, 16.h, 12.v),
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(10.h)),
-              child: CustomImageView(
-                  imagePath: ImageConstant.imgArrowdown,
-                  height: 24.adaptSize,
-                  width: 24.adaptSize)),
-          hintText: "lbl_height_in_cm".tr,
-          items:
-              controller.editProfileTwoModelObj.value.dropdownItemList1!.value,
-          onChanged: (value) {
-            controller.onSelected1(value);
-          })
-    ]);
-  }
-
-  /// Section Widget
   Widget _buildDrinking() {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text("lbl_do_you_drink".tr, style: theme.textTheme.bodyLarge),
@@ -208,7 +194,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                 width: 264.h,
                 text: "lbl_yes".tr,
                 value:
-                    controller.editProfileTwoModelObj.value.radioList1.value[0],
+                    controller.editProfileTwoModelObj.value.smokingDrinkingRadioList.value[0],
                 groupValue: controller.drinkingRadioGroup.value,
                 padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 12.v),
                 isRightCheck: true,
@@ -221,7 +207,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                     width: 264.h,
                     text: "lbl_socially".tr,
                     value: controller
-                        .editProfileTwoModelObj.value.radioList1.value[1],
+                        .editProfileTwoModelObj.value.smokingDrinkingRadioList.value[1],
                     groupValue: controller.drinkingRadioGroup.value,
                     padding:
                         EdgeInsets.symmetric(horizontal: 15.h, vertical: 12.v),
@@ -235,7 +221,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                     width: 264.h,
                     text: "lbl_no".tr,
                     value: controller
-                        .editProfileTwoModelObj.value.radioList1.value[2],
+                        .editProfileTwoModelObj.value.smokingDrinkingRadioList.value[2],
                     groupValue: controller.drinkingRadioGroup.value,
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.h, vertical: 13.v),
@@ -257,7 +243,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                 width: 264.h,
                 text: "lbl_yes".tr,
                 value:
-                    controller.editProfileTwoModelObj.value.radioList2.value[0],
+                    controller.editProfileTwoModelObj.value.smokingDrinkingRadioList.value[0],
                 groupValue: controller.smokingRadioGroup.value,
                 padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 12.v),
                 isRightCheck: true,
@@ -270,7 +256,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                     width: 264.h,
                     text: "lbl_socially".tr,
                     value: controller
-                        .editProfileTwoModelObj.value.radioList2.value[1],
+                        .editProfileTwoModelObj.value.smokingDrinkingRadioList.value[1],
                     groupValue: controller.smokingRadioGroup.value,
                     padding:
                         EdgeInsets.symmetric(horizontal: 15.h, vertical: 12.v),
@@ -284,7 +270,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                     width: 264.h,
                     text: "lbl_no".tr,
                     value: controller
-                        .editProfileTwoModelObj.value.radioList2.value[2],
+                        .editProfileTwoModelObj.value.smokingDrinkingRadioList.value[2],
                     groupValue: controller.smokingRadioGroup.value,
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.h, vertical: 12.v),
@@ -323,14 +309,18 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
 
   /// Navigates to the previous screen.
   onTapVector() {
-    Get.back();
+    Get.toNamed(
+      AppRoutes.editProfileScreen,
+      arguments: controller.phoneNumber
+    );
   }
 
   /// Navigates to the editProfileScreen when the action is triggered.
-  onTapSaveMyProfile() {
-    controller.saveUserProfile();
+  onTapSaveMyProfile() async {
+    await controller.saveUserProfile();
     Get.toNamed(
       AppRoutes.editProfileScreen,
+      arguments: controller.phoneNumber
     );
   }
 }

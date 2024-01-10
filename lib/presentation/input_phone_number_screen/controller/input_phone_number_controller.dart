@@ -1,4 +1,6 @@
 import 'package:matchaapplication/core/app_export.dart';
+import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
+import 'package:matchaapplication/data/models/userModel/user.dart';
 import 'package:matchaapplication/presentation/input_phone_number_screen/models/input_phone_number_model.dart';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/utils/utils.dart';
@@ -10,9 +12,13 @@ import 'package:flutter/material.dart';
 /// current inputPhoneNumberModelObj
 class InputPhoneNumberController extends GetxController {
   late final IsarService _isar;
+  late final FirestoreService _firestore;
+  late final PrefUtils _prefUtils;
 
   InputPhoneNumberController() {
     _isar = IsarService();
+    _firestore = FirestoreService();
+    _prefUtils = PrefUtils();
   }
 
   TextEditingController phoneNumberController = TextEditingController();
@@ -23,7 +29,7 @@ class InputPhoneNumberController extends GetxController {
   Rx<Country> selectedCountry =
       CountryPickerUtils.getCountryByPhoneCode('62').obs;
 
-  String fullPhoneNumber = '62';
+  String fullPhoneNumber = '';
 
   var userDetail = new Map();
 
@@ -46,18 +52,55 @@ class InputPhoneNumberController extends GetxController {
       print("missing");
       return false;
     }
-    fullPhoneNumber = fullPhoneNumber + phoneNumberController.value.text;
+    fullPhoneNumber = selectedCountry.value.phoneCode + phoneNumberController.value.text;
     userDetail['userPhoneNumber'] = fullPhoneNumber;
     return true;
   }
 
   Future<bool> checkForExistingUser() async{
-    final user = await _isar.getUserByPhoneNumber(fullPhoneNumber);
-    if (user != null) { // user exists
+    final userFromFiresToreDB = await _firestore.getUserFromFireStoreByPhoneNumber(fullPhoneNumber);
+    if (userFromFiresToreDB.userName != "userName" && userFromFiresToreDB.userPhoneNumber != "") { // user exists
+      _prefUtils.setLoginStatus(true);
+      await _saveUserDataFromFireStoreToIsarDB(userFromFiresToreDB);
       return true;
     }else{ // user does not exist
       return false;
     }
-
   }
+
+  Future<void> _saveUserDataFromFireStoreToIsarDB(UserFireStoreModel userFromFireStoreDB) async {
+    String photoFileLocalPath = await _downloadPhotoFileFromCloudStorage(userFromFireStoreDB.userPhotoLink, userFromFireStoreDB.userName, userFromFireStoreDB.userPhoneNumber);
+    List<String>? contactList = await _getContactListFromFireStoreDB(userFromFireStoreDB.userContactList);
+    UserModel userIsarDBModel = UserModel()
+      ..phoneNumber = userFromFireStoreDB.userPhoneNumber
+      ..name = userFromFireStoreDB.userName
+      ..photoLink = photoFileLocalPath
+      ..photoSize = userFromFireStoreDB.userPhotoSize
+      ..age = userFromFireStoreDB.userBirthday.toDate()
+      ..gender = userFromFireStoreDB.userGender
+      ..profession = userFromFireStoreDB.userProfession
+      ..education = userFromFireStoreDB.userEducation
+      ..religion = userFromFireStoreDB.userReligion
+      ..height = userFromFireStoreDB.userHeight
+      ..smoking = userFromFireStoreDB.userSmoking
+      ..drinking = userFromFireStoreDB.userDrinking
+      ..mbti = userFromFireStoreDB.userMBTI
+      ..contactList = contactList;
+    await _isar.saveUser(userIsarDBModel);
+  }
+
+  Future<String> _downloadPhotoFileFromCloudStorage(String userPhotoLink, String userFullName, String userPhoneNumber) async {
+    String photoLocalLink = await _firestore.downloadUserProfilePicture(userPhotoLink, userFullName, userPhoneNumber);
+    return photoLocalLink;
+  }
+
+  Future<List<String>?> _getContactListFromFireStoreDB(List<String>? contactListFromFireStore) async {
+    List<String>? contactList = [];
+    contactListFromFireStore?.forEach((element) {
+      contactList.add(element);
+    });
+    return contactList;
+  }
+
+
 }
