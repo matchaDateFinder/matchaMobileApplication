@@ -14,7 +14,7 @@
 17. perlu bikin mekanisme untuk nahan contact list yang ada di hp tapi tidak ada di system
 18. perlu bikin mekanisme untuk recheck hal diatas HANYA untuk yang belum ada di contact list user nya
 19. di dashboard notice 2, jika pencet skip, maka di chat list user yang terakhir me-like match tersebut akan ada timer untuk match tersebut(24jam) jika tidak chat sampe timer habis maka match akan hangus
-20. 
+20. Tiap login sync contact di hp dengan contact list di database cloud
 
 ### Table of contents
 - [System requirements](#system-requirements)

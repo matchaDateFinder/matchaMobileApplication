@@ -15,17 +15,17 @@ class CustomBottomBar extends StatelessWidget {
     BottomMenuModel(
       icon: ImageConstant.imgFrameBlack900,
       activeIcon: ImageConstant.imgFrameBlack900,
-      type: BottomBarEnum.Frameblack900,
+      type: BottomBarEnum.chatBottomType,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgFrameBlack90032x32,
       activeIcon: ImageConstant.imgFrameBlack90032x32,
-      type: BottomBarEnum.Frameblack90032x32,
+      type: BottomBarEnum.matchBottomType,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgFrame32x32,
       activeIcon: ImageConstant.imgFrame32x32,
-      type: BottomBarEnum.Frame32x32,
+      type: BottomBarEnum.profileBottomType,
     )
   ];
 
@@ -40,7 +40,7 @@ class CustomBottomBar extends StatelessWidget {
       ),
       child: Obx(
         () => BottomNavigationBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: appTheme.lightGreen200,
           showSelectedLabels: false,
           showUnselectedLabels: false,
           selectedFontSize: 0,
@@ -75,9 +75,9 @@ class CustomBottomBar extends StatelessWidget {
 }
 
 enum BottomBarEnum {
-  Frameblack900,
-  Frameblack90032x32,
-  Frame32x32,
+  chatBottomType,
+  matchBottomType,
+  profileBottomType,
 }
 
 class BottomMenuModel {

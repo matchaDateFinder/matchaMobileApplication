@@ -20,5 +20,6 @@ class UserModel {
   late String? drinking;
   late String? mbti;
   late List<String>? contactList;
+  late DateTime lastRecommendationIsGiven;
 }
 

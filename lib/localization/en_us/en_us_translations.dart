@@ -101,7 +101,7 @@ final Map<String, String> enUs = {
   "lbl_text_here": "Text here...",
   "lbl_type_here": "Type here...",
   "msg_get_the_conversation": "Get the conversation",
-  "msg_next_profile_in": "Next Profile in HH:MM",
+  "msg_next_profile_in": "Next Profile in",
 
 // Network Error String
   "msg_network_err": "Network Error",

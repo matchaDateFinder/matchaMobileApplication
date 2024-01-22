@@ -40,7 +40,6 @@ class CompleteProfileController extends GetxController {
     File photoFile = await userDetail['photoFile'].copy(path.join(documentDir.path, path.basename(userDetail['fullName']+"-"+userDetail['userPhoneNumber']+path.extension(userDetail["photoPath"]))));
     photoDownloadURL = await _firestore.uploadUserProfilePicture(photoFile);
     List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
-    // TODO add filter for save only contact that is registered to the firestoreDB and another filter to find and add non existing user
     contacts.forEach((element) {
       element.phones.forEach((elementA) {
         contactListInit!.add(elementA.number);

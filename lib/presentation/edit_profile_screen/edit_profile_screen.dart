@@ -189,11 +189,11 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
   ///Handling route based on bottom click actions
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
-      case BottomBarEnum.Frameblack900:
+      case BottomBarEnum.chatBottomType:
         return AppRoutes.chatFunctionTabContainerPage;
-      case BottomBarEnum.Frameblack90032x32:
+      case BottomBarEnum.matchBottomType:
         return "/";
-      case BottomBarEnum.Frame32x32:
+      case BottomBarEnum.profileBottomType:
         return "/";
       default:
         return "/";

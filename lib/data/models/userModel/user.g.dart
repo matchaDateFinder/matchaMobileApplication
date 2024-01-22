@@ -47,43 +47,48 @@ const UserModelSchema = CollectionSchema(
       name: r'height',
       type: IsarType.long,
     ),
-    r'mbti': PropertySchema(
+    r'lastRecommendationIsGiven': PropertySchema(
       id: 6,
+      name: r'lastRecommendationIsGiven',
+      type: IsarType.dateTime,
+    ),
+    r'mbti': PropertySchema(
+      id: 7,
       name: r'mbti',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'name',
       type: IsarType.string,
     ),
     r'phoneNumber': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'phoneNumber',
       type: IsarType.string,
     ),
     r'photoLink': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'photoLink',
       type: IsarType.string,
     ),
     r'photoSize': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'photoSize',
       type: IsarType.string,
     ),
     r'profession': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'profession',
       type: IsarType.string,
     ),
     r'religion': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'religion',
       type: IsarType.string,
     ),
     r'smoking': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'smoking',
       type: IsarType.string,
     )
@@ -190,14 +195,15 @@ void _userModelSerialize(
   writer.writeString(offsets[3], object.education);
   writer.writeString(offsets[4], object.gender);
   writer.writeLong(offsets[5], object.height);
-  writer.writeString(offsets[6], object.mbti);
-  writer.writeString(offsets[7], object.name);
-  writer.writeString(offsets[8], object.phoneNumber);
-  writer.writeString(offsets[9], object.photoLink);
-  writer.writeString(offsets[10], object.photoSize);
-  writer.writeString(offsets[11], object.profession);
-  writer.writeString(offsets[12], object.religion);
-  writer.writeString(offsets[13], object.smoking);
+  writer.writeDateTime(offsets[6], object.lastRecommendationIsGiven);
+  writer.writeString(offsets[7], object.mbti);
+  writer.writeString(offsets[8], object.name);
+  writer.writeString(offsets[9], object.phoneNumber);
+  writer.writeString(offsets[10], object.photoLink);
+  writer.writeString(offsets[11], object.photoSize);
+  writer.writeString(offsets[12], object.profession);
+  writer.writeString(offsets[13], object.religion);
+  writer.writeString(offsets[14], object.smoking);
 }
 
 UserModel _userModelDeserialize(
@@ -213,14 +219,15 @@ UserModel _userModelDeserialize(
   object.education = reader.readStringOrNull(offsets[3]);
   object.gender = reader.readString(offsets[4]);
   object.height = reader.readLongOrNull(offsets[5]);
-  object.mbti = reader.readStringOrNull(offsets[6]);
-  object.name = reader.readString(offsets[7]);
-  object.phoneNumber = reader.readString(offsets[8]);
-  object.photoLink = reader.readString(offsets[9]);
-  object.photoSize = reader.readString(offsets[10]);
-  object.profession = reader.readStringOrNull(offsets[11]);
-  object.religion = reader.readStringOrNull(offsets[12]);
-  object.smoking = reader.readStringOrNull(offsets[13]);
+  object.lastRecommendationIsGiven = reader.readDateTime(offsets[6]);
+  object.mbti = reader.readStringOrNull(offsets[7]);
+  object.name = reader.readString(offsets[8]);
+  object.phoneNumber = reader.readString(offsets[9]);
+  object.photoLink = reader.readString(offsets[10]);
+  object.photoSize = reader.readString(offsets[11]);
+  object.profession = reader.readStringOrNull(offsets[12]);
+  object.religion = reader.readStringOrNull(offsets[13]);
+  object.smoking = reader.readStringOrNull(offsets[14]);
   return object;
 }
 
@@ -244,9 +251,9 @@ P _userModelDeserializeProp<P>(
     case 5:
       return (reader.readLongOrNull(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
       return (reader.readString(offset)) as P;
     case 9:
@@ -254,10 +261,12 @@ P _userModelDeserializeProp<P>(
     case 10:
       return (reader.readString(offset)) as P;
     case 11:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 12:
       return (reader.readStringOrNull(offset)) as P;
     case 13:
+      return (reader.readStringOrNull(offset)) as P;
+    case 14:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1241,6 +1250,62 @@ extension UserModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'height',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      lastRecommendationIsGivenEqualTo(DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastRecommendationIsGiven',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      lastRecommendationIsGivenGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lastRecommendationIsGiven',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      lastRecommendationIsGivenLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lastRecommendationIsGiven',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      lastRecommendationIsGivenBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lastRecommendationIsGiven',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -2490,6 +2555,20 @@ extension UserModelQuerySortBy on QueryBuilder<UserModel, UserModel, QSortBy> {
     });
   }
 
+  QueryBuilder<UserModel, UserModel, QAfterSortBy>
+      sortByLastRecommendationIsGiven() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastRecommendationIsGiven', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy>
+      sortByLastRecommendationIsGivenDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastRecommendationIsGiven', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByMbti() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mbti', Sort.asc);
@@ -2649,6 +2728,20 @@ extension UserModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<UserModel, UserModel, QAfterSortBy>
+      thenByLastRecommendationIsGiven() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastRecommendationIsGiven', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy>
+      thenByLastRecommendationIsGivenDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastRecommendationIsGiven', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByMbti() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mbti', Sort.asc);
@@ -2799,6 +2892,13 @@ extension UserModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<UserModel, UserModel, QDistinct>
+      distinctByLastRecommendationIsGiven() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lastRecommendationIsGiven');
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QDistinct> distinctByMbti(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2898,6 +2998,13 @@ extension UserModelQueryProperty
   QueryBuilder<UserModel, int?, QQueryOperations> heightProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'height');
+    });
+  }
+
+  QueryBuilder<UserModel, DateTime, QQueryOperations>
+      lastRecommendationIsGivenProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lastRecommendationIsGiven');
     });
   }
 

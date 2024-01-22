@@ -21,7 +21,7 @@ class LoginSignupController extends GetxController {
     if(_prefUtils.getLogInStatus() == true){
       _prefUtils.setLoginStatus(true);
       IsarService isar = IsarService();
-      String phoneNumber = await isar.getOnlyEntryInIsarDB();
+      String phoneNumber = await isar.getPhoneNumberInIsarDB();
       Get.toNamed(
           AppRoutes.userProfileScreen,
           arguments: phoneNumber);

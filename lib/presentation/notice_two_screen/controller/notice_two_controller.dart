@@ -7,4 +7,9 @@ import 'package:matchaapplication/presentation/notice_two_screen/models/notice_t
 /// current noticeTwoModelObj
 class NoticeTwoController extends GetxController {
   Rx<NoticeTwoModel> noticeTwoModelObj = NoticeTwoModel().obs;
+
+  // TODO need to find a way to dispose the current controller when moving to another page via the bottom bar
+  Future<void> manuallyKillConstructor() async {
+    Get.delete<NoticeTwoController>();
+  }
 }

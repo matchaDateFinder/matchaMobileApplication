@@ -16,6 +16,7 @@ class UserFireStoreModel {
   late String? userDrinking;
   late String? userMBTI;
   late List<String>? userContactList;
+  late Timestamp? lastRecommendationIsGiven;
 
   UserFireStoreModel({
     required this.userName,
@@ -31,7 +32,8 @@ class UserFireStoreModel {
     this.userSmoking,
     this.userDrinking,
     this.userMBTI,
-    this.userContactList
+    this.userContactList,
+    this.lastRecommendationIsGiven
   });
 
   UserFireStoreModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
@@ -53,6 +55,7 @@ class UserFireStoreModel {
     documentSnapshot["userContactList"].forEach((element) {
       userContactList!.add(element.toString());
     });
+    lastRecommendationIsGiven = documentSnapshot["lastRecommendationIsGiven"];
   }
 
 }

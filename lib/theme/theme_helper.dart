@@ -139,6 +139,7 @@ class PrimaryColors {
   // LightGreen
   Color get lightGreen200 => Color(0XFFCCE29E);
   Color get lightGreen50 => Color(0XFFF5F9EB);
+  Color get testColor => Color(0XFFEA1551);
 }
 
 PrimaryColors get appTheme => ThemeHelper().themeColor();

@@ -4,6 +4,7 @@ import 'models/tag4_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/presentation/chat_function_tab_container_page/chat_function_tab_container_page.dart';
+import 'package:matchaapplication/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:matchaapplication/widgets/app_bar/appbar_subtitle_one.dart';
 import 'package:matchaapplication/widgets/app_bar/custom_app_bar.dart';
 import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
@@ -23,15 +24,18 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomImageView(
-                          imagePath: ImageConstant.imgImage,
-                          height: 360.adaptSize,
-                          width: 360.adaptSize),
-                      SizedBox(height: 8.v),
+                      Obx(() =>
+                          CustomImageView(
+                              imagePath: controller.userPhotoPath.value, //photo path
+                              height: 360.adaptSize,
+                              width: 360.adaptSize,
+                              alignment: Alignment.center),
+                      ),
+                      SizedBox(height: 5.v),
                       Padding(
                           padding: EdgeInsets.only(left: 24.h),
-                          child: Text("lbl_name_age".tr,
-                              style: CustomTextStyles.headlineSmallSemiBold)),
+                          child: Obx(() => Text(controller.nameAge.value, // name and age
+                              style: CustomTextStyles.headlineSmallSemiBold))),
                       SizedBox(height: 5.v),
                       Padding(
                           padding: EdgeInsets.only(left: 24.h),
@@ -43,10 +47,11 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
                                 margin: EdgeInsets.symmetric(vertical: 1.v)),
                             Padding(
                                 padding: EdgeInsets.only(left: 8.h),
-                                child: Text("lbl_profession".tr,
-                                    style: theme.textTheme.bodyMedium))
+                                child: Obx(() => Text(controller.userProfession.value == '' ?
+                                'Please complete your profile' : controller.userProfession.value,
+                                    style: theme.textTheme.bodyMedium)))
                           ])),
-                      SizedBox(height: 13.v),
+                      SizedBox(height: 10.v),
                       Padding(
                           padding: EdgeInsets.only(left: 24.h),
                           child: Row(children: [
@@ -57,12 +62,13 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
                                 margin: EdgeInsets.symmetric(vertical: 1.v)),
                             Padding(
                                 padding: EdgeInsets.only(left: 8.h),
-                                child: Text("lbl_mutual_info".tr,
-                                    style: theme.textTheme.bodyMedium))
+                                child: Obx(() => Text(controller.mutualName.value == '' ?
+                                'for mutual' : controller.mutualName.value,
+                                    style: theme.textTheme.bodyMedium)))
                           ])),
-                      SizedBox(height: 26.v),
+                      SizedBox(height: 10.v),
                       _buildCandidateProfile(),
-                      SizedBox(height: 30.v),
+                      SizedBox(height: 10.v),
                       Align(
                           alignment: Alignment.center,
                           child: Row(
@@ -77,16 +83,24 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
                                         onTap: () {
                                           onTapBtnSearch();
                                         },
-                                        child: CustomImageView())),
+                                        child: Icon(
+                                          Icons.cancel,
+                                          size: 48,
+                                          color: appTheme.green800,
+                                        ))),
                                 Padding(
                                     padding: EdgeInsets.only(left: 39.h),
                                     child: CustomIconButton(
-                                        height: 52.adaptSize,
-                                        width: 52.adaptSize,
+                                        height: 48.adaptSize,
+                                        width: 48.adaptSize,
                                         onTap: () {
                                           onTapBtnCheckmark();
                                         },
-                                        child: CustomImageView()))
+                                        child: Icon(
+                                            Icons.check_circle,
+                                            size: 48,
+                                            color: appTheme.green800,
+                                        )))
                               ])),
                       SizedBox(height: 5.v)
                     ])),
@@ -112,10 +126,10 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
               runSpacing: 8.v,
               spacing: 8.h,
               children: List<Widget>.generate(
-                  controller.candidateProfileModelObj.value.tag4ItemList.value
+                  controller.candidateProfileModelObj.value.candidateTagItemList.value
                       .length, (index) {
-                Tag4ItemModel model = controller
-                    .candidateProfileModelObj.value.tag4ItemList.value[index];
+                CandidateTagItemModel model = controller
+                    .candidateProfileModelObj.value.candidateTagItemList.value[index];
                 return Tag4ItemWidget(model);
               })))
         ]));
@@ -124,19 +138,19 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
   /// Section Widget
   Widget _buildBottomBar() {
     return CustomBottomBar(onChanged: (BottomBarEnum type) {
-      Get.toNamed(getCurrentRoute(type), id: 1);
+       _onTapBottomNavigation(type);
     });
   }
 
   ///Handling route based on bottom click actions
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
-      case BottomBarEnum.Frameblack900:
+      case BottomBarEnum.chatBottomType:
         return AppRoutes.chatFunctionTabContainerPage;
-      case BottomBarEnum.Frameblack90032x32:
-        return "/";
-      case BottomBarEnum.Frame32x32:
-        return "/";
+      case BottomBarEnum.matchBottomType:
+        return AppRoutes.candidateProfileScreen;
+      case BottomBarEnum.profileBottomType:
+        return AppRoutes.userProfileScreen;
       default:
         return "/";
     }
@@ -147,22 +161,42 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
     switch (currentRoute) {
       case AppRoutes.chatFunctionTabContainerPage:
         return ChatFunctionTabContainerPage();
+      case AppRoutes.candidateProfileScreen:
+        return CandidateProfileScreen();
+      case AppRoutes.userProfileScreen:
+        return UserProfileScreen();
       default:
         return DefaultWidget();
     }
   }
 
   /// Navigates to the noticeOneScreen when the action is triggered.
-  onTapBtnSearch() {
-    Get.toNamed(
-      AppRoutes.noticeOneScreen,
-    );
+  onTapBtnSearch() async {
+    await controller.manuallyKillConstructor();
+    if(!(await controller.saveUserReaction(false))){
+      Get.toNamed(
+        AppRoutes.noticeOneScreen,
+      );
+    }
   }
 
   /// Navigates to the noticeTwoScreen when the action is triggered.
-  onTapBtnCheckmark() {
-    Get.toNamed(
-      AppRoutes.noticeTwoScreen,
-    );
+  onTapBtnCheckmark() async {
+    await controller.manuallyKillConstructor();
+    if(await controller.saveUserReaction(true)){
+      Get.toNamed(
+        AppRoutes.noticeTwoScreen,
+      );
+    }else{
+      Get.toNamed(
+        AppRoutes.noticeOneScreen,
+      );
+    }
   }
+
+  _onTapBottomNavigation(BottomBarEnum type) async{
+    await controller.manuallyKillConstructor();
+    Get.toNamed(getCurrentRoute(type));
+  }
+
 }

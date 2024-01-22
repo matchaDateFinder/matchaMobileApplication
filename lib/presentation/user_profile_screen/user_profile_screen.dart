@@ -1,3 +1,5 @@
+import 'package:matchaapplication/presentation/candidate_profile_screen/candidate_profile_screen.dart';
+
 import '../user_profile_screen/widgets/tag2_item_widget.dart';
 import 'controller/user_profile_controller.dart';
 import 'models/tag2_item_model.dart';
@@ -102,19 +104,19 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
   /// Section Widget
   Widget _buildBottomBar() {
     return CustomBottomBar(onChanged: (BottomBarEnum type) {
-      Get.toNamed(getCurrentRoute(type), id: 1);
+      _onTapBottomNavigation(type);
     });
   }
 
   ///Handling route based on bottom click actions
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
-      case BottomBarEnum.Frameblack900:
+      case BottomBarEnum.chatBottomType:
         return AppRoutes.chatFunctionTabContainerPage;
-      case BottomBarEnum.Frameblack90032x32:
-        return "/";
-      case BottomBarEnum.Frame32x32:
-        return "/";
+      case BottomBarEnum.matchBottomType:
+        return AppRoutes.candidateProfileScreen;
+      case BottomBarEnum.profileBottomType:
+        return AppRoutes.userProfileScreen;
       default:
         return "/";
     }
@@ -125,6 +127,10 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
     switch (currentRoute) {
       case AppRoutes.chatFunctionTabContainerPage:
         return ChatFunctionTabContainerPage();
+      case AppRoutes.candidateProfileScreen:
+        return CandidateProfileScreen();
+      case AppRoutes.userProfileScreen:
+        return UserProfileScreen();
       default:
         return DefaultWidget();
     }
@@ -137,5 +143,10 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
       AppRoutes.editProfileScreen,
       arguments: controller.phoneNumber
     );
+  }
+
+  _onTapBottomNavigation(BottomBarEnum type) async{
+    await controller.manuallyKillConstructor();
+    Get.toNamed(getCurrentRoute(type));
   }
 }

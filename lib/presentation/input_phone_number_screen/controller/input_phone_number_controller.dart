@@ -69,7 +69,7 @@ class InputPhoneNumberController extends GetxController {
   }
 
   Future<void> _saveUserDataFromFireStoreToIsarDB(UserFireStoreModel userFromFireStoreDB) async {
-    String photoFileLocalPath = await _downloadPhotoFileFromCloudStorage(userFromFireStoreDB.userPhotoLink, userFromFireStoreDB.userName, userFromFireStoreDB.userPhoneNumber);
+    String photoFileLocalPath = await _firestore.downloadPhotoFileFromCloudStorage(userFromFireStoreDB.userPhotoLink, userFromFireStoreDB.userName, userFromFireStoreDB.userPhoneNumber);
     List<String>? contactList = await _getContactListFromFireStoreDB(userFromFireStoreDB.userContactList);
     UserModel userIsarDBModel = UserModel()
       ..phoneNumber = userFromFireStoreDB.userPhoneNumber
@@ -85,13 +85,9 @@ class InputPhoneNumberController extends GetxController {
       ..smoking = userFromFireStoreDB.userSmoking
       ..drinking = userFromFireStoreDB.userDrinking
       ..mbti = userFromFireStoreDB.userMBTI
-      ..contactList = contactList;
+      ..contactList = contactList
+      ..lastRecommendationIsGiven = userFromFireStoreDB.lastRecommendationIsGiven!.toDate();
     await _isar.saveUser(userIsarDBModel);
-  }
-
-  Future<String> _downloadPhotoFileFromCloudStorage(String userPhotoLink, String userFullName, String userPhoneNumber) async {
-    String photoLocalLink = await _firestore.downloadUserProfilePicture(userPhotoLink, userFullName, userPhoneNumber);
-    return photoLocalLink;
   }
 
   Future<List<String>?> _getContactListFromFireStoreDB(List<String>? contactListFromFireStore) async {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:matchaapplication/data/models/fireStoreModel/matchFireStoreModel/matchFireStore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
@@ -63,7 +64,13 @@ class FirestoreService {
       'userSmoking' : userData.smoking,
       'userDrinking' : userData.drinking,
       'userMBTI' : userData.mbti,
+    });
+  }
 
+  Future<void> updateUserLastRecommendationTimeFromFireStoreByPhoneNumber(String phoneNumber, DateTime recommendationTimeIsGiven) async {
+    UserFireStoreModel userRef = await getUserFromFireStoreByPhoneNumber(phoneNumber);
+    firebaseFirestore.collection("userData").doc(userRef.userId).update({
+      'lastRecommendationIsGiven' : Timestamp.fromDate(recommendationTimeIsGiven),
     });
   }
 
@@ -81,6 +88,11 @@ class FirestoreService {
     }
   }
 
+  Future<String> downloadPhotoFileFromCloudStorage(String userPhotoLink, String userFullName, String userPhoneNumber) async {
+    String photoLocalLink = await downloadUserProfilePicture(userPhotoLink, userFullName, userPhoneNumber);
+    return photoLocalLink;
+  }
+
   Future<String> downloadUserProfilePicture(String downloadURL, String userName, String phoneNumber) async {
     Directory documentDir = await getApplicationDocumentsDirectory();
     String filePath = '';
@@ -95,11 +107,11 @@ class FirestoreService {
     return filePath;
   }
 
-  Future<List<UserFireStoreModel>> getListOfUserFromFireStoreByPhoneNumber(List<String> phoneNumberList) async {
+  Future<List<UserFireStoreModel>> getListOfMutualConnectionByPhoneNumberList(List<String> phoneNumberList, String phoneNumber) async {
     final userRef = firebaseFirestore.collection("userData");
-    final query = userRef.where("userPhoneNumber", whereIn: phoneNumberList);
+    final query = userRef.where("userContactList", arrayContainsAny: phoneNumberList)
+                         .where("userPhoneNumber", isNotEqualTo: phoneNumber);
     List<UserFireStoreModel> listOfUser = [];
-    // UserFireStoreModel userDataResult = new UserFireStoreModel(userName: "userName", userPhoneNumber: "", userPhotoLink: "userPhotoLink", userPhotoSize: "userPhotoSize", userGender: "userGender", userBirthday: Timestamp(0,0));
     await query.get().then(
           (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
@@ -109,6 +121,82 @@ class FirestoreService {
       onError: (e) => print("Error completing: $e"),
     );
     return listOfUser;
+  }
+
+  Future<List<String>> getMatchListByPhoneNumber(String phoneNumber, List<String> phoneNumberList) async {
+    final matchRef = firebaseFirestore.collection("matchList");
+    final queryForUserAsFirstUser = matchRef.where("user1PhoneNumber", isEqualTo: phoneNumber).where("hasBeenVisitedByUser1", isEqualTo: true);
+    final queryForUserAsSecondUser = matchRef.where("user2PhoneNumber", isEqualTo: phoneNumber).where("hasBeenVisitedByUser2", isEqualTo: true);
+    List<String> result = [];
+    List<String> queryResult = [];
+    await queryForUserAsFirstUser.get().then(
+          (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          queryResult.add(MatchFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot).user2PhoneNumber);
+        }
+      },
+      onError: (e) => print("Error completing query 1: $e"),
+    );
+    await queryForUserAsSecondUser.get().then(
+          (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          queryResult.add(MatchFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot).user1PhoneNumber);
+        }
+      },
+      onError: (e) => print("Error completing query 2: $e"),
+    );
+    phoneNumberList.forEach((element) {
+      if(!(queryResult.contains(element))){
+        result.add(element);
+      }
+    });
+    return result;
+  }
+
+  Future<List<MatchFireStoreModel>> checkIfMatchExistsInFirestoreDB(String userPhoneNumber1, String userPhoneNumber2) async {
+    final matchRef = firebaseFirestore.collection("matchList");
+    final queryForUserAsFirstUser = matchRef.where("user1PhoneNumber", isEqualTo: userPhoneNumber1).where("user2PhoneNumber", isEqualTo: userPhoneNumber2);
+    final queryForUserAsSecondUser = matchRef.where("user2PhoneNumber", isEqualTo: userPhoneNumber1).where("user1PhoneNumber", isEqualTo: userPhoneNumber2);
+    List<MatchFireStoreModel> result = [];
+    await queryForUserAsFirstUser.get().then(
+          (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          result.add(MatchFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing query 1: $e"),
+    );
+    await queryForUserAsSecondUser.get().then(
+          (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          result.add(MatchFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing query 2: $e"),
+    );
+    return result;
+  }
+
+  Future<void> addMatchToFireStore(MatchFireStoreModel matchModel) async {
+    await firebaseFirestore
+        .collection('matchList')
+        .add({
+      'user1Name': matchModel.user1Name,
+      'user1PhoneNumber': matchModel.user1PhoneNumber,
+      'user2Name': matchModel.user2Name,
+      'user2PhoneNumber': matchModel.user2PhoneNumber,
+      'user1Reaction': matchModel.user1Reaction,
+      'user1Reaction': false,
+      'hasBeenVisitedByUser1': matchModel.hasBeenVisitedByUser1,
+      'hasBeenVisitedByUser2': false,
+    });
+  }
+
+  Future<void> updateMatchingInFireStore(MatchFireStoreModel matchModel, bool user2Reaction) async {
+    firebaseFirestore.collection("userData").doc(matchModel.matchId).update({
+      'user2Reaction' : user2Reaction,
+      'hasBeenVisitedByUser2' : true
+    });
   }
 
 }

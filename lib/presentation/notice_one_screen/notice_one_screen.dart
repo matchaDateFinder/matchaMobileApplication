@@ -2,6 +2,8 @@ import 'controller/notice_one_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/presentation/chat_function_tab_container_page/chat_function_tab_container_page.dart';
+import 'package:matchaapplication/presentation/user_profile_screen/user_profile_screen.dart';
+import 'package:matchaapplication/presentation/candidate_profile_screen/candidate_profile_screen.dart';
 import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
 import 'package:matchaapplication/widgets/custom_elevated_button.dart';
 
@@ -52,16 +54,18 @@ class NoticeOneScreen extends GetWidget<NoticeOneController> {
                 ),
               ),
               Spacer(),
+              Obx(() =>
               CustomElevatedButton(
-                height: 32.v,
-                text: "msg_next_profile_in".tr,
-                margin: EdgeInsets.only(
-                  left: 24.h,
-                  right: 30.h,
+                  height: 32.v,
+                  text: controller.textToShow.value,
+                  margin: EdgeInsets.only(
+                    left: 24.h,
+                    right: 30.h,
+                  ),
+                  buttonStyle: CustomButtonStyles.fillLightGreen,
+                  buttonTextStyle: CustomTextStyles.bodyMediumPoppins,
                 ),
-                buttonStyle: CustomButtonStyles.fillLightGreen,
-                buttonTextStyle: CustomTextStyles.bodyMediumPoppins,
-              ),
+              )
             ],
           ),
         ),
@@ -74,7 +78,7 @@ class NoticeOneScreen extends GetWidget<NoticeOneController> {
   Widget _buildBottomBar() {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {
-        Get.toNamed(getCurrentRoute(type), id: 1);
+        _onTapBottomNavigation(type);
       },
     );
   }
@@ -82,12 +86,12 @@ class NoticeOneScreen extends GetWidget<NoticeOneController> {
   ///Handling route based on bottom click actions
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
-      case BottomBarEnum.Frameblack900:
+      case BottomBarEnum.chatBottomType:
         return AppRoutes.chatFunctionTabContainerPage;
-      case BottomBarEnum.Frameblack90032x32:
-        return "/";
-      case BottomBarEnum.Frame32x32:
-        return "/";
+      case BottomBarEnum.matchBottomType:
+        return AppRoutes.candidateProfileScreen;
+      case BottomBarEnum.profileBottomType:
+        return AppRoutes.userProfileScreen;
       default:
         return "/";
     }
@@ -98,8 +102,18 @@ class NoticeOneScreen extends GetWidget<NoticeOneController> {
     switch (currentRoute) {
       case AppRoutes.chatFunctionTabContainerPage:
         return ChatFunctionTabContainerPage();
+      case AppRoutes.candidateProfileScreen:
+        return CandidateProfileScreen();
+      case AppRoutes.userProfileScreen:
+        return UserProfileScreen();
       default:
         return DefaultWidget();
     }
   }
+
+  _onTapBottomNavigation(BottomBarEnum type) async{
+    await controller.manuallyKillConstructor();
+    Get.toNamed(getCurrentRoute(type));
+  }
+
 }

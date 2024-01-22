@@ -51,7 +51,12 @@ class UploadProfilePictureScreen
                                           height: 32.adaptSize,
                                           width: 32.adaptSize,
                                           alignment: Alignment.center)
-                                  ) : Image.file(File(controller.selectedImagePath.value))
+                                  ) : CustomImageView(
+                                  imagePath: controller.selectedImagePath.value,
+                                  height: 264.adaptSize,
+                                  width: 264.adaptSize,
+                                )
+                                // Image.file(File(controller.selectedImagePath.value))
                                 ),
                                 onTap: (){
                                   _onPictureSelection();

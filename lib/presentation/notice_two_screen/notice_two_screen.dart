@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/presentation/chat_function_tab_container_page/chat_function_tab_container_page.dart';
+import 'package:matchaapplication/presentation/user_profile_screen/user_profile_screen.dart';
+import 'package:matchaapplication/presentation/candidate_profile_screen/candidate_profile_screen.dart';
 import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
 import 'package:matchaapplication/widgets/custom_elevated_button.dart';
 
@@ -88,20 +90,22 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
 
   /// Section Widget
   Widget _buildBottomBar() {
-    return CustomBottomBar(onChanged: (BottomBarEnum type) {
-      Get.toNamed(getCurrentRoute(type), id: 1);
-    });
+    return CustomBottomBar(
+      onChanged: (BottomBarEnum type) {
+        _onTapBottomNavigation(type);
+      },
+    );
   }
 
   ///Handling route based on bottom click actions
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
-      case BottomBarEnum.Frameblack900:
+      case BottomBarEnum.chatBottomType:
         return AppRoutes.chatFunctionTabContainerPage;
-      case BottomBarEnum.Frameblack90032x32:
-        return "/";
-      case BottomBarEnum.Frame32x32:
-        return "/";
+      case BottomBarEnum.matchBottomType:
+        return AppRoutes.candidateProfileScreen;
+      case BottomBarEnum.profileBottomType:
+        return AppRoutes.userProfileScreen;
       default:
         return "/";
     }
@@ -112,9 +116,18 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
     switch (currentRoute) {
       case AppRoutes.chatFunctionTabContainerPage:
         return ChatFunctionTabContainerPage();
+      case AppRoutes.candidateProfileScreen:
+        return CandidateProfileScreen();
+      case AppRoutes.userProfileScreen:
+        return UserProfileScreen();
       default:
         return DefaultWidget();
     }
+  }
+
+  _onTapBottomNavigation(BottomBarEnum type) async{
+    await controller.manuallyKillConstructor();
+    Get.toNamed(getCurrentRoute(type));
   }
 
   /// Navigates to the chatRoomOneScreen when the action is triggered.

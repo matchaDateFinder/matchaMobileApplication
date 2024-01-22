@@ -45,7 +45,7 @@ class IsarService {
     findFirst();
   }
 
-  Future<String> getOnlyEntryInIsarDB() async {
+  Future<String> getPhoneNumberInIsarDB() async {
     final isar = await db;
     List<UserModel> user = await isar.userModels.where().findAll();
     return user[0].phoneNumber;

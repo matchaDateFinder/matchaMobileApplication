@@ -11,7 +11,7 @@ class Tag4ItemWidget extends StatelessWidget {
           key: key,
         );
 
-  Tag4ItemModel tag4ItemModelObj;
+  CandidateTagItemModel tag4ItemModelObj;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class Tag4ItemWidget extends StatelessWidget {
         showCheckmark: false,
         labelPadding: EdgeInsets.zero,
         label: Text(
-          tag4ItemModelObj.iconacademiccap!.value,
+          tag4ItemModelObj.attributevalue!.value,
           style: TextStyle(
             color: theme.colorScheme.primary,
             fontSize: 14.fSize,
@@ -34,12 +34,11 @@ class Tag4ItemWidget extends StatelessWidget {
           ),
         ),
         avatar: CustomImageView(
-          imagePath: ImageConstant.imgIcon16Academiccap,
+          imagePath: tag4ItemModelObj.attributeIcon!.value,
           height: 15.v,
           width: 16.h,
           margin: EdgeInsets.only(right: 8.h),
         ),
-        selected: (tag4ItemModelObj.isSelected?.value ?? false),
         backgroundColor: appTheme.lightGreen200,
         selectedColor: appTheme.lightGreen200,
         shape: (tag4ItemModelObj.isSelected?.value ?? false)
@@ -58,9 +57,6 @@ class Tag4ItemWidget extends StatelessWidget {
                   12.h,
                 ),
               ),
-        onSelected: (value) {
-          tag4ItemModelObj.isSelected!.value = value;
-        },
       ),
     );
   }
