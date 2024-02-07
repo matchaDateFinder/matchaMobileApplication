@@ -140,6 +140,8 @@ class PrimaryColors {
   Color get lightGreen200 => Color(0XFFCCE29E);
   Color get lightGreen50 => Color(0XFFF5F9EB);
   Color get testColor => Color(0XFFEA1551);
+  Color get chatBubbleMeGreen => Color(0XFFCCE29E);
+
 }
 
 PrimaryColors get appTheme => ThemeHelper().themeColor();

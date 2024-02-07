@@ -20,6 +20,7 @@ class EditProfileController extends GetxController {
   Rx<String>  userDrinking = ''.obs;
   Rx<String>  userSmoking = ''.obs;
   Rx<String>  userMBTI = ''.obs;
+  var photoLink = "".obs;
 
   EditProfileController() {
     _isar = IsarService();
@@ -27,8 +28,6 @@ class EditProfileController extends GetxController {
   }
 
   var user;
-
-  String photoLink = "";
 
   @override
   void onInit() async {
@@ -41,7 +40,8 @@ class EditProfileController extends GetxController {
       userDrinking.value = user.drinking!;
       userSmoking.value = user.smoking!;
       userMBTI.value = user.mbti!;
-      photoLink = user.photoLink!;
+      photoLink.value = user.photoLink!;
+      print(photoLink.value);
     }
   }
 
@@ -64,6 +64,8 @@ class EditProfileController extends GetxController {
   Future<void> logOutFromTheApp() async {
     _prefUtils.setLoginStatus(false);
     int checkIfDeleteSuccess = await _erasePhotoFileFromDevice();
+    // TODO unsubscribe to all of the topic
+
     await _isar.clearAllDataFromIsarDB();
     print(_prefUtils.getLogInStatus());
   }

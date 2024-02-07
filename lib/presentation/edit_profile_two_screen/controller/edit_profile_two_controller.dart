@@ -139,8 +139,8 @@ class EditProfileTwoController extends GetxController {
     }else{
       userData.mbti = mbtiDropDownValue.value;
     }
-    await _saveUserProfileToIsarDB();
     await _saveUserProfileToFireStoreDB();
+    await _saveUserProfileToIsarDB();
     Get.delete<EditProfileTwoController>();
   }
 

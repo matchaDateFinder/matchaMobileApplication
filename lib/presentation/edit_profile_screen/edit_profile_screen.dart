@@ -25,12 +25,13 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
                       height: 128.adaptSize,
                       width: 128.adaptSize,
                       child: Stack(alignment: Alignment.center, children: [
+                        Obx(() =>
                         CustomImageView(
-                            imagePath: ImageConstant.imgAvatar128x128,
+                            imagePath: controller.photoLink.value,
                             height: 128.adaptSize,
                             width: 128.adaptSize,
                             radius: BorderRadius.circular(64.h),
-                            alignment: Alignment.center),
+                            alignment: Alignment.center)),
                         CustomImageView(
                             imagePath: ImageConstant.imgCamera,
                             height: 24.adaptSize,
@@ -146,7 +147,7 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
   /// Section Widget
   Widget _buildBottomBar() {
     return CustomBottomBar(onChanged: (BottomBarEnum type) {
-      Get.toNamed(getCurrentRoute(type), id: 1);
+      _onTapBottomNavigation(type);
     });
   }
 
@@ -190,15 +191,16 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
       case BottomBarEnum.chatBottomType:
-        return AppRoutes.chatFunctionTabContainerPage;
+        return AppRoutes.chatFunctionContainerScreen;
       case BottomBarEnum.matchBottomType:
-        return "/";
+        return AppRoutes.candidateProfileScreen;
       case BottomBarEnum.profileBottomType:
-        return "/";
+        return AppRoutes.userProfileScreen;
       default:
         return "/";
     }
   }
+
 
   ///Handling page based on route
   Widget getCurrentPage(String currentRoute) {
@@ -234,6 +236,11 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
     Get.toNamed(
       AppRoutes.loginSignupScreen
     );
+  }
+
+  _onTapBottomNavigation(BottomBarEnum type) async{
+    await controller.manuallyKillConstructor();
+    Get.toNamed(getCurrentRoute(type));
   }
 }
 

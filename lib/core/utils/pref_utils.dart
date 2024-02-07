@@ -43,4 +43,9 @@ class PrefUtils {
   void setLoginStatus(bool value){
     _sharedPreferences?.setBool("isLogin", value);
   }
+
+  void setLocalUser(Map<String,String> userMap){
+   // TODO set key value for user map
+  }
+
 }

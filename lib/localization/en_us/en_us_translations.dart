@@ -41,7 +41,7 @@ final Map<String, String> enUs = {
   // Input Phone Number Screen
   "lbl_62": "+62",
   "lbl_890_0000_0000": "890-0000-0000",
-  "lbl_get_started": "Get started",
+  "lbl_get_started": "Verify Your Number",
   "msg_what_s_your_number": "What’s Your Number?",
 
   // Complete Profile Screen
@@ -51,7 +51,7 @@ final Map<String, String> enUs = {
       "Complete your profile below for a standout Matcha experience.",
 
   // Notice Two Screen
-  "lbl_congratulation": "Congratulation",
+  "lbl_congratulation": "Congratulations",
   "lbl_it_s_a_match_a": "It’s a Match-a!",
   "msg_ask_for_a_matcha": "Ask for a matcha date?",
 
@@ -96,8 +96,8 @@ final Map<String, String> enUs = {
   "lbl_profession": "Profession",
   "lbl_religion": "Religion",
   "lbl_send": "Send",
-  "lbl_skip_for_now": "Skip for now",
-  "lbl_socially": "Socially",
+  "lbl_skip_for_now": "Keep Swiping",
+  "lbl_socially": "Occasionally",
   "lbl_text_here": "Text here...",
   "lbl_type_here": "Type here...",
   "msg_get_the_conversation": "Get the conversation",

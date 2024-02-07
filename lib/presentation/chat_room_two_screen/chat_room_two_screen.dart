@@ -13,102 +13,53 @@ class ChatRoomTwoScreen extends GetWidget<ChatRoomTwoController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: theme.colorScheme.onPrimary,
-            appBar: _buildAppBar(),
-            body: Container(
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 16.v),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomElevatedButton(
-                          width: 200.h,
-                          text: "msg_hi_nice_to_matcha".tr,
-                          buttonTextStyle:
-                              CustomTextStyles.bodyMediumPoppinsLightgreen50),
-                      SizedBox(height: 16.v),
-                      CustomElevatedButton(
-                          width: 200.h,
-                          text: "msg_hi_nice_to_matcha".tr,
-                          margin: EdgeInsets.only(right: 1.h),
-                          buttonStyle: CustomButtonStyles.fillLightGreenTL24,
-                          buttonTextStyle: CustomTextStyles.bodyMediumPoppins,
-                          alignment: Alignment.centerRight),
-                      SizedBox(height: 5.v)
-                    ])),
-            bottomNavigationBar: _buildChatBar()));
-  }
-
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar() {
-    return CustomAppBar(
-        height: 64.v,
-        leadingWidth: 48.h,
-        leading: AppbarLeadingImage(
-            imagePath: ImageConstant.imgArrowLeftPrimary,
-            margin: EdgeInsets.only(left: 24.h, top: 20.v, bottom: 20.v),
-            onTap: () {
-              onTapArrowLeft();
-            }),
-        title: Padding(
-            padding: EdgeInsets.only(left: 8.h),
-            child: Row(children: [
-              AppbarTitleImage(
-                  imagePath: ImageConstant.imgClose,
-                  onTap: () {
-                    onTapClose();
-                  }),
-              AppbarTitle(
-                  text: "lbl_name".tr,
-                  margin: EdgeInsets.only(left: 8.h, top: 12.v, bottom: 11.v))
-            ])),
-        styleType: Style.bgFill);
-  }
-
-  /// Section Widget
-  Widget _buildChatBar() {
-    return Container(
-        margin: EdgeInsets.only(left: 23.h, right: 23.h, bottom: 16.v),
-        decoration: AppDecoration.fillLightGreen,
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomImageView(
-                  imagePath: ImageConstant.imgFramePrimary24x24,
-                  height: 24.adaptSize,
-                  width: 24.adaptSize,
-                  margin: EdgeInsets.symmetric(vertical: 4.v)),
-              CustomImageView(
-                  imagePath: ImageConstant.imgFrame24x24,
-                  height: 24.adaptSize,
-                  width: 24.adaptSize,
-                  margin: EdgeInsets.only(left: 8.h, top: 4.v, bottom: 4.v)),
-              Padding(
-                  padding: EdgeInsets.only(left: 8.h),
-                  child: CustomTextFormField(
-                      width: 200.h,
-                      controller: controller.textController,
-                      hintText: "lbl_text_here".tr,
-                      textInputAction: TextInputAction.done,
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 9.h, vertical: 5.v))),
-              Padding(
-                  padding: EdgeInsets.only(left: 8.h, top: 4.v, bottom: 3.v),
-                  child: Text("lbl_send".tr, style: theme.textTheme.bodyLarge))
-            ]));
-  }
-
-  /// Navigates to the previous screen.
-  onTapArrowLeft() {
-    Get.back();
-  }
-
-  /// Navigates to the previous screen.
-  onTapClose() {
-    Get.back();
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Chat App'),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Obx(
+                    () => ListView.builder(
+                  itemCount: controller.messages.length,
+                  itemBuilder: (context, index) {
+                    final message = controller.messages[index];
+                    return ListTile(
+                      title: Text(message.text),
+                      tileColor: message.isMe ? Colors.blue : Colors.grey,
+                      contentPadding: EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: controller.messageController,
+                      decoration: InputDecoration(
+                        hintText: 'Type your message...',
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () => controller.sendMessage(),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -49,7 +49,7 @@ class RequestContactAccessScreen
                             Padding(
                                 padding: EdgeInsets.only(left: 16.h, top: 2.v),
                                 child: Text("msg_terms_and_conditions".tr,
-                                    style: CustomTextStyles.bodyLargeDMSans
+                                    style: CustomTextStyles.bodyLargeDMSansTnC
                                         .copyWith(
                                             decoration:
                                                 TextDecoration.underline)))

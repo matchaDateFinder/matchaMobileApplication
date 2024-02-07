@@ -11,6 +11,8 @@ class CustomTextStyles {
         color: appTheme.black900,
       );
   static get bodyLargeDMSans => theme.textTheme.bodyLarge!.dMSans;
+  static get bodyLargeDMSansTnC => theme.textTheme.bodyLarge!.dMSans.copyWith(
+      fontWeight: FontWeight.w800);
   static get bodyLargeDMSansBlack900 =>
       theme.textTheme.bodyLarge!.dMSans.copyWith(
         color: appTheme.black900,

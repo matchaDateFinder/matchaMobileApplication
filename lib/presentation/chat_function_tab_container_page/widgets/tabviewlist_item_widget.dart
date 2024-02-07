@@ -25,7 +25,7 @@ class TabviewlistItemWidget extends StatelessWidget {
         color: appTheme.blueGray100,
       ),
       child: TabBar(
-        // controller: controller.tabViewController,
+        controller: controller.controller,
         isScrollable: true,
         labelColor: theme.colorScheme.primary,
         labelStyle: TextStyle(

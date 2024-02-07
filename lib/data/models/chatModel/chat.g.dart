@@ -27,27 +27,42 @@ const ChatSchema = CollectionSchema(
       name: r'chatMessage',
       type: IsarType.string,
     ),
-    r'chatStatus': PropertySchema(
+    r'chatRoomId': PropertySchema(
       id: 2,
+      name: r'chatRoomId',
+      type: IsarType.string,
+    ),
+    r'chatStatus': PropertySchema(
+      id: 3,
       name: r'chatStatus',
       type: IsarType.string,
     ),
-    r'receiverId': PropertySchema(
-      id: 3,
-      name: r'receiverId',
-      type: IsarType.long,
-    ),
-    r'senderId': PropertySchema(
+    r'fireStoreMessageId': PropertySchema(
       id: 4,
-      name: r'senderId',
-      type: IsarType.long,
+      name: r'fireStoreMessageId',
+      type: IsarType.string,
+    ),
+    r'isReceived': PropertySchema(
+      id: 5,
+      name: r'isReceived',
+      type: IsarType.bool,
+    ),
+    r'senderPhoneNumber': PropertySchema(
+      id: 6,
+      name: r'senderPhoneNumber',
+      type: IsarType.string,
+    ),
+    r'sentDate': PropertySchema(
+      id: 7,
+      name: r'sentDate',
+      type: IsarType.dateTime,
     )
   },
   estimateSize: _chatEstimateSize,
   serialize: _chatSerialize,
   deserialize: _chatDeserialize,
   deserializeProp: _chatDeserializeProp,
-  idName: r'messageId',
+  idName: r'chatMessageId',
   indexes: {},
   links: {},
   embeddedSchemas: {},
@@ -65,7 +80,10 @@ int _chatEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.attachmentLink.length * 3;
   bytesCount += 3 + object.chatMessage.length * 3;
+  bytesCount += 3 + object.chatRoomId.length * 3;
   bytesCount += 3 + object.chatStatus.length * 3;
+  bytesCount += 3 + object.fireStoreMessageId.length * 3;
+  bytesCount += 3 + object.senderPhoneNumber.length * 3;
   return bytesCount;
 }
 
@@ -77,9 +95,12 @@ void _chatSerialize(
 ) {
   writer.writeString(offsets[0], object.attachmentLink);
   writer.writeString(offsets[1], object.chatMessage);
-  writer.writeString(offsets[2], object.chatStatus);
-  writer.writeLong(offsets[3], object.receiverId);
-  writer.writeLong(offsets[4], object.senderId);
+  writer.writeString(offsets[2], object.chatRoomId);
+  writer.writeString(offsets[3], object.chatStatus);
+  writer.writeString(offsets[4], object.fireStoreMessageId);
+  writer.writeBool(offsets[5], object.isReceived);
+  writer.writeString(offsets[6], object.senderPhoneNumber);
+  writer.writeDateTime(offsets[7], object.sentDate);
 }
 
 Chat _chatDeserialize(
@@ -91,9 +112,12 @@ Chat _chatDeserialize(
   final object = Chat();
   object.attachmentLink = reader.readString(offsets[0]);
   object.chatMessage = reader.readString(offsets[1]);
-  object.chatStatus = reader.readString(offsets[2]);
-  object.receiverId = reader.readLong(offsets[3]);
-  object.senderId = reader.readLong(offsets[4]);
+  object.chatRoomId = reader.readString(offsets[2]);
+  object.chatStatus = reader.readString(offsets[3]);
+  object.fireStoreMessageId = reader.readString(offsets[4]);
+  object.isReceived = reader.readBool(offsets[5]);
+  object.senderPhoneNumber = reader.readString(offsets[6]);
+  object.sentDate = reader.readDateTime(offsets[7]);
   return object;
 }
 
@@ -111,16 +135,22 @@ P _chatDeserializeProp<P>(
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
+    case 5:
+      return (reader.readBool(offset)) as P;
+    case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
+      return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
 Id _chatGetId(Chat object) {
-  return object.messageId;
+  return object.chatMessageId;
 }
 
 List<IsarLinkBase<dynamic>> _chatGetLinks(Chat object) {
@@ -130,7 +160,7 @@ List<IsarLinkBase<dynamic>> _chatGetLinks(Chat object) {
 void _chatAttach(IsarCollection<dynamic> col, Id id, Chat object) {}
 
 extension ChatQueryWhereSort on QueryBuilder<Chat, Chat, QWhere> {
-  QueryBuilder<Chat, Chat, QAfterWhere> anyMessageId() {
+  QueryBuilder<Chat, Chat, QAfterWhere> anyChatMessageId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -138,67 +168,72 @@ extension ChatQueryWhereSort on QueryBuilder<Chat, Chat, QWhere> {
 }
 
 extension ChatQueryWhere on QueryBuilder<Chat, Chat, QWhereClause> {
-  QueryBuilder<Chat, Chat, QAfterWhereClause> messageIdEqualTo(Id messageId) {
+  QueryBuilder<Chat, Chat, QAfterWhereClause> chatMessageIdEqualTo(
+      Id chatMessageId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: messageId,
-        upper: messageId,
+        lower: chatMessageId,
+        upper: chatMessageId,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterWhereClause> messageIdNotEqualTo(
-      Id messageId) {
+  QueryBuilder<Chat, Chat, QAfterWhereClause> chatMessageIdNotEqualTo(
+      Id chatMessageId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: messageId, includeUpper: false),
+              IdWhereClause.lessThan(upper: chatMessageId, includeUpper: false),
             )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: messageId, includeLower: false),
+              IdWhereClause.greaterThan(
+                  lower: chatMessageId, includeLower: false),
             );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: messageId, includeLower: false),
+              IdWhereClause.greaterThan(
+                  lower: chatMessageId, includeLower: false),
             )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: messageId, includeUpper: false),
+              IdWhereClause.lessThan(upper: chatMessageId, includeUpper: false),
             );
       }
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterWhereClause> messageIdGreaterThan(Id messageId,
+  QueryBuilder<Chat, Chat, QAfterWhereClause> chatMessageIdGreaterThan(
+      Id chatMessageId,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: messageId, includeLower: include),
+        IdWhereClause.greaterThan(lower: chatMessageId, includeLower: include),
       );
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterWhereClause> messageIdLessThan(Id messageId,
+  QueryBuilder<Chat, Chat, QAfterWhereClause> chatMessageIdLessThan(
+      Id chatMessageId,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.lessThan(upper: messageId, includeUpper: include),
+        IdWhereClause.lessThan(upper: chatMessageId, includeUpper: include),
       );
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterWhereClause> messageIdBetween(
-    Id lowerMessageId,
-    Id upperMessageId, {
+  QueryBuilder<Chat, Chat, QAfterWhereClause> chatMessageIdBetween(
+    Id lowerChatMessageId,
+    Id upperChatMessageId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: lowerMessageId,
+        lower: lowerChatMessageId,
         includeLower: includeLower,
-        upper: upperMessageId,
+        upper: upperChatMessageId,
         includeUpper: includeUpper,
       ));
     });
@@ -466,6 +501,189 @@ extension ChatQueryFilter on QueryBuilder<Chat, Chat, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatMessageIdEqualTo(
+      Id value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'chatMessageId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatMessageIdGreaterThan(
+    Id value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'chatMessageId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatMessageIdLessThan(
+    Id value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'chatMessageId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatMessageIdBetween(
+    Id lower,
+    Id upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'chatMessageId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'chatRoomId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'chatRoomId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'chatRoomId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'chatRoomId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'chatRoomId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'chatRoomId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'chatRoomId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'chatRoomId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'chatRoomId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> chatRoomIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'chatRoomId',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Chat, Chat, QAfterFilterCondition> chatStatusEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -596,154 +814,323 @@ extension ChatQueryFilter on QueryBuilder<Chat, Chat, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messageIdEqualTo(Id value) {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> fireStoreMessageIdEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'messageId',
+        property: r'fireStoreMessageId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messageIdGreaterThan(
-    Id value, {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> fireStoreMessageIdGreaterThan(
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'messageId',
+        property: r'fireStoreMessageId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messageIdLessThan(
-    Id value, {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> fireStoreMessageIdLessThan(
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'messageId',
+        property: r'fireStoreMessageId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messageIdBetween(
-    Id lower,
-    Id upper, {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> fireStoreMessageIdBetween(
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'messageId',
+        property: r'fireStoreMessageId',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> receiverIdEqualTo(int value) {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> fireStoreMessageIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'fireStoreMessageId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> fireStoreMessageIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'fireStoreMessageId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> fireStoreMessageIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'fireStoreMessageId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> fireStoreMessageIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'fireStoreMessageId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> fireStoreMessageIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'receiverId',
+        property: r'fireStoreMessageId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition>
+      fireStoreMessageIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'fireStoreMessageId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> isReceivedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isReceived',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> receiverIdGreaterThan(
-    int value, {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderPhoneNumberEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'senderPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderPhoneNumberGreaterThan(
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'receiverId',
+        property: r'senderPhoneNumber',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> receiverIdLessThan(
-    int value, {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderPhoneNumberLessThan(
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'receiverId',
+        property: r'senderPhoneNumber',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> receiverIdBetween(
-    int lower,
-    int upper, {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderPhoneNumberBetween(
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'receiverId',
+        property: r'senderPhoneNumber',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderIdEqualTo(int value) {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderPhoneNumberStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'senderPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderPhoneNumberEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'senderPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderPhoneNumberContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'senderPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderPhoneNumberMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'senderPhoneNumber',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderPhoneNumberIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'senderId',
+        property: r'senderPhoneNumber',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition>
+      senderPhoneNumberIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'senderPhoneNumber',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> sentDateEqualTo(
+      DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'sentDate',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderIdGreaterThan(
-    int value, {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> sentDateGreaterThan(
+    DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'senderId',
+        property: r'sentDate',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderIdLessThan(
-    int value, {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> sentDateLessThan(
+    DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'senderId',
+        property: r'sentDate',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> senderIdBetween(
-    int lower,
-    int upper, {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> sentDateBetween(
+    DateTime lower,
+    DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'senderId',
+        property: r'sentDate',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -782,6 +1169,18 @@ extension ChatQuerySortBy on QueryBuilder<Chat, Chat, QSortBy> {
     });
   }
 
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortByChatRoomId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'chatRoomId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortByChatRoomIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'chatRoomId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Chat, Chat, QAfterSortBy> sortByChatStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'chatStatus', Sort.asc);
@@ -794,27 +1193,51 @@ extension ChatQuerySortBy on QueryBuilder<Chat, Chat, QSortBy> {
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> sortByReceiverId() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortByFireStoreMessageId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'receiverId', Sort.asc);
+      return query.addSortBy(r'fireStoreMessageId', Sort.asc);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> sortByReceiverIdDesc() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortByFireStoreMessageIdDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'receiverId', Sort.desc);
+      return query.addSortBy(r'fireStoreMessageId', Sort.desc);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> sortBySenderId() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortByIsReceived() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'senderId', Sort.asc);
+      return query.addSortBy(r'isReceived', Sort.asc);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> sortBySenderIdDesc() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortByIsReceivedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'senderId', Sort.desc);
+      return query.addSortBy(r'isReceived', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortBySenderPhoneNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'senderPhoneNumber', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortBySenderPhoneNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'senderPhoneNumber', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortBySentDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sentDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> sortBySentDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sentDate', Sort.desc);
     });
   }
 }
@@ -844,6 +1267,30 @@ extension ChatQuerySortThenBy on QueryBuilder<Chat, Chat, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenByChatMessageId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'chatMessageId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenByChatMessageIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'chatMessageId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenByChatRoomId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'chatRoomId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenByChatRoomIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'chatRoomId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Chat, Chat, QAfterSortBy> thenByChatStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'chatStatus', Sort.asc);
@@ -856,39 +1303,51 @@ extension ChatQuerySortThenBy on QueryBuilder<Chat, Chat, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> thenByMessageId() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenByFireStoreMessageId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'messageId', Sort.asc);
+      return query.addSortBy(r'fireStoreMessageId', Sort.asc);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> thenByMessageIdDesc() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenByFireStoreMessageIdDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'messageId', Sort.desc);
+      return query.addSortBy(r'fireStoreMessageId', Sort.desc);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> thenByReceiverId() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenByIsReceived() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'receiverId', Sort.asc);
+      return query.addSortBy(r'isReceived', Sort.asc);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> thenByReceiverIdDesc() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenByIsReceivedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'receiverId', Sort.desc);
+      return query.addSortBy(r'isReceived', Sort.desc);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> thenBySenderId() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenBySenderPhoneNumber() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'senderId', Sort.asc);
+      return query.addSortBy(r'senderPhoneNumber', Sort.asc);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterSortBy> thenBySenderIdDesc() {
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenBySenderPhoneNumberDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'senderId', Sort.desc);
+      return query.addSortBy(r'senderPhoneNumber', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenBySentDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sentDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QAfterSortBy> thenBySentDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sentDate', Sort.desc);
     });
   }
 }
@@ -909,6 +1368,13 @@ extension ChatQueryWhereDistinct on QueryBuilder<Chat, Chat, QDistinct> {
     });
   }
 
+  QueryBuilder<Chat, Chat, QDistinct> distinctByChatRoomId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'chatRoomId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Chat, Chat, QDistinct> distinctByChatStatus(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -916,23 +1382,39 @@ extension ChatQueryWhereDistinct on QueryBuilder<Chat, Chat, QDistinct> {
     });
   }
 
-  QueryBuilder<Chat, Chat, QDistinct> distinctByReceiverId() {
+  QueryBuilder<Chat, Chat, QDistinct> distinctByFireStoreMessageId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'receiverId');
+      return query.addDistinctBy(r'fireStoreMessageId',
+          caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Chat, Chat, QDistinct> distinctBySenderId() {
+  QueryBuilder<Chat, Chat, QDistinct> distinctByIsReceived() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'senderId');
+      return query.addDistinctBy(r'isReceived');
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QDistinct> distinctBySenderPhoneNumber(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'senderPhoneNumber',
+          caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Chat, Chat, QDistinct> distinctBySentDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'sentDate');
     });
   }
 }
 
 extension ChatQueryProperty on QueryBuilder<Chat, Chat, QQueryProperty> {
-  QueryBuilder<Chat, int, QQueryOperations> messageIdProperty() {
+  QueryBuilder<Chat, int, QQueryOperations> chatMessageIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'messageId');
+      return query.addPropertyName(r'chatMessageId');
     });
   }
 
@@ -948,21 +1430,39 @@ extension ChatQueryProperty on QueryBuilder<Chat, Chat, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Chat, String, QQueryOperations> chatRoomIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'chatRoomId');
+    });
+  }
+
   QueryBuilder<Chat, String, QQueryOperations> chatStatusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'chatStatus');
     });
   }
 
-  QueryBuilder<Chat, int, QQueryOperations> receiverIdProperty() {
+  QueryBuilder<Chat, String, QQueryOperations> fireStoreMessageIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'receiverId');
+      return query.addPropertyName(r'fireStoreMessageId');
     });
   }
 
-  QueryBuilder<Chat, int, QQueryOperations> senderIdProperty() {
+  QueryBuilder<Chat, bool, QQueryOperations> isReceivedProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'senderId');
+      return query.addPropertyName(r'isReceived');
+    });
+  }
+
+  QueryBuilder<Chat, String, QQueryOperations> senderPhoneNumberProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'senderPhoneNumber');
+    });
+  }
+
+  QueryBuilder<Chat, DateTime, QQueryOperations> sentDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'sentDate');
     });
   }
 }

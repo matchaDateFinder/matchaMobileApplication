@@ -140,7 +140,7 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
   /// Navigates to the noticeOneScreen when the action is triggered.
   onTapTxtSkipForNow() {
     Get.toNamed(
-      AppRoutes.noticeOneScreen,
+      AppRoutes.userProfileScreen,
     );
   }
 }

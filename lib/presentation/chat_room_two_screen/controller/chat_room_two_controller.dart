@@ -7,13 +7,14 @@ import 'package:flutter/material.dart';
 /// This class manages the state of the ChatRoomTwoScreen, including the
 /// current chatRoomTwoModelObj
 class ChatRoomTwoController extends GetxController {
-  TextEditingController textController = TextEditingController();
+  var messages = <ChatRoomTwoModel>[].obs;
+  var messageController = TextEditingController();
 
-  Rx<ChatRoomTwoModel> chatRoomTwoModelObj = ChatRoomTwoModel().obs;
-
-  @override
-  void onClose() {
-    super.onClose();
-    textController.dispose();
+  void sendMessage() {
+    final messageText = messageController.text.trim();
+    if (messageText.isNotEmpty) {
+      messages.add(ChatRoomTwoModel(text: messageText, isMe: true));
+      messageController.clear();
+    }
   }
 }

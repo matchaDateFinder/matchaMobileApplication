@@ -1,8 +1,10 @@
 import 'package:isar/isar.dart';
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/matchFireStoreModel/matchFireStore.dart';
-import 'package:matchaapplication/presentation/candidate_profile_screen/models/candidate_profile_model.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
+import 'package:matchaapplication/data/models/fireStoreModel/chatRoomFireStoreModel/chatRoomFireStore.dart';
+import 'package:matchaapplication/data/models/chatModel/chatRoom.dart';
+import 'package:matchaapplication/presentation/candidate_profile_screen/models/candidate_profile_model.dart';
 
 /// A controller class for the CandidateProfileScreen.
 ///
@@ -110,6 +112,23 @@ class CandidateProfileController extends GetxController {
       await _firestore.updateMatchingInFireStore(listOfMatch[0], reaction);
       if(listOfMatch[0].user1Reaction == true && reaction == true){
         result = true;
+        // ChatRoom newChatRoomIsar = ChatRoom()
+        // ..participantsNumber = [phoneNumber, candidatePhoneNumber]
+        // ..chatCount = 0
+        // ..chatUnreadCount = 0
+        // ..chatBoxStatus = 0;
+        // await _isar.createNewChatRoom(newChatRoomIsar);
+        ChatRoomFireStoreModel newChatRoomFireStore = ChatRoomFireStoreModel(
+            participantsNumber: [phoneNumber, candidatePhoneNumber],
+            participantsName: [user.userName, candidateName],
+            chatBoxStatus: 0,
+            chatCount: 0,
+            chatUnreadCount: 0);
+        await _firestore.createNewChatRoomInFireStore(newChatRoomFireStore);
+        // TODO create a new row in online db that stores topicName and userParticipants
+
+        // TODO subscribe to the the topic
+
       }
     }else{
       // TODO ketika tidak nemu entry di firestore

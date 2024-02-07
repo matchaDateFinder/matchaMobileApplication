@@ -112,11 +112,11 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
       case BottomBarEnum.chatBottomType:
-        return AppRoutes.chatFunctionTabContainerPage;
+        return AppRoutes.chatFunctionContainerScreen;
       case BottomBarEnum.matchBottomType:
-        return "/";
+        return AppRoutes.candidateProfileScreen;
       case BottomBarEnum.profileBottomType:
-        return "/";
+        return AppRoutes.userProfileScreen;
       default:
         return "/";
     }

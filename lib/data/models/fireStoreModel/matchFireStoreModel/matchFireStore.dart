@@ -30,7 +30,7 @@ class MatchFireStoreModel{
     user2Name = documentSnapshot["user2Name"];
     user2PhoneNumber = documentSnapshot["user2PhoneNumber"];
     user1Reaction = documentSnapshot["user1Reaction"];
-      user2Reaction = documentSnapshot["user2Reaction"];
+    user2Reaction = documentSnapshot["user2Reaction"];
     hasBeenVisitedByUser1 = documentSnapshot["hasBeenVisitedByUser1"];
     hasBeenVisitedByUser2 = documentSnapshot["hasBeenVisitedByUser2"];
   }

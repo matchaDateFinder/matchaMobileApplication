@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:isar/isar.dart';
 
 import 'package:matchaapplication/data/models/chatModel/chat.dart';
+import 'package:matchaapplication/data/models/chatModel/chatRoom.dart';
 import 'package:matchaapplication/data/models/userModel/user.dart';
 import 'package:matchaapplication/data/models/matchModel/match.dart';
 
@@ -23,7 +23,7 @@ class IsarService {
     final dir = await getApplicationDocumentsDirectory();
     if (Isar.instanceNames.isEmpty) {
       return await Isar.open(
-        [ChatSchema, UserModelSchema, MatchSchema],
+        [ChatSchema, ChatRoomSchema, UserModelSchema, MatchSchema],
         inspector: true,
         directory: dir.path
       );
@@ -58,7 +58,13 @@ class IsarService {
       await isar.userModels.clear();
       await isar.matchs.clear();
       await isar.chats.clear();
+      await isar.chatRooms.clear();
     });
+  }
+
+  Future<void> createNewChatRoom(ChatRoom chatRoom) async {
+    final isar = await db;
+    isar.writeTxnSync<int>(() => isar.chatRooms.putSync(chatRoom));
   }
 
 }

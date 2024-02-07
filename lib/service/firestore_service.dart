@@ -1,15 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:matchaapplication/data/models/fireStoreModel/matchFireStoreModel/matchFireStore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-
 import 'package:matchaapplication/core/app_export.dart';
+
 import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
+import 'package:matchaapplication/data/models/fireStoreModel/matchFireStoreModel/matchFireStore.dart';
+import 'package:matchaapplication/data/models/fireStoreModel/chatRoomFireStoreModel/chatRoomFireStore.dart';
+import 'package:matchaapplication/data/models/fireStoreModel/chatMessageFireStoreModel/chatMessageFireStore.dart';
 import 'package:matchaapplication/data/models/userModel/user.dart';
 
-class FirestoreService {
+class FirestoreService extends ChangeNotifier{
   late FirebaseFirestore firebaseFirestore;
   late FirebaseStorage firebaseStorage;
 
@@ -186,7 +188,7 @@ class FirestoreService {
       'user2Name': matchModel.user2Name,
       'user2PhoneNumber': matchModel.user2PhoneNumber,
       'user1Reaction': matchModel.user1Reaction,
-      'user1Reaction': false,
+      'user2Reaction': false,
       'hasBeenVisitedByUser1': matchModel.hasBeenVisitedByUser1,
       'hasBeenVisitedByUser2': false,
     });
@@ -199,4 +201,83 @@ class FirestoreService {
     });
   }
 
+  Future<void> createNewChatRoomInFireStore(ChatRoomFireStoreModel chatRoomFireStoreModel) async {
+    await firebaseFirestore
+        .collection('chatRoom')
+        .add({
+      'participantsNumber' : chatRoomFireStoreModel.participantsNumber,
+      'participantsName' : chatRoomFireStoreModel.participantsName,
+      'chatBoxStatus' : chatRoomFireStoreModel.chatBoxStatus,
+      'chatCount' : chatRoomFireStoreModel.chatCount,
+      'chatUnreadCount' : chatRoomFireStoreModel.chatUnreadCount,
+    });
+  }
+
+  Future<List<ChatRoomFireStoreModel>> getChatRoomForUser(String phoneNumber) async {
+    List<ChatRoomFireStoreModel> result = [];
+    final chatRoomRef = firebaseFirestore.collection("chatRoom");
+    final query = chatRoomRef.where("participantsNumber", arrayContains: phoneNumber);
+    await query.get().then(
+          (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          result.add(ChatRoomFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+    return result;
+  }
+
+  Future<List<ChatMessageFireStoreModel>> getChatMessage(String chatRoomId, String userPhoneNumber, String matchPhoneNumber) async {
+    List<ChatMessageFireStoreModel> result = [];
+    final chatMessageRef = firebaseFirestore.collection("chatMessage");
+    final query = chatMessageRef.where("chatRoomId", isEqualTo: chatRoomId).where("senderPhoneNumber", whereIn: [userPhoneNumber, matchPhoneNumber]).orderBy("sentDate");
+    await query.get().then(
+          (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          result.add(ChatMessageFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+    return result;
+  }
+
+  Future<void> sendChatMessage(ChatMessageFireStoreModel newChat) async {
+    await firebaseFirestore
+        .collection('chatMessage')
+        .add({
+      'chatRoomId' : newChat.chatRoomId,
+      'senderPhoneNumber' : newChat.senderPhoneNumber,
+      'chatMessage' : newChat.chatMessage,
+      'attachmentLink' : newChat.attachmentLink,
+      'chatStatus' : newChat.chatStatus,
+      'sentDate' : newChat.sentDate,
+      'isReceived' : newChat.isReceived,
+    });
+  }
+
+  Stream<QuerySnapshot> getMessage(String chatRoomId, String userPhoneNumber, String matchPhoneNumber) {
+    return firebaseFirestore
+                .collection("chatMessage")
+                .where("chatRoomId", isEqualTo: chatRoomId)
+                .where("senderPhoneNumber", whereIn: [userPhoneNumber, matchPhoneNumber])
+                .orderBy("sentDate")
+                .snapshots();
+  }
+
+  Future<String> getUserPhotoLinkFromFireStoreByPhoneNumber(String phoneNumber) async {
+    final userRef = firebaseFirestore.collection("userData");
+    final query = userRef.where("userPhoneNumber", isEqualTo: phoneNumber);
+    String userDataResult = "";
+    await query.get().then(
+          (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          userDataResult = UserFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot).userPhotoLink;
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+    return userDataResult;
+  }
 }

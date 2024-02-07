@@ -1,11 +1,8 @@
-import 'package:matchaapplication/presentation/candidate_profile_screen/candidate_profile_screen.dart';
-
 import '../user_profile_screen/widgets/tag2_item_widget.dart';
 import 'controller/user_profile_controller.dart';
 import 'models/tag2_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/presentation/chat_function_tab_container_page/chat_function_tab_container_page.dart';
 import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
 import 'package:matchaapplication/widgets/custom_elevated_button.dart';
 
@@ -112,27 +109,13 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
       case BottomBarEnum.chatBottomType:
-        return AppRoutes.chatFunctionTabContainerPage;
+        return AppRoutes.chatFunctionContainerScreen;
       case BottomBarEnum.matchBottomType:
         return AppRoutes.candidateProfileScreen;
       case BottomBarEnum.profileBottomType:
         return AppRoutes.userProfileScreen;
       default:
         return "/";
-    }
-  }
-
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.chatFunctionTabContainerPage:
-        return ChatFunctionTabContainerPage();
-      case AppRoutes.candidateProfileScreen:
-        return CandidateProfileScreen();
-      case AppRoutes.userProfileScreen:
-        return UserProfileScreen();
-      default:
-        return DefaultWidget();
     }
   }
 

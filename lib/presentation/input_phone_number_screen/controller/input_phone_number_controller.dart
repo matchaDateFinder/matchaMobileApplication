@@ -62,6 +62,7 @@ class InputPhoneNumberController extends GetxController {
     if (userFromFiresToreDB.userName != "userName" && userFromFiresToreDB.userPhoneNumber != "") { // user exists
       _prefUtils.setLoginStatus(true);
       await _saveUserDataFromFireStoreToIsarDB(userFromFiresToreDB);
+      // TODO subscribe the app to all of the related topic in DB
       return true;
     }else{ // user does not exist
       return false;

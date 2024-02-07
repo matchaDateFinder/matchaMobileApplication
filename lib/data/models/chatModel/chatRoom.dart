@@ -1,13 +1,12 @@
 import 'package:isar/isar.dart';
-part 'chatList.g.dart';
+part 'chatRoom.g.dart';
 
 @collection
-@Name("ChatList")
-class ChatList {
+@Name("ChatRoom")
+class ChatRoom {
   @Index(unique: true, replace: true)
-  final Id chatListId = Isar.autoIncrement;
-  late String senderNumber;
-  late String receiverNumber;
+  final Id chatRoomId = Isar.autoIncrement;
+  late List<String> participantsNumber;
   late int chatBoxStatus;
   late int chatCount;
   late int chatUnreadCount;

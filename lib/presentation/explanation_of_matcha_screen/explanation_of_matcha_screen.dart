@@ -17,14 +17,6 @@ class ExplanationOfMatchaScreen
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CustomImageView(
-                          imagePath: ImageConstant.imgArrowLeftPrimary,
-                          height: 24.adaptSize,
-                          width: 24.adaptSize,
-                          margin: EdgeInsets.only(left: 24.h),
-                          onTap: () {
-                            onTapImgArrowLeft();
-                          }),
                       SizedBox(height: 40.v),
                       Align(
                           alignment: Alignment.center,
@@ -53,11 +45,6 @@ class ExplanationOfMatchaScreen
                                       style: theme.textTheme.bodyLarge)))),
                       SizedBox(height: 7.v)
                     ]))));
-  }
-
-  /// Navigates to the previous screen.
-  onTapImgArrowLeft() {
-    Get.back();
   }
 
   /// Navigates to the requestContactAccessScreen when the action is triggered.
