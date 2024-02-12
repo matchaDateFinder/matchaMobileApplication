@@ -1,4 +1,5 @@
 import '../candidate_profile_screen/widgets/tag4_item_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'controller/candidate_profile_controller.dart';
 import 'models/tag4_item_model.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +26,15 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Obx(() =>
-                          CustomImageView(
-                              imagePath: controller.userPhotoPath.value, //photo path
-                              height: 360.adaptSize,
-                              width: 360.adaptSize,
-                              alignment: Alignment.center),
+                          CachedNetworkImage(
+                            imageUrl: controller.userPhotoPath.value,
+                            fit: BoxFit.cover,
+                            height: 360.adaptSize,
+                            width: 360.adaptSize,
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                CircularProgressIndicator(value: downloadProgress.progress),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
                       ),
                       SizedBox(height: 5.v),
                       Padding(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/presentation/chat_room_one_screen/models/chat_message.dart';
 import 'package:matchaapplication/presentation/chat_room_one_screen/chatUtils/formatter.dart';
@@ -8,10 +9,12 @@ import 'package:matchaapplication/presentation/chat_room_one_screen/chatUtils/fo
 class Bubble extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final ChatMessage chat;
+  final String? photoLink;
 
   const Bubble({
     this.margin,
     required this.chat,
+    this.photoLink,
   });
 
   @override
@@ -21,8 +24,16 @@ class Bubble extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (chat.type == "2") // 2 for received
-          const CircleAvatar(
-            backgroundImage: AssetImage("assets/images/avatar_1.png"),
+          ClipOval(
+            child: CachedNetworkImage(
+              imageUrl: photoLink!,
+              fit: BoxFit.cover,
+              width: 50,
+              height: 50,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(value: downloadProgress.progress),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
           ),
         Container(
           margin: margin ?? EdgeInsets.zero,

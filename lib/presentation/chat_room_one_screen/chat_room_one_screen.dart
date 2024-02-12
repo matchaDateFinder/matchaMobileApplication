@@ -50,25 +50,29 @@ class ChatRoomOneScreen extends GetWidget<ChatRoomOneController> {
         title: Padding(
             padding: EdgeInsets.only(left: 8.h),
             child:
-    // Obx(() =>
-              Row(
-                children: [
-                  ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl: controller.receiverPhotoLink,
-                      fit: BoxFit.cover,
-                      width: 50,
-                      height: 50,
-                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          CircularProgressIndicator(value: downloadProgress.progress),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
-                  ),
-                  AppbarTitle(
-                      text: controller.receiverName,
-                      margin: EdgeInsets.only(left: 8.h, top: 12.v, bottom: 11.v))
-            ])
-            // )
+              InkWell(
+                  child : Row(
+                    children: [
+                      ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl: controller.receiverPhotoLink,
+                          fit: BoxFit.cover,
+                          width: 50,
+                          height: 50,
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              CircularProgressIndicator(value: downloadProgress.progress),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                        ),
+                      ),
+                      AppbarTitle(
+                          text: controller.receiverName,
+                          margin: EdgeInsets.only(left: 8.h, top: 12.v, bottom: 11.v),
+                      )],
+                ),
+                onTap: () {
+                    onTapImgAvatar();
+                },
+              ),
         ),
         styleType: Style.bgFill);
   }
@@ -129,7 +133,8 @@ class ChatRoomOneScreen extends GetWidget<ChatRoomOneController> {
                   messageItemList.add(_buildMessageItem(document));
                 });
                 return ListView(
-                  children: messageItemList,
+                  reverse: true,
+                  children: messageItemList.reversed.toList(),
                 );
               })
           );
@@ -138,7 +143,8 @@ class ChatRoomOneScreen extends GetWidget<ChatRoomOneController> {
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String,dynamic>;
     return Bubble(margin: EdgeInsetsDirectional.only(bottom:20.v),
-              chat: controller.transformFromMapToChat(data));
+              chat: controller.transformFromMapToChat(data),
+              photoLink: controller.receiverPhotoLink);
   }
 
   /// Date Separator widget
@@ -190,7 +196,6 @@ class ChatRoomOneScreen extends GetWidget<ChatRoomOneController> {
                   padding: EdgeInsets.only(left: 8.h),
                   child: CustomTextFormField(
                       focusNode: controller.focusNode,
-
                       width: 200.h,
                       controller: controller.textHereController,
                       hintText: "lbl_text_here".tr,

@@ -1,4 +1,5 @@
 import '../user_profile_screen/widgets/tag2_item_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'controller/user_profile_controller.dart';
 import 'models/tag2_item_model.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +28,15 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
         width: double.maxFinite,
         child: Stack(alignment: Alignment.topCenter, children: [
           Obx(() =>
-              CustomImageView(
-                  imagePath: controller.userPhotoPath.value, //photo path
-                  height: 360.adaptSize,
-                  width: 360.adaptSize,
-                  alignment: Alignment.center),
+              CachedNetworkImage(
+                imageUrl: controller.userPhotoPath.value,
+                fit: BoxFit.cover,
+                height: 360.adaptSize,
+                width: 360.adaptSize,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
           ),
         ]));
   }

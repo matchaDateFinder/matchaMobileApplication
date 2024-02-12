@@ -7,7 +7,8 @@ import 'package:matchaapplication/presentation/user_profile_screen/models/user_p
 /// This class manages the state of the UserProfileScreen, including the
 /// current userProfileModelObj
 class UserProfileController extends GetxController {
-  late final IsarService _isar;
+  late final FirestoreService _firestoreService;
+  late final PrefUtils _prefUtils;
 
   Rx<UserProfileModel> userProfileModelObj = UserProfileModel().obs;
 
@@ -22,19 +23,20 @@ class UserProfileController extends GetxController {
   var user;
 
   UserProfileController() {
-    _isar = IsarService();
+    _firestoreService = FirestoreService();
+    _prefUtils = PrefUtils();
   }
 
   @override
   void onInit() async {
     // TODO
     // change to fetch from local db instead of get from param
-    phoneNumber = await _isar.getPhoneNumberInIsarDB();
-    user = await _isar.getUserByPhoneNumber(phoneNumber);
+    phoneNumber = _prefUtils.getUserPhoneNumber();
+    user = await _firestoreService.getUserFromFireStoreByPhoneNumber(phoneNumber);
     if (user != null) {
-      userName = user?.name;
-      photoPathFromDB = user?.photoLink;
-      userAge = calculateAge(DateTime.now(), user!.age);
+      userName = user?.userName;
+      photoPathFromDB = user?.userPhotoLink;
+      userAge = calculateAge(DateTime.now(), user!.userBirthday.toDate());
       nameAge.value = userName + ' - ' + userAge.toString();
       userPhotoPath.value = photoPathFromDB;
       await userProfileModelObj.value.setItemTag(user);

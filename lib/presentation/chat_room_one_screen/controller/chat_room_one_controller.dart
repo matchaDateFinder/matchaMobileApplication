@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/data/models/chatModel/chat.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/chatMessageFireStoreModel/chatMessageFireStore.dart';
 import 'package:matchaapplication/presentation/chat_room_one_screen/models/chat_message.dart';
 
@@ -24,6 +23,8 @@ class ChatRoomOneController extends GetxController {
   late final String receiverPhotoLink;
   late final Stream<QuerySnapshot> messageListContent;
 
+  late Map<String, dynamic> matchProfileAttribute;
+
   bool get isTextFieldEnable => textHereController.text.isNotEmpty;
 
   ChatRoomOneController() {
@@ -38,6 +39,7 @@ class ChatRoomOneController extends GetxController {
     receiverName = arguments["receiverName"];
     receiverPhotoLink = arguments["receiverPhotoLink"];
     messageListContent = _firestore.getMessage(chatRoomId, userPhoneNumber, matchPhoneNumber);
+    matchProfileAttribute = new Map<String,dynamic>();
   }
 
   var matchProfile;
@@ -46,6 +48,21 @@ class ChatRoomOneController extends GetxController {
   void onInit() async {
     matchProfile = await _firestore.getUserFromFireStoreByPhoneNumber(matchPhoneNumber);
     chatList.refresh();
+    matchProfileAttribute["currentUserPhoneNumber"] = userPhoneNumber;
+    matchProfileAttribute["userName"] = matchProfile!.userName;
+    matchProfileAttribute["userPhoneNumber"] = matchProfile!.userPhoneNumber;
+    matchProfileAttribute["userPhotoDownloadLink"] = matchProfile!.userPhotoLink;
+    matchProfileAttribute["userGender"] = matchProfile!.userGender;
+    matchProfileAttribute["userBirthday"] = matchProfile!.userBirthday.toDate();
+    matchProfileAttribute["userProfession"] = matchProfile!.userProfession;
+    matchProfileAttribute["userEducation"] = matchProfile!.userEducation;
+    matchProfileAttribute["userReligion"] = matchProfile!.userReligion;
+    matchProfileAttribute["userHeight"] = matchProfile!.userHeight;
+    matchProfileAttribute["userSmoking"] = matchProfile!.userSmoking;
+    matchProfileAttribute["userDrinking"] = matchProfile!.userDrinking;
+    matchProfileAttribute["userMBTI"] = matchProfile!.userMBTI;
+    matchProfileAttribute["userContactList"] = matchProfile!.userContactList;
+    matchProfileAttribute["chatRoomId"] = chatRoomId;
   }
 
   @override
@@ -87,20 +104,6 @@ class ChatRoomOneController extends GetxController {
 
   Future<void> manuallyKillConstructor() async {
     Get.delete<ChatRoomOneController>();
-  }
-
-  Map<String,String> matchProfileAttribute(){
-    Map<String, String> matchProfileAttribute = new Map<String,String>();
-    matchProfileAttribute[""] = matchProfile!.name;
-    matchProfileAttribute[""] = matchProfile!.name;
-    matchProfileAttribute[""] = matchProfile!.name;
-    matchProfileAttribute[""] = matchProfile!.name;
-    matchProfileAttribute[""] = matchProfile!.name;
-    matchProfileAttribute[""] = matchProfile!.name;
-    matchProfileAttribute[""] = matchProfile!.name;
-    matchProfileAttribute[""] = matchProfile!.name;
-    matchProfileAttribute[""] = matchProfile!.name;
-    return matchProfileAttribute;
   }
 
   ChatMessage transformFromMapToChat(Map<String, dynamic> documentData) {

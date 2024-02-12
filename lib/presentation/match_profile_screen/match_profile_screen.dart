@@ -1,4 +1,5 @@
 import '../match_profile_screen/widgets/tag_item_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'controller/match_profile_controller.dart';
 import 'models/tag_item_model.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,7 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
             backgroundColor: theme.colorScheme.onPrimary,
             body: SizedBox(
                 width: double.maxFinite,
-                child: Column(children: [_buildStack(), _buildMatchProfile()])),
-            bottomNavigationBar: _buildBottomBar()));
+                child: Column(children: [_buildStack(), _buildMatchProfile()]))));
   }
 
   /// Section Widget
@@ -28,11 +28,15 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
         height: 360.adaptSize,
         width: double.maxFinite,
         child: Stack(alignment: Alignment.topCenter, children: [
-          CustomImageView(
-              imagePath: ImageConstant.imgImage,
-              height: 360.adaptSize,
-              width: 360.adaptSize,
-              alignment: Alignment.center),
+          CachedNetworkImage(
+            imageUrl: controller.userPhotoDownloadLink,
+            fit: BoxFit.cover,
+            height: 360.adaptSize,
+            width: 360.adaptSize,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(value: downloadProgress.progress),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
           CustomAppBar(
               leadingWidth: double.maxFinite,
               leading: AppbarLeadingIconbutton(
@@ -55,10 +59,10 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
               runSpacing: 8.v,
               spacing: 8.h,
               children: List<Widget>.generate(
-                  controller.matchProfileModelObj.value.tagItemList.value
+                  controller.matchProfileModelObj.value.userTagItemList.value
                       .length, (index) {
                 TagItemModel model = controller
-                    .matchProfileModelObj.value.tagItemList.value[index];
+                    .matchProfileModelObj.value.userTagItemList.value[index];
                 return TagItemWidget(model);
               })))
         ]));
@@ -69,8 +73,8 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 16.v),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text("lbl_name_age".tr,
-              style: CustomTextStyles.headlineSmallSemiBold),
+          Obx(() => Text(controller.nameAge.value, // name and age
+              style: CustomTextStyles.headlineSmallSemiBold)),
           SizedBox(height: 5.v),
           Row(children: [
             CustomImageView(
@@ -80,8 +84,9 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
                 margin: EdgeInsets.symmetric(vertical: 1.v)),
             Padding(
                 padding: EdgeInsets.only(left: 8.h),
-                child: Text("lbl_profession".tr,
-                    style: theme.textTheme.bodyMedium))
+                child: Obx(() => Text(controller.userProfession.value == '' ?
+                'Please complete your profile' : controller.userProfession.value,
+                    style: theme.textTheme.bodyMedium)))
           ]),
           SizedBox(height: 13.v),
           Row(children: [
@@ -101,39 +106,13 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
         ]));
   }
 
-  /// Section Widget
-  Widget _buildBottomBar() {
-    return CustomBottomBar(onChanged: (BottomBarEnum type) {
-      Get.toNamed(getCurrentRoute(type), id: 1);
-    });
-  }
-
-  ///Handling route based on bottom click actions
-  String getCurrentRoute(BottomBarEnum type) {
-    switch (type) {
-      case BottomBarEnum.chatBottomType:
-        return AppRoutes.chatFunctionContainerScreen;
-      case BottomBarEnum.matchBottomType:
-        return AppRoutes.candidateProfileScreen;
-      case BottomBarEnum.profileBottomType:
-        return AppRoutes.userProfileScreen;
-      default:
-        return "/";
-    }
-  }
-
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.chatFunctionTabContainerPage:
-        return ChatFunctionTabContainerPage();
-      default:
-        return DefaultWidget();
-    }
-  }
-
   /// Navigates to the previous screen.
-  onTapArrowLeft() {
-    Get.back();
+  onTapArrowLeft() async {
+    await controller.manuallyKillConstructor();
+    Map<String, String> mapOfArguments = await controller.convertToMap();
+    Get.toNamed(
+        AppRoutes.chatRoomOneScreen,
+        arguments: mapOfArguments
+    );
   }
 }

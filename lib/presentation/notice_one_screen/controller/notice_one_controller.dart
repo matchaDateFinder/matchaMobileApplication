@@ -9,8 +9,8 @@ import 'package:matchaapplication/presentation/notice_one_screen/models/notice_o
 /// current noticeOneModelObj
 class NoticeOneController extends GetxController {
   Rx<NoticeOneModel> noticeOneModelObj = NoticeOneModel().obs;
-  late final IsarService _isar;
   late final FirestoreService _firestore;
+  late final PrefUtils _prefUtils;
 
   Timer? _timer;
   final textToShow = "msg_next_profile_in".tr.obs;
@@ -23,13 +23,13 @@ class NoticeOneController extends GetxController {
   var timeMinutes = 0;
 
   NoticeOneController() {
-    _isar = IsarService();
     _firestore = FirestoreService();
+    _prefUtils = PrefUtils();
   }
 
   @override
   void onInit() async {
-    phoneNumber = await _isar.getPhoneNumberInIsarDB();
+    phoneNumber = _prefUtils.getUserPhoneNumber();
     user = await _firestore.getUserFromFireStoreByPhoneNumber(phoneNumber);
     if(user != null){
       DateTime lastRecomDate = user!.lastRecommendationIsGiven.toDate();

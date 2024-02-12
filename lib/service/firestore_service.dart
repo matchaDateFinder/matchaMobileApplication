@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:matchaapplication/core/app_export.dart';
 
@@ -9,7 +8,6 @@ import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/
 import 'package:matchaapplication/data/models/fireStoreModel/matchFireStoreModel/matchFireStore.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/chatRoomFireStoreModel/chatRoomFireStore.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/chatMessageFireStoreModel/chatMessageFireStore.dart';
-import 'package:matchaapplication/data/models/userModel/user.dart';
 
 class FirestoreService extends ChangeNotifier{
   late FirebaseFirestore firebaseFirestore;
@@ -56,16 +54,16 @@ class FirestoreService extends ChangeNotifier{
     return userDataResult;
   }
 
-  Future<void> updateUserProfileFromFireStoreByPhoneNumber(String phoneNumber, UserModel userData) async {
+  Future<void> updateUserProfileFromFireStoreByPhoneNumber(String phoneNumber, UserFireStoreModel userData) async {
     UserFireStoreModel userRef = await getUserFromFireStoreByPhoneNumber(phoneNumber);
     firebaseFirestore.collection("userData").doc(userRef.userId).update({
-      'userProfession' : userData.profession,
-      'userEducation' : userData.education,
-      'userReligion' : userData.religion,
-      'userHeight' : userData.height,
-      'userSmoking' : userData.smoking,
-      'userDrinking' : userData.drinking,
-      'userMBTI' : userData.mbti,
+      'userProfession' : userData.userProfession,
+      'userEducation' : userData.userEducation,
+      'userReligion' : userData.userReligion,
+      'userHeight' : userData.userHeight,
+      'userSmoking' : userData.userSmoking,
+      'userDrinking' : userData.userDrinking,
+      'userMBTI' : userData.userMBTI,
     });
   }
 
@@ -88,25 +86,6 @@ class FirestoreService extends ChangeNotifier{
     } catch (e) {
       return('error occured');
     }
-  }
-
-  Future<String> downloadPhotoFileFromCloudStorage(String userPhotoLink, String userFullName, String userPhoneNumber) async {
-    String photoLocalLink = await downloadUserProfilePicture(userPhotoLink, userFullName, userPhoneNumber);
-    return photoLocalLink;
-  }
-
-  Future<String> downloadUserProfilePicture(String downloadURL, String userName, String phoneNumber) async {
-    Directory documentDir = await getApplicationDocumentsDirectory();
-    String filePath = '';
-    try{
-      final httpsReference = firebaseStorage.refFromURL(downloadURL);
-      final File tempFile = File(path.join(documentDir.path, path.basename(userName+"-"+phoneNumber+path.extension(httpsReference.fullPath))));
-      await httpsReference.writeToFile(tempFile);
-      filePath = tempFile.path;
-    } catch (e) {
-      return("file not found");
-    }
-    return filePath;
   }
 
   Future<List<UserFireStoreModel>> getListOfMutualConnectionByPhoneNumberList(List<String> phoneNumberList, String phoneNumber) async {

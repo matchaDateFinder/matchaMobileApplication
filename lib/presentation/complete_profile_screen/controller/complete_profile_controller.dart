@@ -16,14 +16,12 @@ class CompleteProfileController extends GetxController {
   Rx<CompleteProfileModel> completeProfileModelObj = CompleteProfileModel().obs;
   List<String>? contactListInit = [];
 
-  late final IsarService _isar;
   late final FirestoreService _firestore;
   late final PrefUtils _prefUtils;
 
   String photoDownloadURL = '';
 
   CompleteProfileController() {
-    _isar = IsarService();
     _firestore = FirestoreService();
     _prefUtils = PrefUtils();
   }
@@ -45,28 +43,16 @@ class CompleteProfileController extends GetxController {
         contactListInit!.add(elementA.number);
       });
     });
-    _saveToLocalDB(photoFile.path);
     _saveToFireStoreDB();
+    _prefUtils.setLocalUser(convertUserDetailToUserMap());
     _prefUtils.setLoginStatus(true);
   }
 
-  void _saveToLocalDB(String photoFileLocalPath) async {
-    _userIsarDBModel = UserModel()
-      ..phoneNumber = userDetail['userPhoneNumber']
-      ..name = userDetail['fullName']
-      ..photoLink = photoFileLocalPath
-      ..photoSize = userDetail['photoSize']
-      ..age = userDetail['birthday']
-      ..gender = userDetail['gender']
-      ..profession = ''
-      ..education = ''
-      ..religion = ''
-      ..height = 0
-      ..smoking = ''
-      ..drinking = ''
-      ..mbti = ''
-      ..contactList = contactListInit;
-    await _isar.saveUser(_userIsarDBModel);
+  Map<String,dynamic> convertUserDetailToUserMap(){
+    Map<String, dynamic> userMap = {};
+    userMap['userPhoneNumber'] = userDetail['userPhoneNumber'];
+    userMap['photoLink'] = photoDownloadURL;
+    return userMap;
   }
 
   void _saveToFireStoreDB() async {

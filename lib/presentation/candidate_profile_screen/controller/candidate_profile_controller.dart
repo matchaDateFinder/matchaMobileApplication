@@ -11,8 +11,8 @@ import 'package:matchaapplication/presentation/candidate_profile_screen/models/c
 /// This class manages the state of the CandidateProfileScreen, including the
 /// current candidateProfileModelObj
 class CandidateProfileController extends GetxController {
-  late final IsarService _isar;
   late final FirestoreService _firestore;
+  late final PrefUtils _prefUtils;
 
   var userPhotoPath = ''.obs;
   var nameAge = ''.obs;
@@ -30,13 +30,13 @@ class CandidateProfileController extends GetxController {
   var candidateAge;
 
   CandidateProfileController() {
-    _isar = IsarService();
     _firestore = FirestoreService();
+    _prefUtils = PrefUtils();
   }
 
   @override
   void onInit() async{
-    phoneNumber = await _isar.getPhoneNumberInIsarDB();
+    phoneNumber = _prefUtils.getUserPhoneNumber();
     user = await _firestore.getUserFromFireStoreByPhoneNumber(phoneNumber);
     if(user != null){
       DateTime dt1 = user!.lastRecommendationIsGiven.toDate();
@@ -48,12 +48,11 @@ class CandidateProfileController extends GetxController {
         }
         if(existingMatchFilter.length > 0){
           candidateProfile = await _firestore.getUserFromFireStoreByPhoneNumber(existingMatchFilter.first);
-          String photoFileLocalPath = await _firestore.downloadPhotoFileFromCloudStorage(candidateProfile!.userPhotoLink, candidateProfile!.userName, candidateProfile!.userPhoneNumber);
           candidateAge = calculateAge(DateTime.now(), candidateProfile!.userBirthday.toDate());
           candidateName = candidateProfile!.userName;
           candidatePhoneNumber = candidateProfile!.userPhoneNumber;
           nameAge.value = candidateName + ' - ' + candidateAge.toString();
-          userPhotoPath.value = photoFileLocalPath;
+          userPhotoPath.value = candidateProfile!.userPhotoDownloadLink;
           userProfession.value = candidateProfile!.userProfession;
           await candidateProfileModelObj.value.setItemTag(candidateProfile);
           candidateProfileModelObj.refresh();

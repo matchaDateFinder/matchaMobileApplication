@@ -6,6 +6,7 @@ import 'package:matchaapplication/widgets/app_bar/appbar_leading_image.dart';
 import 'package:matchaapplication/widgets/app_bar/appbar_subtitle.dart';
 import 'package:matchaapplication/widgets/app_bar/custom_app_bar.dart';
 import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class EditProfileScreen extends GetWidget<EditProfileController> {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -26,12 +27,17 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
                       width: 128.adaptSize,
                       child: Stack(alignment: Alignment.center, children: [
                         Obx(() =>
-                        CustomImageView(
-                            imagePath: controller.photoLink.value,
-                            height: 128.adaptSize,
-                            width: 128.adaptSize,
-                            radius: BorderRadius.circular(64.h),
-                            alignment: Alignment.center)),
+                        ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl: controller.photoLink.value,
+                              fit: BoxFit.cover,
+                              height: 128.adaptSize,
+                              width: 128.adaptSize,
+                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                  CircularProgressIndicator(value: downloadProgress.progress),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                            ),
+                        )),
                         CustomImageView(
                             imagePath: ImageConstant.imgCamera,
                             height: 24.adaptSize,

@@ -1,6 +1,5 @@
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
-import 'package:matchaapplication/data/models/userModel/user.dart';
 import 'package:matchaapplication/presentation/input_phone_number_screen/models/input_phone_number_model.dart';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/utils/utils.dart';
@@ -11,12 +10,10 @@ import 'package:flutter/material.dart';
 /// This class manages the state of the InputPhoneNumberScreen, including the
 /// current inputPhoneNumberModelObj
 class InputPhoneNumberController extends GetxController {
-  late final IsarService _isar;
   late final FirestoreService _firestore;
   late final PrefUtils _prefUtils;
 
   InputPhoneNumberController() {
-    _isar = IsarService();
     _firestore = FirestoreService();
     _prefUtils = PrefUtils();
   }
@@ -61,7 +58,7 @@ class InputPhoneNumberController extends GetxController {
     final userFromFiresToreDB = await _firestore.getUserFromFireStoreByPhoneNumber(fullPhoneNumber);
     if (userFromFiresToreDB.userName != "userName" && userFromFiresToreDB.userPhoneNumber != "") { // user exists
       _prefUtils.setLoginStatus(true);
-      await _saveUserDataFromFireStoreToIsarDB(userFromFiresToreDB);
+      _prefUtils.setLocalUser(convertMapPreferences(userFromFiresToreDB));
       // TODO subscribe the app to all of the related topic in DB
       return true;
     }else{ // user does not exist
@@ -69,26 +66,11 @@ class InputPhoneNumberController extends GetxController {
     }
   }
 
-  Future<void> _saveUserDataFromFireStoreToIsarDB(UserFireStoreModel userFromFireStoreDB) async {
-    String photoFileLocalPath = await _firestore.downloadPhotoFileFromCloudStorage(userFromFireStoreDB.userPhotoLink, userFromFireStoreDB.userName, userFromFireStoreDB.userPhoneNumber);
-    List<String>? contactList = await _getContactListFromFireStoreDB(userFromFireStoreDB.userContactList);
-    UserModel userIsarDBModel = UserModel()
-      ..phoneNumber = userFromFireStoreDB.userPhoneNumber
-      ..name = userFromFireStoreDB.userName
-      ..photoLink = photoFileLocalPath
-      ..photoSize = userFromFireStoreDB.userPhotoSize
-      ..age = userFromFireStoreDB.userBirthday.toDate()
-      ..gender = userFromFireStoreDB.userGender
-      ..profession = userFromFireStoreDB.userProfession
-      ..education = userFromFireStoreDB.userEducation
-      ..religion = userFromFireStoreDB.userReligion
-      ..height = userFromFireStoreDB.userHeight
-      ..smoking = userFromFireStoreDB.userSmoking
-      ..drinking = userFromFireStoreDB.userDrinking
-      ..mbti = userFromFireStoreDB.userMBTI
-      ..contactList = contactList
-      ..lastRecommendationIsGiven = userFromFireStoreDB.lastRecommendationIsGiven!.toDate();
-    await _isar.saveUser(userIsarDBModel);
+  Map<String,dynamic> convertMapPreferences(UserFireStoreModel userFromFireStore){
+    Map<String, dynamic> userMap = {};
+    userMap["userPhoneNumber"] = userFromFireStore.userPhoneNumber;
+    userMap["photoLink"] = userFromFireStore.userPhotoLink;
+    return userMap;
   }
 
   Future<List<String>?> _getContactListFromFireStoreDB(List<String>? contactListFromFireStore) async {

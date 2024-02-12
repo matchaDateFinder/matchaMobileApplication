@@ -44,8 +44,19 @@ class PrefUtils {
     _sharedPreferences?.setBool("isLogin", value);
   }
 
-  void setLocalUser(Map<String,String> userMap){
+  String? getUserPhoneNumber() {
+    return _sharedPreferences?.getString("userPhoneNumber");
+  }
+
+  void setLocalUser(Map<String,dynamic> userMap){
    // TODO set key value for user map
+    _sharedPreferences?.setString("userPhoneNumber", userMap['userPhoneNumber']);
+    _sharedPreferences?.setString("photoLink", userMap['photoLink']);
+  }
+
+  void clearLocalPreferences(){
+    _sharedPreferences?.setString("userPhoneNumber", "");
+    _sharedPreferences?.setString("photoLink", "");
   }
 
 }

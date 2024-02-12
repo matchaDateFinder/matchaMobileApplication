@@ -32,39 +32,39 @@ class IsarService {
   }
 
 
-  Future<void> saveUser(UserModel newUser) async {
-    final isar = await db;
-    isar.writeTxnSync<int>(() => isar.userModels.putSync(newUser));
-  }
-
-  Future<UserModel?> getUserByPhoneNumber(String phoneNumber) async {
-    final isar = await db;
-    return await isar.userModels.
-    filter().
-    phoneNumberMatches(phoneNumber).
-    findFirst();
-  }
-
-  Future<String> getPhoneNumberInIsarDB() async {
-    final isar = await db;
-    List<UserModel> user = await isar.userModels.where().findAll();
-    return user[0].phoneNumber;
-  }
-
-  Future<void> clearAllDataFromIsarDB() async {
-    // TODO
-    final isar = await db;
-    await isar.writeTxn(() async {
-      await isar.userModels.clear();
-      await isar.matchs.clear();
-      await isar.chats.clear();
-      await isar.chatRooms.clear();
-    });
-  }
-
-  Future<void> createNewChatRoom(ChatRoom chatRoom) async {
-    final isar = await db;
-    isar.writeTxnSync<int>(() => isar.chatRooms.putSync(chatRoom));
-  }
+  // Future<void> saveUser(UserModel newUser) async {
+  //   final isar = await db;
+  //   isar.writeTxnSync<int>(() => isar.userModels.putSync(newUser));
+  // }
+  //
+  // Future<UserModel?> getUserByPhoneNumber(String phoneNumber) async {
+  //   final isar = await db;
+  //   return await isar.userModels.
+  //   filter().
+  //   phoneNumberMatches(phoneNumber).
+  //   findFirst();
+  // }
+  //
+  // Future<String> getPhoneNumberInIsarDB() async {
+  //   final isar = await db;
+  //   List<UserModel> user = await isar.userModels.where().findAll();
+  //   return user[0].phoneNumber;
+  // }
+  //
+  // Future<void> clearAllDataFromIsarDB() async {
+  //   // TODO
+  //   final isar = await db;
+  //   await isar.writeTxn(() async {
+  //     await isar.userModels.clear();
+  //     await isar.matchs.clear();
+  //     await isar.chats.clear();
+  //     await isar.chatRooms.clear();
+  //   });
+  // }
+  //
+  // Future<void> createNewChatRoom(ChatRoom chatRoom) async {
+  //   final isar = await db;
+  //   isar.writeTxnSync<int>(() => isar.chatRooms.putSync(chatRoom));
+  // }
 
 }

@@ -17,14 +17,17 @@ class LoginSignupController extends GetxController {
 
   @override
   void onInit() async{
-    print(_prefUtils.getLogInStatus());
     if(_prefUtils.getLogInStatus() == true){
       _prefUtils.setLoginStatus(true);
-      IsarService isar = IsarService();
-      String phoneNumber = await isar.getPhoneNumberInIsarDB();
-      Get.toNamed(
-          AppRoutes.userProfileScreen,
-          arguments: phoneNumber);
+      String phoneNumber = _prefUtils.getUserPhoneNumber()!;
+      Future.delayed(Duration.zero, () {
+        Get.toNamed(
+            AppRoutes.userProfileScreen,
+            arguments: phoneNumber);
+      });
+      // Get.toNamed(
+      //     AppRoutes.userProfileScreen,
+      //     arguments: phoneNumber);
     }
     super.onInit();
   }

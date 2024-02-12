@@ -23,8 +23,6 @@ class ChatFunctionContainerScreen
                   itemCount: controller.chatFunctionContainerModelObj.length,
                   itemBuilder: (context, index) {
                   final _data = controller.chatFunctionContainerModelObj[index];
-                  // final hasPhoto = _data.photoURL != null &&
-                  //     _data.photoURL != '';
                     return ListTile(
                         leading: ClipOval(
                           child: CachedNetworkImage(

@@ -25,7 +25,7 @@ class TagItemWidget extends StatelessWidget {
         showCheckmark: false,
         labelPadding: EdgeInsets.zero,
         label: Text(
-          tagItemModelObj.iconacademiccap!.value,
+          tagItemModelObj.attributevalue!.value,
           style: TextStyle(
             color: theme.colorScheme.primary,
             fontSize: 14.fSize,
@@ -34,7 +34,7 @@ class TagItemWidget extends StatelessWidget {
           ),
         ),
         avatar: CustomImageView(
-          imagePath: ImageConstant.imgIcon16Academiccap,
+          imagePath: tagItemModelObj.attributeIcon!.value,
           height: 15.v,
           width: 16.h,
           margin: EdgeInsets.only(right: 8.h),
@@ -58,9 +58,6 @@ class TagItemWidget extends StatelessWidget {
                   12.h,
                 ),
               ),
-        onSelected: (value) {
-          tagItemModelObj.isSelected!.value = value;
-        },
       ),
     );
   }
