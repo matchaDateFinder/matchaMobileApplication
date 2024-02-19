@@ -4,17 +4,15 @@ class ChatRoomFireStoreModel{
   String? chatRoomId;
   late List<String> participantsNumber;
   late List<String> participantsName;
-  late int? chatBoxStatus;
-  late int? chatCount;
-  late int? chatUnreadCount;
+  late Map<String,int>? unreadMessagesCountFromParticipantA;
+  late Map<String,int>? unreadMessagesCountFromParticipantB;
 
 
   ChatRoomFireStoreModel({
     required this.participantsNumber,
     required this.participantsName,
-    this.chatBoxStatus,
-    this.chatCount,
-    this.chatUnreadCount,
+    this.unreadMessagesCountFromParticipantA,
+    this.unreadMessagesCountFromParticipantB,
   });
 
   ChatRoomFireStoreModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
@@ -27,9 +25,14 @@ class ChatRoomFireStoreModel{
     documentSnapshot["participantsName"].forEach((participantName) {
       participantsName.add(participantName);
     });
-    chatBoxStatus = documentSnapshot["chatBoxStatus"];
-    chatCount = documentSnapshot["chatCount"];
-    chatUnreadCount = documentSnapshot["chatUnreadCount"];
+    unreadMessagesCountFromParticipantA = {};
+    documentSnapshot["unreadMessagesCountFromParticipantA"].keys.forEach((key){
+      unreadMessagesCountFromParticipantA?[key] = documentSnapshot["unreadMessagesCountFromParticipantA"][key];
+    });
+    unreadMessagesCountFromParticipantB = {};
+    documentSnapshot["unreadMessagesCountFromParticipantB"].keys.forEach((key){
+      unreadMessagesCountFromParticipantB?[key] = documentSnapshot["unreadMessagesCountFromParticipantB"][key];
+    });
   }
 
 }

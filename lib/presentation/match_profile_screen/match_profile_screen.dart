@@ -4,10 +4,8 @@ import 'controller/match_profile_controller.dart';
 import 'models/tag_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/presentation/chat_function_tab_container_page/chat_function_tab_container_page.dart';
 import 'package:matchaapplication/widgets/app_bar/appbar_leading_iconbutton.dart';
 import 'package:matchaapplication/widgets/app_bar/custom_app_bar.dart';
-import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
 
 class MatchProfileScreen extends GetWidget<MatchProfileController> {
   const MatchProfileScreen({Key? key}) : super(key: key);

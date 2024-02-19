@@ -1,7 +1,7 @@
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/data/models/fireStoreModel/chatRoomFireStoreModel/chatRoomFireStore.dart';
 import 'package:matchaapplication/presentation/chat_function_container_screen/models/chat_function_container_model.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
+
 
 /// A controller class for the ChatFunctionContainerScreen.
 ///
@@ -12,55 +12,64 @@ class ChatFunctionContainerController extends GetxController {
 
   late final FirestoreService _firestore;
   late final PrefUtils _prefUtils;
-
-  var phoneNumber;
-  late UserFireStoreModel user;
+  late final Stream<QuerySnapshot> chatRoomList;
+  late final String phoneNumber;
+  late final String userName;
 
   ChatFunctionContainerController() {
     _firestore = FirestoreService();
     _prefUtils = PrefUtils();
+    phoneNumber = _prefUtils.getUserPhoneNumber()!;
+    chatRoomList = _firestore.getChatRoomList(phoneNumber);
+    userName = _prefUtils.getUserName()!;
   }
 
   @override
   void onInit() async{
-    phoneNumber = _prefUtils.getUserPhoneNumber();
-    user = await _firestore.getUserFromFireStoreByPhoneNumber(phoneNumber);
-    if(user != null) {
-      List<ChatRoomFireStoreModel> chatRoomList = await _firestore.getChatRoomForUser(phoneNumber);
-      chatRoomList.forEach((chatRoom) async {
-        ChatFunctionContainerModel newChatRoom = new ChatFunctionContainerModel();
-        chatRoom.participantsNumber.forEach((participantNumber) {
-          if(participantNumber != phoneNumber){
-            newChatRoom.phoneNumber!.value = participantNumber;
-          }
-        });
-        chatRoom.participantsName.forEach((participantName) {
-          if(participantName != user.userName){
-            newChatRoom.username!.value = participantName;
-          }
-        });
-        newChatRoom.unreadCount!.value = chatRoom.chatUnreadCount.toString();
-        newChatRoom.chatRoomStatus!.value = chatRoom.chatBoxStatus.toString();
-        newChatRoom.chatRoomId!.value = chatRoom.chatRoomId!;
-        newChatRoom.photoUrl!.value = await _firestore.getUserPhotoLinkFromFireStoreByPhoneNumber(newChatRoom.phoneNumber!.value);
-        chatFunctionContainerModelObj.add(newChatRoom);
-      });
-      chatFunctionContainerModelObj.refresh();
-    }
   }
 
   Future<void> manuallyKillConstructor() async {
     Get.delete<ChatFunctionContainerController>();
   }
 
-  Future<Map<String,String>> convertToMap(String userPhoneNumber, String receiverPhoneNumber, String receiverName,
-          String receiverPhotoLink, String chatRoomId) async{
+  Future<Map<String,String>> convertToMap(String userPhoneNumber, String receiverPhoneNumber, String receiverName, String chatRoomId) async{
     Map<String,String> result = {};
     result["userPhoneNumber"] = userPhoneNumber;
     result["receiverPhoneNumber"] = receiverPhoneNumber;
     result["receiverName"] = receiverName;
-    result["receiverPhotoLink"] = receiverPhotoLink;
+    result["receiverPhotoLink"] = await getUserImageUrl(receiverPhoneNumber);
     result["chatRoomId"] = chatRoomId;
     return result;
   }
+
+  Map<String, String> convertFromDocumentMapToTileMap(Map<String, dynamic> map, String documentId) {
+    Map<String, String> result = {};
+    map["participantsNumber"].forEach((participantNumber) {
+      if(participantNumber != phoneNumber){
+        result["phoneNumber"] = participantNumber;
+      }
+    });
+    map["participantsName"].forEach((participantName) {
+      if(participantName != userName){
+        result["userName"] = participantName;
+      }
+    });
+    map["unreadMessagesCountFromParticipantA"].keys.forEach((key) {
+      if(key != phoneNumber){
+        result["unreadMessagesCount"] = map["unreadMessagesCountFromParticipantA"][key].toString();
+      }
+    });
+    map["unreadMessagesCountFromParticipantB"].keys.forEach((key) {
+      if(key != phoneNumber){
+        result["unreadMessagesCount"] = map["unreadMessagesCountFromParticipantB"][key].toString();
+      }
+    });
+    result["chatRoomId"] = documentId;
+    return result;
+  }
+
+  Future<String> getUserImageUrl(String phoneNumber) async {
+    return await _firestore.getUserPhotoLinkFromFireStoreByPhoneNumber(phoneNumber);
+  }
+
 }

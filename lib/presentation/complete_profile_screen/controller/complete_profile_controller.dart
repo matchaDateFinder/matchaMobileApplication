@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/data/models/userModel/user.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
 import 'package:matchaapplication/presentation/complete_profile_screen/models/complete_profile_model.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,7 +25,6 @@ class CompleteProfileController extends GetxController {
     _prefUtils = PrefUtils();
   }
   var userDetail = new Map();
-  var _userIsarDBModel = new UserModel();
 
   @override
   void onInit() async{
@@ -52,6 +50,7 @@ class CompleteProfileController extends GetxController {
     Map<String, dynamic> userMap = {};
     userMap['userPhoneNumber'] = userDetail['userPhoneNumber'];
     userMap['photoLink'] = photoDownloadURL;
+    userMap['userName'] = userDetail['fullName'];
     return userMap;
   }
 

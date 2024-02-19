@@ -2,9 +2,6 @@ import 'controller/notice_two_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/presentation/chat_function_tab_container_page/chat_function_tab_container_page.dart';
-import 'package:matchaapplication/presentation/user_profile_screen/user_profile_screen.dart';
-import 'package:matchaapplication/presentation/candidate_profile_screen/candidate_profile_screen.dart';
 import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
 import 'package:matchaapplication/widgets/custom_elevated_button.dart';
 
@@ -108,20 +105,6 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
         return AppRoutes.userProfileScreen;
       default:
         return "/";
-    }
-  }
-
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.chatFunctionTabContainerPage:
-        return ChatFunctionTabContainerPage();
-      case AppRoutes.candidateProfileScreen:
-        return CandidateProfileScreen();
-      case AppRoutes.userProfileScreen:
-        return UserProfileScreen();
-      default:
-        return DefaultWidget();
     }
   }
 

@@ -66,10 +66,8 @@ class CandidateProfileController extends GetxController {
     }
   }
 
-  // TODO need to find a way to dispose the current controller when moving to another page via the bottom bar
   Future<void> manuallyKillConstructor() async {
     // TODO clean up photo file from user device
-
     Get.delete<CandidateProfileController>();
   }
 
@@ -120,9 +118,9 @@ class CandidateProfileController extends GetxController {
         ChatRoomFireStoreModel newChatRoomFireStore = ChatRoomFireStoreModel(
             participantsNumber: [phoneNumber, candidatePhoneNumber],
             participantsName: [user.userName, candidateName],
-            chatBoxStatus: 0,
-            chatCount: 0,
-            chatUnreadCount: 0);
+            unreadMessagesCountFromParticipantA: {phoneNumber:0},
+            unreadMessagesCountFromParticipantB: {candidatePhoneNumber:0}
+        );
         await _firestore.createNewChatRoomInFireStore(newChatRoomFireStore);
         // TODO create a new row in online db that stores topicName and userParticipants
 

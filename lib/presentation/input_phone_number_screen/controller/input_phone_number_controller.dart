@@ -70,6 +70,7 @@ class InputPhoneNumberController extends GetxController {
     Map<String, dynamic> userMap = {};
     userMap["userPhoneNumber"] = userFromFireStore.userPhoneNumber;
     userMap["photoLink"] = userFromFireStore.userPhotoLink;
+    userMap["userName"] = userFromFireStore.userName;
     return userMap;
   }
 

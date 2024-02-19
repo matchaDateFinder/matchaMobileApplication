@@ -4,8 +4,6 @@ import 'controller/candidate_profile_controller.dart';
 import 'models/tag4_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/presentation/chat_function_tab_container_page/chat_function_tab_container_page.dart';
-import 'package:matchaapplication/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:matchaapplication/widgets/app_bar/appbar_subtitle_one.dart';
 import 'package:matchaapplication/widgets/app_bar/custom_app_bar.dart';
 import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
@@ -158,20 +156,6 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
         return AppRoutes.userProfileScreen;
       default:
         return "/";
-    }
-  }
-
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.chatFunctionTabContainerPage:
-        return ChatFunctionTabContainerPage();
-      case AppRoutes.candidateProfileScreen:
-        return CandidateProfileScreen();
-      case AppRoutes.userProfileScreen:
-        return UserProfileScreen();
-      default:
-        return DefaultWidget();
     }
   }
 

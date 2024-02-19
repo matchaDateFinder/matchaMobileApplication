@@ -63,6 +63,8 @@ class ChatRoomOneController extends GetxController {
     matchProfileAttribute["userMBTI"] = matchProfile!.userMBTI;
     matchProfileAttribute["userContactList"] = matchProfile!.userContactList;
     matchProfileAttribute["chatRoomId"] = chatRoomId;
+    // TODO add logic to reset unread messages count
+    await _firestore.updateChatRoom(chatRoomId, userPhoneNumber, "openChat");
   }
 
   @override

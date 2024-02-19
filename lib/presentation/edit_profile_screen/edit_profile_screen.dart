@@ -1,7 +1,6 @@
 import 'controller/edit_profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/presentation/chat_function_tab_container_page/chat_function_tab_container_page.dart';
 import 'package:matchaapplication/widgets/app_bar/appbar_leading_image.dart';
 import 'package:matchaapplication/widgets/app_bar/appbar_subtitle.dart';
 import 'package:matchaapplication/widgets/app_bar/custom_app_bar.dart';
@@ -204,17 +203,6 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
         return AppRoutes.userProfileScreen;
       default:
         return "/";
-    }
-  }
-
-
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.chatFunctionTabContainerPage:
-        return ChatFunctionTabContainerPage();
-      default:
-        return DefaultWidget();
     }
   }
 

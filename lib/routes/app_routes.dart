@@ -20,8 +20,8 @@ import 'package:matchaapplication/presentation/complete_profile_screen/complete_
 import 'package:matchaapplication/presentation/complete_profile_screen/binding/complete_profile_binding.dart';
 import 'package:matchaapplication/presentation/notice_two_screen/notice_two_screen.dart';
 import 'package:matchaapplication/presentation/notice_two_screen/binding/notice_two_binding.dart';
-import 'package:matchaapplication/presentation/chat_room_two_screen/chat_room_two_screen.dart';
-import 'package:matchaapplication/presentation/chat_room_two_screen/binding/chat_room_two_binding.dart';
+// import 'package:matchaapplication/presentation/chat_room_two_screen/chat_room_two_screen.dart';
+// import 'package:matchaapplication/presentation/chat_room_two_screen/binding/chat_room_two_binding.dart';
 import 'package:matchaapplication/presentation/input_gender_screen/input_gender_screen.dart';
 import 'package:matchaapplication/presentation/input_gender_screen/binding/input_gender_binding.dart';
 import 'package:matchaapplication/presentation/request_contact_access_screen/request_contact_access_screen.dart';
@@ -36,8 +36,8 @@ import 'package:matchaapplication/presentation/explanation_of_matcha_screen/expl
 import 'package:matchaapplication/presentation/explanation_of_matcha_screen/binding/explanation_of_matcha_binding.dart';
 import 'package:matchaapplication/presentation/login_signup_screen/login_signup_screen.dart';
 import 'package:matchaapplication/presentation/login_signup_screen/binding/login_signup_binding.dart';
-import 'package:matchaapplication/presentation/app_navigation_screen/app_navigation_screen.dart';
-import 'package:matchaapplication/presentation/app_navigation_screen/binding/app_navigation_binding.dart';
+// import 'package:matchaapplication/presentation/app_navigation_screen/app_navigation_screen.dart';
+// import 'package:matchaapplication/presentation/app_navigation_screen/binding/app_navigation_binding.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
@@ -170,13 +170,13 @@ class AppRoutes {
         NoticeTwoBinding(),
       ],
     ),
-    GetPage(
-      name: chatRoomTwoScreen,
-      page: () => ChatRoomTwoScreen(),
-      bindings: [
-        ChatRoomTwoBinding(),
-      ],
-    ),
+    // GetPage(
+    //   name: chatRoomTwoScreen,
+    //   page: () => ChatRoomTwoScreen(),
+    //   bindings: [
+    //     ChatRoomTwoBinding(),
+    //   ],
+    // ),
     GetPage(
       name: inputGenderScreen,
       page: () => InputGenderScreen(),
@@ -226,13 +226,13 @@ class AppRoutes {
         LoginSignupBinding(),
       ],
     ),
-    GetPage(
-      name: appNavigationScreen,
-      page: () => AppNavigationScreen(),
-      bindings: [
-        AppNavigationBinding(),
-      ],
-    ),
+    // GetPage(
+    //   name: appNavigationScreen,
+    //   page: () => AppNavigationScreen(),
+    //   bindings: [
+    //     AppNavigationBinding(),
+    //   ],
+    // ),
     GetPage(
       name: initialRoute,
       page: () => LoginSignupScreen(),

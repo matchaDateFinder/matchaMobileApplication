@@ -5,8 +5,7 @@ import '../../../core/app_export.dart';
 class ChatFunctionContainerModel {
   Rx<String>? username = "".obs;
   Rx<String>? phoneNumber = "".obs;
-  Rx<String>? unreadCount = "".obs;
-  Rx<String>? chatRoomStatus = "".obs;
   Rx<String>? chatRoomId = "".obs;
   Rx<String>? photoUrl = "".obs;
+  Rx<String>? unreadMessagesCount = "".obs;
 }

@@ -1,5 +1,6 @@
 import "dart:core";
 import 'package:matchaapplication/core/app_export.dart';
+import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
 import 'package:matchaapplication/presentation/user_profile_screen/models/user_profile_model.dart';
 
 /// A controller class for the UserProfileScreen.
@@ -12,6 +13,8 @@ class UserProfileController extends GetxController {
 
   Rx<UserProfileModel> userProfileModelObj = UserProfileModel().obs;
 
+  late UserFireStoreModel user;
+
   var userPhotoPath = ''.obs;
   var nameAge = ''.obs;
   var userProfession = ''.obs;
@@ -20,11 +23,13 @@ class UserProfileController extends GetxController {
   var userName;
   var userAge;
   var photoPathFromDB;
-  var user;
 
   UserProfileController() {
     _firestoreService = FirestoreService();
     _prefUtils = PrefUtils();
+    user = UserFireStoreModel(userName: "", userPhoneNumber: "",
+        userPhotoLink: "", userPhotoSize: "",
+        userGender: "", userBirthday: Timestamp.now());
   }
 
   @override

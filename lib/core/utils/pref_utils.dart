@@ -52,11 +52,11 @@ class PrefUtils {
    // TODO set key value for user map
     _sharedPreferences?.setString("userPhoneNumber", userMap['userPhoneNumber']);
     _sharedPreferences?.setString("photoLink", userMap['photoLink']);
+    _sharedPreferences?.setString("userName", userMap['userName']);
   }
 
-  void clearLocalPreferences(){
-    _sharedPreferences?.setString("userPhoneNumber", "");
-    _sharedPreferences?.setString("photoLink", "");
+  String? getUserName() {
+    return _sharedPreferences?.getString("userName");
   }
 
 }

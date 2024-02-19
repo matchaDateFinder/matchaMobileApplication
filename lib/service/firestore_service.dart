@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:matchaapplication/data/models/chatModel/chatRoom.dart';
 import 'package:path/path.dart' as path;
 import 'package:matchaapplication/core/app_export.dart';
 
@@ -186,9 +187,8 @@ class FirestoreService extends ChangeNotifier{
         .add({
       'participantsNumber' : chatRoomFireStoreModel.participantsNumber,
       'participantsName' : chatRoomFireStoreModel.participantsName,
-      'chatBoxStatus' : chatRoomFireStoreModel.chatBoxStatus,
-      'chatCount' : chatRoomFireStoreModel.chatCount,
-      'chatUnreadCount' : chatRoomFireStoreModel.chatUnreadCount,
+      'unreadMessagesCountFromParticipantA' : chatRoomFireStoreModel.unreadMessagesCountFromParticipantA,
+      'unreadMessagesCountFromParticipantB' : chatRoomFireStoreModel.unreadMessagesCountFromParticipantB,
     });
   }
 
@@ -233,7 +233,72 @@ class FirestoreService extends ChangeNotifier{
       'chatStatus' : newChat.chatStatus,
       'sentDate' : newChat.sentDate,
       'isReceived' : newChat.isReceived,
-    });
+    }).then((value) async => await updateChatRoom(newChat.chatRoomId, newChat.senderPhoneNumber, "sendChat"));
+  }
+
+  Future<void> updateChatRoom(String chatRoomId, String senderPhoneNumber, String source) async {
+    final chatRoomRef = firebaseFirestore.collection("chatRoom");
+    final query = chatRoomRef.where(FieldPath.documentId, isEqualTo: chatRoomId);
+    ChatRoomFireStoreModel chatRoom = ChatRoomFireStoreModel(participantsNumber: [""], participantsName: [""]);
+    await query.get().then(
+          (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          chatRoom = ChatRoomFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot);
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+    int participantAUnreadMessage = 0;
+    int participantBUnreadMessage = 0;
+    String receiverPhoneNumber = "";
+    String participantAorBFlag = "";
+    if(chatRoom.unreadMessagesCountFromParticipantA!.containsKey(senderPhoneNumber)){ // kalau pengirim adalah A
+      participantAUnreadMessage = chatRoom.unreadMessagesCountFromParticipantA![senderPhoneNumber]!;
+      participantAorBFlag = "senderA";
+      if(source == "sendChat"){
+        participantAUnreadMessage+=1;
+      }else if(source == "openChat"){
+        participantBUnreadMessage=0;
+      }
+    }else{ // kalau pengirim bukan A
+      chatRoom.unreadMessagesCountFromParticipantA!.keys.forEach((key) {
+        participantAUnreadMessage = chatRoom.unreadMessagesCountFromParticipantA![key]!;
+        receiverPhoneNumber = key;
+      });
+    }
+    if(chatRoom.unreadMessagesCountFromParticipantB!.containsKey(senderPhoneNumber)){ // kalau pengirim adalah B
+      participantBUnreadMessage = chatRoom.unreadMessagesCountFromParticipantB![senderPhoneNumber]!;
+      participantAorBFlag = "senderB";
+      if(source == "sendChat"){
+        participantBUnreadMessage+=1;
+      }else if(source == "openChat"){
+        participantAUnreadMessage=0;
+      }
+    }else{ // kalau pengirim bukan B
+      chatRoom.unreadMessagesCountFromParticipantB!.keys.forEach((key) {
+        participantBUnreadMessage = chatRoom.unreadMessagesCountFromParticipantB![key]!;
+        receiverPhoneNumber = key;
+      });
+    }
+    if(participantAorBFlag == "senderA"){
+      firebaseFirestore.collection("chatRoom").doc(chatRoomId).update({
+        'unreadMessagesCountFromParticipantA' : {
+          senderPhoneNumber : participantAUnreadMessage
+        },
+        'unreadMessagesCountFromParticipantB' : {
+          receiverPhoneNumber : participantBUnreadMessage
+        },
+      });
+    }else if(participantAorBFlag == "senderB"){
+      firebaseFirestore.collection("chatRoom").doc(chatRoomId).update({
+        'unreadMessagesCountFromParticipantA' : {
+          receiverPhoneNumber : participantAUnreadMessage
+        },
+        'unreadMessagesCountFromParticipantB' : {
+          senderPhoneNumber : participantBUnreadMessage
+        },
+      });
+    }
   }
 
   Stream<QuerySnapshot> getMessage(String chatRoomId, String userPhoneNumber, String matchPhoneNumber) {
@@ -243,6 +308,13 @@ class FirestoreService extends ChangeNotifier{
                 .where("senderPhoneNumber", whereIn: [userPhoneNumber, matchPhoneNumber])
                 .orderBy("sentDate")
                 .snapshots();
+  }
+
+  Stream<QuerySnapshot> getChatRoomList(String phoneNumber) {
+    return firebaseFirestore
+            .collection("chatRoom")
+            .where("participantsNumber", arrayContains: phoneNumber)
+            .snapshots();
   }
 
   Future<String> getUserPhotoLinkFromFireStoreByPhoneNumber(String phoneNumber) async {

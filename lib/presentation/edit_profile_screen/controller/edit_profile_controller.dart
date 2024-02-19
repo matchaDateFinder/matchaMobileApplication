@@ -63,7 +63,7 @@ class EditProfileController extends GetxController {
   Future<void> logOutFromTheApp() async {
     _prefUtils.setLoginStatus(false);
     // TODO unsubscribe to all of the topic
-    _prefUtils.clearLocalPreferences();
+    _prefUtils.clearPreferencesData();
   }
 
 
