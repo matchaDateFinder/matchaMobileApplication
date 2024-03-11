@@ -16,42 +16,51 @@ class InputPhoneNumberScreen extends GetWidget<InputPhoneNumberController> {
             body: Container(
                 width: double.maxFinite,
                 padding:
-                    EdgeInsets.symmetric(horizontal: 48.h, vertical: 127.v),
+                    EdgeInsets.symmetric(
+                      horizontal: 47.h,
+                      vertical: 127.v,
+                    ),
                 child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("msg_what_s_your_number".tr,
-                          style: theme.textTheme.headlineSmall),
-                      SizedBox(height: 49.v),
-                      Obx(() => CustomPhoneNumber(
-                          country: controller.selectedCountry.value,
-                          controller: controller.phoneNumberController,
-                          onTap: (Country value) {
-                            controller.selectedCountry.value = value;
-                          })),
+                      Padding(
+                        padding: EdgeInsets.only(left: 1.h),
+                        child: Text(
+                          "msg_what_s_your_number".tr,
+                          style: theme.textTheme.titleLarge,
+                        ),
+                      ),
+                      SizedBox(height: 56.v),
+                      Padding(
+                        padding: EdgeInsets.only(left: 1.h),
+                        child: Obx(() => CustomPhoneNumber(
+                            country: controller.selectedCountry.value,
+                            controller: controller.phoneNumberController,
+                            onTap: (Country value) {
+                              controller.selectedCountry.value = value;
+                            })),
+                      ),
                       Spacer(),
                       CustomElevatedButton(
-                          text: "lbl_get_started".tr,
+                          text: "msg_verify_your_number".tr,
                           onPressed: () {
                             onTapGetStarted();
-                          })
+                          },
+                          margin: EdgeInsets.only(left: 1.h),
+                          buttonStyle: CustomButtonStyles.fillBlack
+                      )
                     ]))));
   }
 
   /// Navigates to the explanationOfMatchaScreen when the action is triggered.
   onTapGetStarted() async{
     if(controller.validateForm()){
-      if(await controller.checkForExistingUser()){ // existing user means login
-        Get.toNamed(
-            AppRoutes.userProfileScreen,
-            arguments: controller.userDetail['userPhoneNumber']
-        );
-      }else{ // non existing user means register
-        Get.toNamed(
-            AppRoutes.explanationOfMatchaScreen,
-            arguments: controller.userDetail['userPhoneNumber']
-        );
-      }
+      Get.toNamed(
+          AppRoutes.otpVerifyScreen,
+          arguments: controller.userDetail['userPhoneNumber']
+      );
     }
+
   }
 }

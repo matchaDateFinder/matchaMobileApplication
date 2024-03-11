@@ -1,7 +1,5 @@
 //ignore: unused_import
 import 'dart:convert';
-import 'dart:ui';
-import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefUtils {
@@ -42,14 +40,18 @@ class PrefUtils {
 
   void setLoginStatus(bool value){
     _sharedPreferences?.setBool("isLogin", value);
+    setOnboardingCheckpoint("-");
   }
 
   String? getUserPhoneNumber() {
     return _sharedPreferences?.getString("userPhoneNumber");
   }
 
+  void setUserPhoneNumber(String value) {
+    _sharedPreferences?.setString("userPhoneNumber", value);
+  }
+
   void setLocalUser(Map<String,dynamic> userMap){
-   // TODO set key value for user map
     _sharedPreferences?.setString("userPhoneNumber", userMap['userPhoneNumber']);
     _sharedPreferences?.setString("photoLink", userMap['photoLink']);
     _sharedPreferences?.setString("userName", userMap['userName']);
@@ -58,5 +60,14 @@ class PrefUtils {
   String? getUserName() {
     return _sharedPreferences?.getString("userName");
   }
+
+  String? getOnboardingCheckpoint() {
+    return _sharedPreferences?.getString("onboardingCheckpoint");
+  }
+
+  void setOnboardingCheckpoint(String value) {
+    _sharedPreferences?.setString("onboardingCheckpoint", value);
+  }
+
 
 }

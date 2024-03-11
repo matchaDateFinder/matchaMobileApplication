@@ -6,47 +6,58 @@ import '../core/app_export.dart';
 /// Additionally, this class includes extensions on [TextStyle] to easily apply specific font families to text.
 
 class CustomTextStyles {
-  // Body text style
-  static get bodyLargeBlack900 => theme.textTheme.bodyLarge!.copyWith(
-        color: appTheme.black900,
+  // Body style
+  static get bodyLargePoppins => theme.textTheme.bodyLarge!.poppins;
+  static get bodyLargePoppinsGray100 =>
+      theme.textTheme.bodyLarge!.poppins.copyWith(
+        color: appTheme.gray100,
       );
-  static get bodyLargeDMSans => theme.textTheme.bodyLarge!.dMSans;
-  static get bodyLargeDMSansTnC => theme.textTheme.bodyLarge!.dMSans.copyWith(
-      fontWeight: FontWeight.w800);
-  static get bodyLargeDMSansBlack900 =>
-      theme.textTheme.bodyLarge!.dMSans.copyWith(
-        color: appTheme.black900,
-      );
-  static get bodyLargeDMSansLightgreen200 =>
-      theme.textTheme.bodyLarge!.dMSans.copyWith(
-        color: appTheme.lightGreen200,
-      );
-  static get bodyLargeGray700 => theme.textTheme.bodyLarge!.copyWith(
-        color: appTheme.gray700,
-      );
-  static get bodyLargeLightgreen50 => theme.textTheme.bodyLarge!.copyWith(
+  static get bodyLargePoppinsLightgreen50 =>
+      theme.textTheme.bodyLarge!.poppins.copyWith(
         color: appTheme.lightGreen50,
       );
-  static get bodyLargeOnPrimaryContainer => theme.textTheme.bodyLarge!.copyWith(
-        color: theme.colorScheme.onPrimaryContainer,
+  static get bodyLargePoppinsLime50 =>
+      theme.textTheme.bodyLarge!.poppins.copyWith(
+        color: appTheme.lime50,
       );
+  static get bodyLargePoppinsSecondaryContainer =>
+      theme.textTheme.bodyLarge!.poppins.copyWith(
+        color: theme.colorScheme.secondaryContainer,
+      );
+  static get bodyLargeSecondaryContainer => theme.textTheme.bodyLarge!.copyWith(
+    color: theme.colorScheme.secondaryContainer,
+  );
   static get bodyMediumPoppins => theme.textTheme.bodyMedium!.poppins;
-  static get bodyMediumPoppinsLightgreen50 =>
+  static get bodyMediumPoppinsOnPrimary =>
       theme.textTheme.bodyMedium!.poppins.copyWith(
-        color: appTheme.lightGreen50,
+        color: theme.colorScheme.onPrimary,
       );
-  // Headline text style
-  static get headlineSmallSemiBold => theme.textTheme.headlineSmall!.copyWith(
-        fontWeight: FontWeight.w600,
-      );
+  static get bodyMediumff000000 => theme.textTheme.bodyMedium!.copyWith(
+    color: Color(0XFF000000),
+  );
   // Title text style
-  static get titleMediumPrimary => theme.textTheme.titleMedium!.copyWith(
-        color: theme.colorScheme.primary,
-      );
-  static get titleMediumPrimarySemiBold =>
+  static get titleLargeSemiBold => theme.textTheme.titleLarge!.copyWith(
+    fontWeight: FontWeight.w600,
+  );
+  static get titleMediumBold => theme.textTheme.titleMedium!.copyWith(
+    fontWeight: FontWeight.w700,
+  );
+  static get titleMediumDMSans => theme.textTheme.titleMedium!.dMSans.copyWith(
+    fontWeight: FontWeight.w500,
+  );
+  static get titleMediumSecondaryContainer =>
       theme.textTheme.titleMedium!.copyWith(
-        color: theme.colorScheme.primary,
-        fontWeight: FontWeight.w600,
+        color: theme.colorScheme.secondaryContainer,
+        fontWeight: FontWeight.w700,
+      );
+  static get titleSmallDMSansff000000 =>
+      theme.textTheme.titleSmall!.dMSans.copyWith(
+        color: Color(0XFF000000),
+        fontWeight: FontWeight.w700,
+      );
+  static get signOutRed =>
+      theme.textTheme.bodyMedium!.poppins.copyWith(
+        color: Colors.redAccent,
       );
 }
 
@@ -60,6 +71,12 @@ extension on TextStyle {
   TextStyle get dMSans {
     return copyWith(
       fontFamily: 'DM Sans',
+    );
+  }
+
+  TextStyle get cormorantGaramond {
+    return copyWith(
+      fontFamily: 'Cormorant Garamond',
     );
   }
 }

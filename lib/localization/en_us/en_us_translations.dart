@@ -33,20 +33,24 @@ final Map<String, String> enUs = {
   "lbl_height": "Height",
   "lbl_log_out_account": "Log out account",
   "lbl_smoking": "Smoking",
+  "msg_personal_information": "Personal Information",
 
   // User Profile Screen
-  "lbl_165_cm": "165 cm", "lbl_edit_my_profile": "Edit my profile",
+  "lbl_165_cm": "165 cm",
+  "lbl_edit_my_profile": "Edit my profile",
   "lbl_intp": "INTP",
+  "msg_it_s_seems_like": "It’s seems like you haven’t complete \nyour profile. Complete now!",
 
   // Input Phone Number Screen
   "lbl_62": "+62",
   "lbl_890_0000_0000": "890-0000-0000",
-  "lbl_get_started": "Verify Your Number",
+  "msg_verify_your_number": "Verify Your Number",
   "msg_what_s_your_number": "What’s Your Number?",
 
   // Complete Profile Screen
   "msg_boost_your_first": "Boost your first impression!",
   "msg_complete_my_profile": "Complete my profile",
+  "msg_maybe_later": "Maybe later",
   "msg_complete_your_profile":
       "Complete your profile below for a standout Matcha experience.",
 
@@ -54,6 +58,12 @@ final Map<String, String> enUs = {
   "lbl_congratulation": "Congratulations",
   "lbl_it_s_a_match_a": "It’s a Match-a!",
   "msg_ask_for_a_matcha": "Ask for a matcha date?",
+
+  // Verification Screen
+  "lbl_verification": "Verification",
+  "msg_verification_explanation" : "Enter the OTP code we have sent \nto your number",
+  "lbl_verify": "Verify",
+  "msg_resend_otp_in_00_00": "Resend OTP in ",
 
   // Chat Room Two Screen
   "msg_hi_nice_to_matcha": "Hi, nice to matcha u!",
@@ -64,9 +74,10 @@ final Map<String, String> enUs = {
 
   // Request Contact Access Screen
   "msg_i_agree_find_my": "I agree, find my Match-a!",
-  "msg_terms_and_conditions": "Terms and conditions",
+  "msg_terms_and_conditions": "I have read the terms and conditions",
+  "msg_request_contact_title": "Contact Access for Better\n Matches",
   "msg_to_find_these_mutual":
-      "To find these mutual \nconnections, Matcha \nrequires access \nto your contacts.",
+      "For Matcha to effectively find \nthese mutual connections \nwe require access to your \ncontacts.",
 
   // Upload Profile Picture Screen
   "msg_upload_your_best": "Upload your\nbest picture",
@@ -76,11 +87,19 @@ final Map<String, String> enUs = {
   "msg_when_is_your_birthday": "When is your birthday?",
 
   // Explanation of Matcha Screen
+  "msg_matcha_explanation":
+      "Connecting Through \nMutual Friends",
   "msg_matcha_specializes":
-      "Matcha specializes in \nconnecting you with \ndates who have mutual \nfriends. ",
+      "Matcha specializes in connecting you \nwith dates who share mutual \nfriends. ",
+  "msg_matcha_explanation_2":
+      "Finding Your Mutual \nConnections. ",
+  "msg_matcha_specializes_2":
+      "To find potential matches, \nMatcha compares your contacts \nwith other users', identifying \nmutual connections.",
 
   // LogIn/SignUp Screen
   "msg_login_with_phone": "Login with phone number",
+  "lbl_matcha" : "Matcha",
+  "msg_find_your_favorite" : "Find your favorite match!",
 
   // Common String
   "lbl_180_cm": "180 cm",
@@ -92,6 +111,7 @@ final Map<String, String> enUs = {
   "lbl_name": "Name",
   "lbl_name_age": "Name, Age",
   "lbl_next": "Next",
+  "lbl_back": "Back",
   "lbl_no": "No",
   "lbl_profession": "Profession",
   "lbl_religion": "Religion",
@@ -106,4 +126,9 @@ final Map<String, String> enUs = {
 // Network Error String
   "msg_network_err": "Network Error",
   "msg_something_went_wrong": "Something Went Wrong!",
+
+// Candidate
+  "msg_looks_like_this":"Looks like this match-a haven’t complete their profile :(",
+
+
 };

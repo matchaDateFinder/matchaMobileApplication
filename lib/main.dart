@@ -12,9 +12,8 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    await FirebaseAuth.instance.signInAnonymously();
-    await FirestoreService();
-    await PrefUtils();
+    FirestoreService();
+    PrefUtils();
     runApp(MyApp());
   });
 }

@@ -1,6 +1,5 @@
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/presentation/chat_function_container_screen/models/chat_function_container_model.dart';
-import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
 
 
 /// A controller class for the ChatFunctionContainerScreen.

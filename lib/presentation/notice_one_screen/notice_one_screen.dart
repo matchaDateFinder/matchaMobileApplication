@@ -1,8 +1,6 @@
 import 'controller/notice_one_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/presentation/user_profile_screen/user_profile_screen.dart';
-import 'package:matchaapplication/presentation/candidate_profile_screen/candidate_profile_screen.dart';
 import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
 import 'package:matchaapplication/widgets/custom_elevated_button.dart';
 
@@ -30,11 +28,11 @@ class NoticeOneScreen extends GetWidget<NoticeOneController> {
               SizedBox(height: 93.v),
               Text(
                 "msg_that_s_it_for_today".tr,
-                style: CustomTextStyles.headlineSmallSemiBold,
+                style: theme.textTheme.headlineLarge,
               ),
               SizedBox(height: 67.v),
               CustomImageView(
-                imagePath: ImageConstant.imgImageNotice1,
+                imagePath: ImageConstant.imgMatchaNoticeThatsItForToday,
                 height: 195.v,
                 width: 253.h,
               ),
@@ -47,23 +45,23 @@ class NoticeOneScreen extends GetWidget<NoticeOneController> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: CustomTextStyles.headlineSmallSemiBold.copyWith(
-                    height: 1.33,
+                  style: CustomTextStyles.titleLargeSemiBold.copyWith(
+                    height: 1.60,
                   ),
                 ),
               ),
               Spacer(),
               Obx(() =>
-              CustomElevatedButton(
-                  height: 32.v,
-                  text: controller.textToShow.value,
-                  margin: EdgeInsets.only(
-                    left: 24.h,
-                    right: 30.h,
+                CustomElevatedButton(
+                    height: 32.v,
+                    text: controller.textToShow.value,
+                    margin: EdgeInsets.only(
+                      left: 24.h,
+                      right: 30.h,
+                    ),
+                    buttonStyle: CustomButtonStyles.fillLightGreen,
+                    buttonTextStyle: CustomTextStyles.bodyMediumPoppins,
                   ),
-                  buttonStyle: CustomButtonStyles.fillLightGreen,
-                  buttonTextStyle: CustomTextStyles.bodyMediumPoppins,
-                ),
               )
             ],
           ),

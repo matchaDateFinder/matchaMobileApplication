@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 
@@ -44,7 +43,24 @@ class ThemeHelper {
       visualDensity: VisualDensity.standard,
       colorScheme: colorScheme,
       textTheme: TextThemes.textTheme(colorScheme),
-      scaffoldBackgroundColor: appTheme.lightGreen50,
+      scaffoldBackgroundColor: appTheme.lime50,
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          side: BorderSide(
+            color: colorScheme.primary,
+            width: 1.h,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.h),
+          ),
+          visualDensity: const VisualDensity(
+            vertical: -4,
+            horizontal: -4,
+          ),
+          padding: EdgeInsets.zero,
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: colorScheme.primary,
@@ -95,17 +111,53 @@ class TextThemes {
           fontFamily: 'DM Sans',
           fontWeight: FontWeight.w400,
         ),
+        bodySmall: TextStyle(
+          color: Color(0XFF000000),
+          fontSize: 12.fSize,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w400,
+        ),
+        displayLarge: TextStyle(
+          color: colorScheme.primary,
+          fontSize: 64.fSize,
+          fontFamily: 'Cormorant Garamond',
+          fontWeight: FontWeight.w700,
+        ),
+        headlineLarge: TextStyle(
+          color: colorScheme.primary,
+          fontSize: 32.fSize,
+          fontFamily: 'Cormorant Garamond',
+          fontWeight: FontWeight.w700,
+        ),
         headlineSmall: TextStyle(
           color: colorScheme.primary,
           fontSize: 24.fSize,
           fontFamily: 'Poppins',
           fontWeight: FontWeight.w400,
         ),
+        labelLarge: TextStyle(
+          color: Color(0XFF000000),
+          fontSize: 12.fSize,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        titleLarge: TextStyle(
+          color: colorScheme.primary,
+          fontSize: 20.fSize,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
         titleMedium: TextStyle(
-          color: appTheme.black900,
+          color: colorScheme.primary,
           fontSize: 16.fSize,
           fontFamily: 'Poppins',
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w600,
+        ),
+        titleSmall: TextStyle(
+          color: colorScheme.primary,
+          fontSize: 14.fSize,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
         ),
       );
 }
@@ -114,34 +166,35 @@ class TextThemes {
 class ColorSchemes {
   static final primaryColorScheme = ColorScheme.light(
     // Primary colors
-    primary: Color(0XFF395833),
+    primary: Color(0XFF000000),
+    secondaryContainer: Color(0XB2000000),
 
     // On colors(text colors)
     onPrimary: Color(0XFFFFFFFF),
-    onPrimaryContainer: Color(0XFFB20000),
+    onPrimaryContainer: Color(0XFFD9D9D9),
   );
 }
 
 /// Class containing custom colors for a primary theme.
 class PrimaryColors {
-  // Black
-  Color get black900 => Color(0XFF000000);
-
-  // BlueGray
-  Color get blueGray100 => Color(0XFFD9D9D9);
-
   // Gray
-  Color get gray700 => Color(0XFF586859);
-
-  // Green
-  Color get green800 => Color(0XFF466C40);
+  Color get gray100 => Color(0XFFFAFAF2);
 
   // LightGreen
-  Color get lightGreen200 => Color(0XFFCCE29E);
+  Color get lightGreen200 => Color(0XFFCCD3A9);
+  Color get lightGreen300 => Color(0XFFBCC480);
   Color get lightGreen50 => Color(0XFFF5F9EB);
-  Color get testColor => Color(0XFFEA1551);
+  Color get lightGreen900 => Color(0XFF395833);
+
+  // Lime
+  Color get lime50 => Color(0XFFF9F9DF);
+
+  // White
+  Color get whiteA700 => Color(0XFFFFFFFF);
+
   Color get chatBubbleMeGreen => Color(0XFFCCE29E);
 
+  Color get black => Color(0XFF000000);
 }
 
 PrimaryColors get appTheme => ThemeHelper().themeColor();

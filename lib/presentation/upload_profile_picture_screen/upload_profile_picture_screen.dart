@@ -1,4 +1,5 @@
-import 'dart:io';
+
+import 'package:matchaapplication/widgets/custom_elevated_button.dart';
 
 import 'controller/upload_profile_picture_controller.dart';
 import 'package:flutter/material.dart';
@@ -18,13 +19,6 @@ class UploadProfilePictureScreen
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomImageView(
-                          imagePath: ImageConstant.imgArrowLeftPrimary,
-                          height: 24.adaptSize,
-                          width: 24.adaptSize,
-                          onTap: () {
-                            onTapImgArrowLeft();
-                          }),
                       SizedBox(height: 38.v),
                       Container(
                           width: 146.h,
@@ -39,11 +33,11 @@ class UploadProfilePictureScreen
                           alignment: Alignment.center,
                           child: InkWell(
                               child :
-                                Obx(()=>controller.selectedImagePath.value==''?
+                                Obx(() => controller.selectedImagePath.value==''?
                                   Container(
                                       height: 264.adaptSize,
                                       width: 264.adaptSize,
-                                      decoration: AppDecoration.fillOnPrimary.copyWith(
+                                      decoration: AppDecoration.outlineFillPrimary.copyWith(
                                           borderRadius:
                                           BorderRadiusStyle.roundedBorder10),
                                       child: CustomImageView(
@@ -67,19 +61,38 @@ class UploadProfilePictureScreen
                       SizedBox(height: 32.v),
                       Align(
                           alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                              onTap: () {
-                                onTapTxtNext();
-                              },
-                              child: Padding(
+                          child: Padding(
                                   padding: EdgeInsets.only(right: 24.h),
-                                  child: Text("lbl_next".tr,
-                                      style: theme.textTheme.bodyLarge))))
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                CustomElevatedButton(
+                                  height: 40.v,
+                                  width: 71.h,
+                                  text: "lbl_back".tr,
+                                  buttonStyle: CustomButtonStyles.outlinePrimaryTL201,
+                                  buttonTextStyle: CustomTextStyles.bodyLargePoppins,
+                                  onPressed: () {
+                                    onPressBack();
+                                  },
+                                ),
+                                CustomElevatedButton(
+                                  height: 40.v,
+                                  width: 67.h,
+                                  text: "lbl_next".tr,
+                                  margin: EdgeInsets.only(left: 8.h),
+                                  buttonStyle: CustomButtonStyles.outlinePrimaryTL20,
+                                  onPressed: () {
+                                    onTapTxtNext();
+                                  },
+                                ),
+                              ],
+                            )))
                     ]))));
   }
 
   /// Navigates to the previous screen.
-  onTapImgArrowLeft() {
+  onPressBack() {
     Get.back();
   }
 

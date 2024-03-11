@@ -104,4 +104,57 @@ class ImageConstant {
   static String imgFrame24x24 = '$imagePath/img_frame_24x24.svg';
 
   static String imageNotFound = 'assets/images/image_not_found.png';
+
+  static String imgColor = '$imagePath/img_color.png';
+
+  static String imgVector225x352 = '$imagePath/img_vector_225x352.png';
+
+  static String imgVector1 = '$imagePath/img_vector_1.png';
+
+  static String imgVector247x360 = '$imagePath/img_vector_247x360.png';
+
+  static String imgVector186x264 = '$imagePath/img_vector_186x264.png';
+
+  static String imgVector197x264 = '$imagePath/img_vector_197x264.png';
+
+  static String imgVectorMatchaLogin = '$imagePath/image-main_1.png';
+
+  static String imgEditIcon = '$imagePath/img_edit_profile.svg';
+
+  // Explanation of Mutual images
+  static String imgVector225x360 = '$imagePath/img_vector_225x360.png';
+
+  static String imgVector5 = '$imagePath/img_vector_5.png';
+
+  static String imgVector366x360 = '$imagePath/img_vector_366x360.png';
+
+  static String imgVector6 = '$imagePath/img_vector_6.png';
+
+  static String imgVector316x360 = '$imagePath/img_vector_316x360.png';
+
+  static String imgVector7 = '$imagePath/img_vector_7.png';
+
+  static String imgVector225x340 = '$imagePath/img_vector_225x340.png';
+
+  static String imgVector8 = '$imagePath/img_vector_8.png';
+
+  static String imgVector225x320 = '$imagePath/img_vector_225x320.png';
+
+  static String imgVector84x70 = '$imagePath/img_vector_84x70.png';
+
+  static String imgVector152x66 = '$imagePath/img_vector_152x66.png';
+
+  static String imgVector104x66 = '$imagePath/img_vector_104x66.png';
+
+  static String imgMutualMatcha = '$imagePath/image-mutual_no_bg.png';
+
+  static String imgCompleteMatchaProfile = '$imagePath/image-completeprofile_1.png';
+
+  static String imgRequestAccessMatcha = '$imagePath/image-contactaccess_1.png';
+
+  static String imgCandidateAndMatch = '$imagePath/image-emptyprofile.png';
+
+  static String imgMatchaExplanation = '$imagePath/image-matchaparty_1.png';
+
+  static String imgMatchaNoticeThatsItForToday = '$imagePath/image-notice_1.png';
 }

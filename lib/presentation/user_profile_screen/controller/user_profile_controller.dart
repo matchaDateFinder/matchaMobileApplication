@@ -27,27 +27,27 @@ class UserProfileController extends GetxController {
   UserProfileController() {
     _firestoreService = FirestoreService();
     _prefUtils = PrefUtils();
-    user = UserFireStoreModel(userName: "", userPhoneNumber: "",
+    user = UserFireStoreModel(userId:"", userName: "", userPhoneNumber: "",
         userPhotoLink: "", userPhotoSize: "",
         userGender: "", userBirthday: Timestamp.now());
   }
 
   @override
   void onInit() async {
-    // TODO
-    // change to fetch from local db instead of get from param
     phoneNumber = _prefUtils.getUserPhoneNumber();
     user = await _firestoreService.getUserFromFireStoreByPhoneNumber(phoneNumber);
-    if (user != null) {
-      userName = user?.userName;
-      photoPathFromDB = user?.userPhotoLink;
-      userAge = calculateAge(DateTime.now(), user!.userBirthday.toDate());
-      nameAge.value = userName + ' - ' + userAge.toString();
-      userPhotoPath.value = photoPathFromDB;
-      await userProfileModelObj.value.setItemTag(user);
-      userProfileModelObj.refresh();
+    userName = user.userName;
+    photoPathFromDB = user.userPhotoLink;
+    userAge = calculateAge(DateTime.now(), user.userBirthday.toDate());
+    nameAge.value = userName + ' - ' + userAge.toString();
+    userPhotoPath.value = photoPathFromDB;
+    if(userProfession.value != null || user.userProfession != ""){
+      userProfession.value = user.userProfession!;
     }
-  }
+    await userProfileModelObj.value.setItemTag(user);
+    userProfileModelObj.refresh();
+    // TODO check if there is a new contact in phone and if exists then upload it to DB
+    }
 
   @override
   void onClose() {

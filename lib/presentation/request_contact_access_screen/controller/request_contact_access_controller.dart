@@ -10,6 +10,11 @@ class RequestContactAccessController extends GetxController {
   Rx<RequestContactAccessModel> requestContactAccessModelObj =
       RequestContactAccessModel().obs;
 
+  late final PrefUtils _prefUtils;
+
+  RequestContactAccessController(){
+    _prefUtils = PrefUtils();
+  }
 
   Future<bool> askPermissions() async {
     PermissionStatus permissionStatus = await _getContactPermission();
@@ -38,6 +43,10 @@ class RequestContactAccessController extends GetxController {
     } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
       print('Permanently Denied - Contact data not available on device');
     }
+  }
+
+  Future<void> setOnboardingCheckpoint() async {
+    _prefUtils.setOnboardingCheckpoint("afterContactAccess");
   }
 
 }

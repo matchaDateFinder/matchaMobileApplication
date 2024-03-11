@@ -54,12 +54,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
   _getStyle() {
     switch (styleType) {
+      case Style.bgOutline:
+        return Container(
+          height: 64.v,
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            color: appTheme.lightGreen300,
+            border: Border.all(
+              color: theme.colorScheme.primary,
+              width: 1.h,
+            ),
+          ),
+        );
       case Style.bgFill:
         return Container(
           height: 64.v,
           width: double.maxFinite,
           decoration: BoxDecoration(
-            color: appTheme.lightGreen50,
+            color: appTheme.lightGreen300,
           ),
         );
       default:
@@ -69,5 +81,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 enum Style {
+  bgOutline,
   bgFill,
 }

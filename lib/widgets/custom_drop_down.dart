@@ -81,14 +81,14 @@ class CustomDropDown extends StatelessWidget {
           focusNode: focusNode ?? FocusNode(),
           icon: icon,
           autofocus: autofocus!,
-          style: textStyle ?? CustomTextStyles.bodyLargeDMSans,
+          style: textStyle ?? theme.textTheme.bodyLarge,
           items: items?.map((SelectionPopupModel item) {
             return DropdownMenuItem<SelectionPopupModel>(
               value: item,
               child: Text(
                 item.title,
                 overflow: TextOverflow.ellipsis,
-                style: hintStyle ?? CustomTextStyles.bodyLargeDMSans,
+                style: hintStyle ?? theme.textTheme.bodyLarge,
               ),
             );
           }).toList(),
@@ -101,7 +101,7 @@ class CustomDropDown extends StatelessWidget {
       );
   InputDecoration get decoration => InputDecoration(
         hintText: hintText ?? "",
-        hintStyle: hintStyle ?? CustomTextStyles.bodyLargeDMSans,
+    hintStyle: hintStyle ?? theme.textTheme.bodyLarge,
         prefixIcon: prefix,
         prefixIconConstraints: prefixConstraints,
         suffixIcon: suffix,
@@ -118,17 +118,26 @@ class CustomDropDown extends StatelessWidget {
         border: borderDecoration ??
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.h),
-              borderSide: BorderSide.none,
+              borderSide: BorderSide(
+                color: theme.colorScheme.primary,
+                width: 1,
+              ),
             ),
         enabledBorder: borderDecoration ??
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.h),
-              borderSide: BorderSide.none,
+              borderSide: BorderSide(
+                color: theme.colorScheme.primary,
+                width: 1,
+              ),
             ),
         focusedBorder: borderDecoration ??
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.h),
-              borderSide: BorderSide.none,
+              borderSide: BorderSide(
+                color: theme.colorScheme.primary,
+                width: 1,
+              ),
             ),
       );
 }

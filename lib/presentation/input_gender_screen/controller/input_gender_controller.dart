@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/presentation/input_gender_screen/models/input_gender_model.dart';
 
@@ -18,6 +19,13 @@ class InputGenderController extends GetxController {
   }
 
   bool validateForm(){
+    if(radioGroup.value.tr == ""){
+      Get.defaultDialog(
+          title: "Please select your gender",
+          content: Text("Please select your gender")
+      );
+      return false;
+    }
     userDetail['gender'] = radioGroup.value.tr;
     return true;
   }

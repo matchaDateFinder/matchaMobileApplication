@@ -74,7 +74,7 @@ class ChatRoomOneScreen extends GetWidget<ChatRoomOneController> {
                 },
               ),
         ),
-        styleType: Style.bgFill);
+        styleType: Style.bgOutline);
   }
 
   /// Section Widget Message List

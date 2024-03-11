@@ -1,6 +1,5 @@
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/presentation/login_signup_screen/models/login_signup_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// A controller class for the LoginSignupScreen.
 ///
@@ -18,16 +17,28 @@ class LoginSignupController extends GetxController {
   @override
   void onInit() async{
     if(_prefUtils.getLogInStatus() == true){
-      _prefUtils.setLoginStatus(true);
       String phoneNumber = _prefUtils.getUserPhoneNumber()!;
       Future.delayed(Duration.zero, () {
         Get.toNamed(
             AppRoutes.userProfileScreen,
             arguments: phoneNumber);
       });
-      // Get.toNamed(
-      //     AppRoutes.userProfileScreen,
-      //     arguments: phoneNumber);
+    }else{
+      if(_prefUtils.getOnboardingCheckpoint() == "afterOTP"){
+        String phoneNumber = _prefUtils.getUserPhoneNumber()!;
+        Future.delayed(Duration.zero, () {
+          Get.toNamed(
+              AppRoutes.explanationOfMatchaScreen,
+              arguments: phoneNumber);
+        });
+      }else if(_prefUtils.getOnboardingCheckpoint() == "afterContactAccess"){
+        String phoneNumber = _prefUtils.getUserPhoneNumber()!;
+        Future.delayed(Duration.zero, () {
+          Get.toNamed(
+              AppRoutes.inputNameScreen,
+              arguments: phoneNumber);
+        });
+      }
     }
     super.onInit();
   }

@@ -1,6 +1,5 @@
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
-import 'package:matchaapplication/data/models/userModel/user.dart';
 import 'package:matchaapplication/presentation/edit_profile_two_screen/models/edit_profile_two_model.dart';
 import 'package:flutter/material.dart';
 /// A controller class for the EditProfileTwoScreen.
@@ -37,10 +36,8 @@ class EditProfileTwoController extends GetxController {
   @override
   void onInit() async{
     userData = await _firestore.getUserFromFireStoreByPhoneNumber(phoneNumber);
-    if (userData != null){
-      await setDefaultValue();
+    await setDefaultValue();
     }
-  }
 
   @override
   void onReady() async {
@@ -113,35 +110,31 @@ class EditProfileTwoController extends GetxController {
   }
 
   Future<void> saveUserProfile() async{
-    if (answerProfessionController.value.text == null || answerProfessionController.value.text == ""){
+    if (answerProfessionController.value.text == ""){
       userData.userProfession = "";
     }else{
       userData.userProfession = answerProfessionController.value.text;
     }
     userData.userEducation = educationRadioGroup.value.tr;
-    if (religionDropDownValue.value == null || religionDropDownValue.value == ""){
+    if (religionDropDownValue.value == ""){
       userData.userReligion = "";
     }else{
       userData.userReligion = religionDropDownValue.value;
     }
-    if (answerHeightController.value.text == null || answerHeightController.value.text == ""){
+    if (answerHeightController.value.text == ""){
       userData.userHeight = 0;
     }else{
       userData.userHeight = int.parse(answerHeightController.value.text);
     }
     userData.userSmoking = smokingRadioGroup.value.tr;
     userData.userDrinking = drinkingRadioGroup.value.tr;
-    if (mbtiDropDownValue.value == null){
-      userData.userMBTI = "";
-    }else{
-      userData.userMBTI = mbtiDropDownValue.value;
-    }
-    await _saveUserProfileToFireStoreDB();
+    userData.userMBTI = mbtiDropDownValue.value;
+      await _saveUserProfileToFireStoreDB();
     Get.delete<EditProfileTwoController>();
   }
 
   Future<void> _saveUserProfileToFireStoreDB() async {
-    await _firestore.updateUserProfileFromFireStoreByPhoneNumber(phoneNumber, userData!);
+    await _firestore.updateUserProfileFromFireStoreByPhoneNumber(phoneNumber, userData);
   }
 
   String translateFromDBtoLabel(String dbTerm, String fromWhich) {

@@ -34,13 +34,13 @@ class CustomBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 64.v,
+      height: 64.adaptSize,
       decoration: BoxDecoration(
-        color: appTheme.blueGray100,
+        color: appTheme.lightGreen300,
       ),
       child: Obx(
         () => BottomNavigationBar(
-          backgroundColor: appTheme.lightGreen200,
+          backgroundColor: Colors.transparent,
           showSelectedLabels: false,
           showUnselectedLabels: false,
           selectedFontSize: 0,
@@ -53,13 +53,13 @@ class CustomBottomBar extends StatelessWidget {
                 imagePath: bottomMenuList[index].icon,
                 height: 32.adaptSize,
                 width: 32.adaptSize,
-                color: appTheme.black900,
+                color: theme.colorScheme.primary,
               ),
               activeIcon: CustomImageView(
                 imagePath: bottomMenuList[index].activeIcon,
                 height: 32.adaptSize,
                 width: 32.adaptSize,
-                color: appTheme.black900,
+                color: theme.colorScheme.primary,
               ),
               label: '',
             );
@@ -98,7 +98,7 @@ class DefaultWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Color(0xffffffff),
       padding: EdgeInsets.all(10),
       child: Center(
         child: Column(

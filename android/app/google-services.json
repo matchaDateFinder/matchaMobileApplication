@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "960340226506",
-    "project_id": "matchaapp-4bf91",
-    "storage_bucket": "matchaapp-4bf91.appspot.com"
+    "project_number": "1011488982700",
+    "project_id": "matchamainapplication",
+    "storage_bucket": "matchamainapplication.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:960340226506:android:d0ff5b29f9a0f771639f33",
+        "mobilesdk_app_id": "1:1011488982700:android:ef9824988ee5ae56b94109",
         "android_client_info": {
           "package_name": "com.matchaapplication.app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA2HjwC19qmeLM6SCd4rRforL2C1WfwkZg"
+          "current_key": "AIzaSyAJqSHo0K6vpUWbw75n3q_SNk9Iv_TiCt4"
         }
       ],
       "services": {

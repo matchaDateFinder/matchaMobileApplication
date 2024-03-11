@@ -6,7 +6,6 @@ import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/widgets/custom_bottom_bar.dart';
 import 'package:matchaapplication/widgets/app_bar/appbar_subtitle.dart';
 import 'package:matchaapplication/widgets/app_bar/custom_app_bar.dart';
-import 'package:matchaapplication/data/models/fireStoreModel/chatRoomFireStoreModel/chatRoomFireStore.dart';
 
 class ChatFunctionContainerScreen
     extends GetWidget<ChatFunctionContainerController> {
@@ -25,72 +24,6 @@ class ChatFunctionContainerScreen
                 )
               ],
             ),
-            // body: Container(
-            //   child: StreamBuilder<QuerySnapshot>(
-            //     stream: controller.chatRoomList,
-            //     builder: (context, snapshot){
-            //       if(snapshot.hasError){
-            //         return Text('Error${snapshot.error}');
-            //       }
-            //       if(snapshot.connectionState == ConnectionState.waiting){
-            //         return Text('Loading');
-            //       }
-            //       // List<QueryDocumentSnapshot<Object?>> chatRoomList = [];
-            //       // snapshot.data!.docs.forEach((document) {
-            //       //   chatRoomList.add((document));
-            //       // });
-            //       List<Widget> chatRoomList = [];
-            //       snapshot.data!.docs.forEach((document) {
-            //         chatRoomList.add(_buildChatRoom(document));
-            //       });
-            //       return ListView(
-            //         reverse: true,
-            //         shrinkWrap: true,
-            //         children: chatRoomList.reversed.toList(),
-            //       );
-            //       // return ListView.builder(
-            //       //   itemCount: chatRoomList.length,
-            //       //   itemBuilder: (context, index) {
-            //       //     _buildChatRoomList(chatRoomList[index]);
-            //       //   },
-            //       // );
-            //     })
-            //   // child: Obx(() => ListView.builder( //change to streamBuilder
-            //   //     itemCount: controller.chatFunctionContainerModelObj.length,
-            //   //     itemBuilder: (context, index) {
-            //   //     final _data = controller.chatFunctionContainerModelObj[index];
-            //   //       return ListTile(
-            //   //           leading: ClipOval(
-            //   //             child: CachedNetworkImage(
-            //   //               imageUrl: _data.photoUrl!.value,
-            //   //               fit: BoxFit.cover,
-            //   //               width: 50,
-            //   //               height: 50,
-            //   //               progressIndicatorBuilder: (context, url, downloadProgress) =>
-            //   //                   CircularProgressIndicator(value: downloadProgress.progress),
-            //   //               errorWidget: (context, url, error) => Icon(Icons.error),
-            //   //             ),
-            //   //           ),
-            //   //           title: Text(_data.username!.value),
-            //   //           titleTextStyle: TextStyle(
-            //   //             color: theme.colorScheme.primary,
-            //   //             fontSize: 16.fSize,
-            //   //             fontFamily: 'Poppins',
-            //   //             fontWeight: FontWeight.w400,
-            //   //           ),
-            //   //           trailing: Text(_data.unreadMessagesCount!.value == "0" ? "" : _data.unreadMessagesCount!.value),
-            //   //           onTap: () =>
-            //   //            _onTapGoToChatRoom(controller.phoneNumber,
-            //   //                _data.phoneNumber!.value,
-            //   //                _data.username!.value,
-            //   //                _data.photoUrl!.value,
-            //   //                _data.chatRoomId!.value),
-            //   //           visualDensity: VisualDensity(vertical: 4)
-            //   //       );
-            //   //     },
-            //   //   ),
-            //   // )
-            // ),
             bottomNavigationBar: _buildBottomBar()));
   }
 
@@ -100,7 +33,7 @@ class ChatFunctionContainerScreen
         height: 64.v,
         centerTitle: true,
         title: AppbarSubtitle(text: "lbl_chats".tr),
-        styleType: Style.bgFill);
+        styleType: Style.bgOutline);
   }
 
   /// Section Widget
@@ -170,7 +103,7 @@ class ChatFunctionContainerScreen
           fontFamily: 'Poppins',
           fontWeight: FontWeight.w400,
         ),
-        trailing: Text((chatRoom["unreadMessagesCount"] ?? "0") == "0" ? "" : chatRoom["unreadMessagesCount"]!), // unreadmessages count
+        trailing: Text((chatRoom["unreadMessagesCount"] ?? "0") == "0" ? "" : chatRoom["unreadMessagesCount"]!),
         onTap: () =>
             _onTapGoToChatRoom(controller.phoneNumber,
                 chatRoom["phoneNumber"] ?? "", // phoneNumber

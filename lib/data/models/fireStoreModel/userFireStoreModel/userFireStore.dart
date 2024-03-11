@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserFireStoreModel {
-  String? userId;
+  late String userId;
   late String userName;
   late String userPhoneNumber;
   late String userPhotoLink;
@@ -19,6 +19,7 @@ class UserFireStoreModel {
   late Timestamp? lastRecommendationIsGiven;
 
   UserFireStoreModel({
+    required this.userId,
     required this.userName,
     required this.userPhoneNumber,
     required this.userPhotoLink,

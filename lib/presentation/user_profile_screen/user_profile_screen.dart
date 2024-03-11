@@ -73,32 +73,57 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
           Padding(
               padding: EdgeInsets.only(left: 1.h),
               child: Obx(() => Text(controller.nameAge.value, // name and age
-                  style: CustomTextStyles.headlineSmallSemiBold))),
-          SizedBox(height: 5.v),
-          Padding(
-              padding: EdgeInsets.only(left: 1.h),
-              child: Row(children: [
-                CustomImageView(
-                    imagePath: ImageConstant.imgIcon16Briefcase,
-                    height: 16.adaptSize,
-                    width: 16.adaptSize,
-                    margin: EdgeInsets.symmetric(vertical: 1.v)),
+                  style: CustomTextStyles.titleLargeSemiBold))),
+          Obx(() => controller.userProfileModelObj.value.userTagItemList.value.length > 0 ?
+            Column(
+              children: [
+                SizedBox(height: 10.v),
                 Padding(
-                    padding: EdgeInsets.only(left: 8.h),
-                    child: Obx(() => Text(controller.userProfession.value == '' ?
-                        'Please complete your profile' : controller.userProfession.value,
-                        style: theme.textTheme.bodyMedium))),
-              ])),
-          // SizedBox(height: 5.v),
-          _buildColumn(),
-          SizedBox(height: 15.v),
+                    padding: EdgeInsets.only(left: 1.h),
+                    child: Row(children: [
+                      CustomImageView(
+                          imagePath: ImageConstant.imgIcon16Briefcase,
+                          height: 16.adaptSize,
+                          width: 16.adaptSize,
+                          margin: EdgeInsets.symmetric(vertical: 1.v)),
+                      Padding(
+                          padding: EdgeInsets.only(left: 8.h),
+                          child: Obx(() => Text(controller.userProfession.value == '' ?
+                          'Please complete your profile' : controller.userProfession.value,
+                              style: theme.textTheme.bodyMedium))),
+                    ])),
+                // SizedBox(height: 5.v),
+                _buildColumn(),
+                SizedBox(height: 15.v),
+              ],
+            ) : Column(
+              children: [
+                SizedBox(height: 60.v),
+                Container(
+                    width: 280.h,
+                    margin: EdgeInsets.symmetric(horizontal: 25.h),
+                    child: Text("msg_it_s_seems_like".tr,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: CustomTextStyles.bodyMediumPoppins
+                            .copyWith(height: 1.71)),
+                    decoration: AppDecoration.outlinePrimary2,
+                    padding: EdgeInsets.all(15),
+                    ),
+                SizedBox(height: 60.v),
+              ],
+            ),
+          ),
           CustomElevatedButton(
               text: "lbl_edit_my_profile".tr,
               margin: EdgeInsets.symmetric(horizontal: 25.h),
               onPressed: () {
                 onTapEditMyProfile();
               },
-              alignment: Alignment.center),
+              alignment: Alignment.center,
+              buttonStyle: CustomButtonStyles.fillBlack,
+              ),
           // SizedBox(height: 7.v)
         ]));
   }

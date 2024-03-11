@@ -1,4 +1,3 @@
-import 'package:matchaapplication/data/models/selectionPopupModel/selection_popup_model.dart';
 import '../../../core/app_export.dart';
 
 /// This class defines the variables used in the [edit_profile_two_screen],

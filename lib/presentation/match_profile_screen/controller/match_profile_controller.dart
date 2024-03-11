@@ -1,3 +1,4 @@
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/presentation/match_profile_screen/models/match_profile_model.dart';
 
@@ -7,6 +8,7 @@ import 'package:matchaapplication/presentation/match_profile_screen/models/match
 /// current matchProfileModelObj
 class MatchProfileController extends GetxController {
   Rx<MatchProfileModel> matchProfileModelObj = MatchProfileModel().obs;
+  late final FirestoreService _firestore;
 
   RxString userPhoneNumber = ''.obs;
   RxString userGender = ''.obs;
@@ -19,6 +21,11 @@ class MatchProfileController extends GetxController {
   RxString userMBTI = ''.obs;
   RxString nameAge = ''.obs;
 
+  RxList listOfMutuals = [].obs;
+  var mutualName = ''.obs;
+  var currentUser;
+  var candidateUser;
+
   late final String userName;
   late final DateTime userBirthday;
   late final String userPhotoDownloadLink;
@@ -29,6 +36,7 @@ class MatchProfileController extends GetxController {
   var chatRoomId;
 
   MatchProfileController() {
+    _firestore = FirestoreService();
     var arguments = Get.arguments;
     userName = arguments["userName"];
     userPhoneNumber.value = arguments["userPhoneNumber"];
@@ -47,6 +55,37 @@ class MatchProfileController extends GetxController {
     contactList = arguments["userContactList"];
     chatRoomId = arguments["chatRoomId"];
     currentUserPhoneNumber = arguments["currentUserPhoneNumber"];
+  }
+
+  @override
+  void onInit() async{
+    super.onInit();
+    currentUser = await _firestore.getUserFromFireStoreByPhoneNumber(currentUserPhoneNumber);
+    candidateUser = await _firestore.getUserFromFireStoreByPhoneNumber(userPhoneNumber.value);
+    List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
+    currentUser.userContactList.forEach((userContact) {
+      if(candidateUser.userContactList.contains(userContact)){
+        String temp = '';
+        contacts.forEach((contact) {
+          contact.phones.forEach((number) {
+            if(number.number == userContact){
+              temp = contact.displayName;
+            }
+          });
+        });
+        if(temp == ''){
+          listOfMutuals.value.add(userContact);
+        }else{
+          listOfMutuals.value.add(temp);
+        }
+      }
+    });
+    if(listOfMutuals.value.length == 1){
+      mutualName.value = "Friends with " + listOfMutuals.value.first;
+    }else{
+      mutualName.value = "Friends with " + listOfMutuals.value.first +
+          " and " + (listOfMutuals.value.length-1).toString() + " Others";
+    }
   }
 
   @override

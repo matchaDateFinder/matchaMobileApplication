@@ -15,99 +15,134 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            backgroundColor: theme.colorScheme.onPrimary,
-            appBar: _buildAppBar(),
-            body: SizedBox(
-                width: double.maxFinite,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Obx(() =>
-                          CachedNetworkImage(
-                            imageUrl: controller.userPhotoPath.value,
-                            fit: BoxFit.cover,
-                            height: 360.adaptSize,
-                            width: 360.adaptSize,
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                CircularProgressIndicator(value: downloadProgress.progress),
-                            errorWidget: (context, url, error) => Icon(Icons.error),
+      child: Scaffold(
+        backgroundColor: theme.colorScheme.onPrimary,
+        // appBar: _buildAppBar(),
+        body: SizedBox(
+          width: double.maxFinite,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 5.v),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(alignment: Alignment.topCenter, children: [
+                    Obx(() =>
+                        CachedNetworkImage(
+                          imageUrl: controller.userPhotoPath.value,
+                          fit: BoxFit.cover,
+                          height: 360.adaptSize,
+                          width: 360.adaptSize,
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              CircularProgressIndicator(value: downloadProgress.progress),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                        ),
+                    ),
+                  ]),
+                  SizedBox(height: 17.v),
+                  Padding(
+                      padding: EdgeInsets.only(left: 24.h),
+                      child: Obx(() => Text(controller.nameAge.value, // name and age
+                          style: CustomTextStyles.titleLargeSemiBold))),
+                  SizedBox(height: 23.v),
+                  Obx(() => controller.userProfession.value == '' ?
+                    SizedBox(height: 0.v) :
+                    Padding(
+                        padding: EdgeInsets.only(left: 24.h),
+                        child: Row(children: [
+                          CustomImageView(
+                              imagePath: ImageConstant.imgIcon16Briefcase,
+                              height: 16.adaptSize,
+                              width: 16.adaptSize,
+                              margin: EdgeInsets.symmetric(vertical: 1.v)),
+                          Padding(
+                              padding: EdgeInsets.only(left: 8.h),
+                              child: Text(controller.userProfession.value,
+                                  style: theme.textTheme.bodyMedium))
+                        ]))
+                  ),
+                  SizedBox(height: 10.v),
+                  Padding(
+                      padding: EdgeInsets.only(left: 24.h),
+                      child: Row(children: [
+                        CustomImageView(
+                            imagePath: ImageConstant.imgIcon16Mutual,
+                            height: 16.adaptSize,
+                            width: 16.adaptSize,
+                            margin: EdgeInsets.symmetric(vertical: 1.v)),
+                        Padding(
+                            padding: EdgeInsets.only(left: 8.h),
+                            child: Obx(() => controller.mutualName.value == '' ?
+                              Text('-', style: theme.textTheme.bodyMedium) :
+                              InkWell(
+                                child: Text(controller.mutualName.value,
+                                    style: theme.textTheme.bodyMedium),
+                                onTap: () {
+                                  if(controller.listOfMutuals.length > 1){
+                                    onTapListOfMutual(context);
+                                  }
+                                },
+                              )
+                            ),
+                        )
+                      ])),
+                  SizedBox(height: 8.v),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24.h),
+                    child: Text(
+                      "lbl_general_info".tr,
+                      style: theme.textTheme.titleSmall,
+                    ),
+                  ),
+                  SizedBox(height: 8.v),
+                  _buildCandidateProfile(),
+                  SizedBox(height: 30.v),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 2.v),
+                            child: CustomIconButton(
+                                height: 48.adaptSize,
+                                width: 48.adaptSize,
+                                onTap: () {
+                                  onTapBtnSearch();
+                                },
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 48,
+                                  color: appTheme.black,
+                                )
+                            )
                           ),
-                      ),
-                      SizedBox(height: 5.v),
-                      Padding(
-                          padding: EdgeInsets.only(left: 24.h),
-                          child: Obx(() => Text(controller.nameAge.value, // name and age
-                              style: CustomTextStyles.headlineSmallSemiBold))),
-                      SizedBox(height: 5.v),
-                      Padding(
-                          padding: EdgeInsets.only(left: 24.h),
-                          child: Row(children: [
-                            CustomImageView(
-                                imagePath: ImageConstant.imgIcon16Briefcase,
-                                height: 16.adaptSize,
-                                width: 16.adaptSize,
-                                margin: EdgeInsets.symmetric(vertical: 1.v)),
-                            Padding(
-                                padding: EdgeInsets.only(left: 8.h),
-                                child: Obx(() => Text(controller.userProfession.value == '' ?
-                                'Please complete your profile' : controller.userProfession.value,
-                                    style: theme.textTheme.bodyMedium)))
-                          ])),
-                      SizedBox(height: 10.v),
-                      Padding(
-                          padding: EdgeInsets.only(left: 24.h),
-                          child: Row(children: [
-                            CustomImageView(
-                                imagePath: ImageConstant.imgIcon16Mutual,
-                                height: 16.adaptSize,
-                                width: 16.adaptSize,
-                                margin: EdgeInsets.symmetric(vertical: 1.v)),
-                            Padding(
-                                padding: EdgeInsets.only(left: 8.h),
-                                child: Obx(() => Text(controller.mutualName.value == '' ?
-                                'for mutual' : controller.mutualName.value,
-                                    style: theme.textTheme.bodyMedium)))
-                          ])),
-                      SizedBox(height: 10.v),
-                      _buildCandidateProfile(),
-                      SizedBox(height: 10.v),
-                      Align(
-                          alignment: Alignment.center,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 2.v),
-                                    child: CustomIconButton(
-                                        height: 48.adaptSize,
-                                        width: 48.adaptSize,
-                                        onTap: () {
-                                          onTapBtnSearch();
-                                        },
-                                        child: Icon(
-                                          Icons.cancel,
-                                          size: 48,
-                                          color: appTheme.green800,
-                                        ))),
-                                Padding(
-                                    padding: EdgeInsets.only(left: 39.h),
-                                    child: CustomIconButton(
-                                        height: 48.adaptSize,
-                                        width: 48.adaptSize,
-                                        onTap: () {
-                                          onTapBtnCheckmark();
-                                        },
-                                        child: Icon(
-                                            Icons.check_circle,
-                                            size: 48,
-                                            color: appTheme.green800,
-                                        )))
-                              ])),
-                      SizedBox(height: 5.v)
-                    ])),
-            bottomNavigationBar: _buildBottomBar()));
+                          Padding(
+                              padding: EdgeInsets.only(left: 39.h),
+                              child: CustomIconButton(
+                                  height: 48.adaptSize,
+                                  width: 48.adaptSize,
+                                  onTap: () {
+                                    onTapBtnCheckmark();
+                                  },
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    size: 48,
+                                    color: appTheme.whiteA700,
+                                  ),
+                              )
+                          )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        bottomNavigationBar: _buildBottomBar()
+      )
+    );
   }
 
   /// Section Widget
@@ -115,27 +150,65 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
     return CustomAppBar(
         centerTitle: true,
         title: AppbarSubtitleOne(text: "msg_next_profile_in".tr),
-        styleType: Style.bgFill);
+        styleType: Style.bgOutline);
   }
 
   /// Section Widget
   Widget _buildCandidateProfile() {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 24.h),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text("lbl_general_info".tr, style: theme.textTheme.bodyLarge),
-          SizedBox(height: 8.v),
-          Obx(() => Wrap(
-              runSpacing: 8.v,
-              spacing: 8.h,
-              children: List<Widget>.generate(
-                  controller.candidateProfileModelObj.value.candidateTagItemList.value
-                      .length, (index) {
-                CandidateTagItemModel model = controller
-                    .candidateProfileModelObj.value.candidateTagItemList.value[index];
-                return Tag4ItemWidget(model);
-              })))
-        ]));
+    if(controller.candidateProfileModelObj.value.candidateTagItemList.value
+        .length > 0){
+      return Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.h),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("lbl_general_info".tr, style: theme.textTheme.bodyLarge),
+                SizedBox(height: 8.v),
+                Obx(() => Wrap(
+                    runSpacing: 8.v,
+                    spacing: 8.h,
+                    children: List<Widget>.generate(
+                        controller.candidateProfileModelObj.value.candidateTagItemList.value
+                            .length, (index) {
+                      CandidateTagItemModel model = controller
+                          .candidateProfileModelObj.value.candidateTagItemList.value[index];
+                      return Tag4ItemWidget(model);
+                    })))
+              ]
+          )
+      );
+    }else{
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 4.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomImageView(
+              imagePath: ImageConstant.imgCandidateAndMatch,
+              height: 186.v,
+              width: 264.h,
+              alignment: Alignment.center,
+            ),
+            SizedBox(height: 18.v),
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: 216.h,
+                child: Text(
+                  "msg_looks_like_this".tr,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: CustomTextStyles.bodyMediumPoppins.copyWith(
+                    height: 1.71,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   /// Section Widget
@@ -149,7 +222,7 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
       case BottomBarEnum.chatBottomType:
-        return AppRoutes.chatFunctionTabContainerPage;
+        return AppRoutes.chatFunctionContainerScreen;
       case BottomBarEnum.matchBottomType:
         return AppRoutes.candidateProfileScreen;
       case BottomBarEnum.profileBottomType:
@@ -175,6 +248,7 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
     if(await controller.saveUserReaction(true)){
       Get.toNamed(
         AppRoutes.noticeTwoScreen,
+        arguments: controller.argumentForNoticeTwo
       );
     }else{
       Get.toNamed(
@@ -186,6 +260,43 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
   _onTapBottomNavigation(BottomBarEnum type) async{
     await controller.manuallyKillConstructor();
     Get.toNamed(getCurrentRoute(type));
+  }
+
+  onTapListOfMutual(context){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius:BorderRadius.circular(20.0)),
+            child: Container(
+                constraints: BoxConstraints(maxHeight: 350),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("List of Mutuals"),
+                        SizedBox(height: 5.v),
+                        Container(
+                          child: _buildListOfMutuals(),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+            ),
+          );
+        });
+  }
+
+  Widget _buildListOfMutuals(){
+    String listOfMutual = '';
+    controller.listOfMutuals.value.forEach((contact) {
+      listOfMutual = listOfMutual + contact + '\n';
+    });
+    return Text(listOfMutual, style: CustomTextStyles.bodyMediumPoppins);
   }
 
 }

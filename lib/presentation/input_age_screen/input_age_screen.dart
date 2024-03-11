@@ -16,14 +16,6 @@ class InputAgeScreen extends GetWidget<InputAgeController> {
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 64.v),
                 child: Column(children: [
-                  CustomImageView(
-                      imagePath: ImageConstant.imgArrowLeftPrimary,
-                      height: 24.adaptSize,
-                      width: 24.adaptSize,
-                      alignment: Alignment.centerLeft,
-                      onTap: () {
-                        onTapImgArrowLeft();
-                      }),
                   SizedBox(height: 39.v),
                   Text("msg_when_is_your_birthday".tr,
                       style: theme.textTheme.headlineSmall),
@@ -42,24 +34,44 @@ class InputAgeScreen extends GetWidget<InputAgeController> {
                   CustomElevatedButton(
                     onPressed: () => controller.chooseDate(),
                     text: 'Select date of birth',
+                    buttonStyle: CustomButtonStyles.fillBlack
                   ),
                   Spacer(),
                   SizedBox(height: 32.v),
                   Align(
                       alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                          onTap: () {
-                            onTapTxtNext();
-                          },
-                          child: Padding(
-                              padding: EdgeInsets.only(right: 24.h),
-                              child: Text("lbl_next".tr,
-                                  style: theme.textTheme.bodyLarge))))
+                      child: Padding(
+                          padding: EdgeInsets.only(right: 24.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              CustomElevatedButton(
+                                height: 40.v,
+                                width: 71.h,
+                                text: "lbl_back".tr,
+                                buttonStyle: CustomButtonStyles.outlinePrimaryTL201,
+                                buttonTextStyle: CustomTextStyles.bodyLargePoppins,
+                                onPressed: () {
+                                  onPressBack();
+                                },
+                              ),
+                              CustomElevatedButton(
+                                height: 40.v,
+                                width: 67.h,
+                                text: "lbl_next".tr,
+                                margin: EdgeInsets.only(left: 8.h),
+                                buttonStyle: CustomButtonStyles.outlinePrimaryTL20,
+                                onPressed: () {
+                                  onTapTxtNext();
+                                },
+                              ),
+                            ],
+                          )))
                 ]))));
   }
 
   /// Navigates to the previous screen.
-  onTapImgArrowLeft() {
+  onPressBack() {
     Get.back();
   }
 

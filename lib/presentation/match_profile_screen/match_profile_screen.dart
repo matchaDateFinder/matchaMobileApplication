@@ -17,7 +17,15 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
             backgroundColor: theme.colorScheme.onPrimary,
             body: SizedBox(
                 width: double.maxFinite,
-                child: Column(children: [_buildStack(), _buildMatchProfile()]))));
+                child: Column(
+                    children: [
+                      _buildStack(),
+                      _buildMatchProfile(context)
+                    ]
+                )
+            )
+        )
+    );
   }
 
   /// Section Widget
@@ -47,7 +55,7 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
   }
 
   /// Section Widget
-  Widget _buildColumn() {
+  Widget _buildColumn() { // TODO tanya reyhan kalau match chat profile perlu ada gambar yang sama di candidate kah
     return Padding(
         padding: EdgeInsets.only(right: 15.h),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -67,12 +75,12 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
   }
 
   /// Section Widget
-  Widget _buildMatchProfile() {
+  Widget _buildMatchProfile(context) {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 16.v),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Obx(() => Text(controller.nameAge.value, // name and age
-              style: CustomTextStyles.headlineSmallSemiBold)),
+              style: CustomTextStyles.titleLargeSemiBold)),
           SizedBox(height: 5.v),
           Row(children: [
             CustomImageView(
@@ -94,9 +102,20 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
                 width: 16.adaptSize,
                 margin: EdgeInsets.symmetric(vertical: 1.v)),
             Padding(
-                padding: EdgeInsets.only(left: 8.h),
-                child: Text("lbl_mutual_info".tr,
-                    style: theme.textTheme.bodyMedium))
+              padding: EdgeInsets.only(left: 8.h),
+              child: Obx(() => controller.mutualName.value == '' ?
+                Text('-', style: theme.textTheme.bodyMedium) :
+                InkWell(
+                  child: Text(controller.mutualName.value,
+                      style: theme.textTheme.bodyMedium),
+                  onTap: () {
+                    if(controller.listOfMutuals.length > 1){
+                      onTapListOfMutual(context);
+                    }
+                  },
+                )
+              ),
+            )
           ]),
           SizedBox(height: 26.v),
           _buildColumn(),
@@ -112,5 +131,42 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
         AppRoutes.chatRoomOneScreen,
         arguments: mapOfArguments
     );
+  }
+
+  onTapListOfMutual(context){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius:BorderRadius.circular(20.0)),
+            child: Container(
+                constraints: BoxConstraints(maxHeight: 350),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("List of Mutuals"),
+                        SizedBox(height: 5.v),
+                        Container(
+                          child: _buildListOfMutuals(),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+            ),
+          );
+        });
+  }
+
+  Widget _buildListOfMutuals(){
+    String listOfMutual = '';
+    controller.listOfMutuals.value.forEach((contact) {
+      listOfMutual = listOfMutual + contact + '\n';
+    });
+    return Text(listOfMutual, style: CustomTextStyles.bodyMediumPoppins);
   }
 }

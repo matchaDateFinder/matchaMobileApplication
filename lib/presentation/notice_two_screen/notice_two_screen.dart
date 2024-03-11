@@ -18,28 +18,32 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
                 padding: EdgeInsets.symmetric(horizontal: 26.h, vertical: 42.v),
                 child:
                     Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  SizedBox(height: 87.v),
-                  Text("lbl_congratulation".tr,
-                      style: CustomTextStyles.headlineSmallSemiBold),
-                  SizedBox(height: 38.v),
-                  _buildEightyNineStack(),
-                  SizedBox(height: 39.v),
-                  Text("lbl_it_s_a_match_a".tr,
-                      style: CustomTextStyles.headlineSmallSemiBold),
-                  SizedBox(height: 64.v),
-                  CustomElevatedButton(
-                      text: "msg_ask_for_a_matcha".tr,
-                      margin: EdgeInsets.symmetric(horizontal: 21.h),
-                      onPressed: () {
-                        onTapAskForAMatchaDate();
-                      }),
-                  SizedBox(height: 17.v),
-                  GestureDetector(
-                      onTap: () {
-                        onTapTxtSkipForNow();
-                      },
-                      child: Text("lbl_skip_for_now".tr,
-                          style: theme.textTheme.bodyLarge))
+                      SizedBox(height: 87.v),
+                      Text("lbl_congratulation".tr,
+                        style: theme.textTheme.headlineLarge
+                      ),
+                      SizedBox(height: 38.v),
+                      _buildEightyNineStack(),
+                      SizedBox(height: 39.v),
+                      Text("lbl_it_s_a_match_a".tr,
+                        style: theme.textTheme.headlineLarge,
+                      ),
+                      SizedBox(height: 64.v),
+                      CustomElevatedButton(
+                          text: "msg_ask_for_a_matcha".tr,
+                          margin: EdgeInsets.symmetric(horizontal: 21.h),
+                          onPressed: () {
+                            onTapAskForAMatchaDate();
+                          },
+                          buttonStyle: CustomButtonStyles.fillBlack,
+                      ),
+                      SizedBox(height: 17.v),
+                      GestureDetector(
+                          onTap: () {
+                            onTapTxtSkipForNow();
+                          },
+                          child: Text("lbl_skip_for_now".tr,
+                              style: theme.textTheme.bodyLarge))
                 ])),
             bottomNavigationBar: _buildBottomBar()));
   }
@@ -61,7 +65,7 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
                           image: fs.Svg(ImageConstant.imgUser2),
                           fit: BoxFit.cover)),
                   child: CustomImageView(
-                      imagePath: ImageConstant.imgAvatar2,
+                      imagePath: controller.userPhotoLink,
                       height: 128.adaptSize,
                       width: 128.adaptSize,
                       radius: BorderRadius.circular(64.h),
@@ -77,7 +81,7 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
                           image: fs.Svg(ImageConstant.imgUser1),
                           fit: BoxFit.cover)),
                   child: CustomImageView(
-                      imagePath: ImageConstant.imgAvatar1,
+                      imagePath: controller.candidatePhotoLink,
                       height: 128.adaptSize,
                       width: 128.adaptSize,
                       radius: BorderRadius.circular(64.h),
@@ -114,14 +118,18 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
   }
 
   /// Navigates to the chatRoomOneScreen when the action is triggered.
-  onTapAskForAMatchaDate() {
+  onTapAskForAMatchaDate() async {
+    Map<String, String> mapOfArguments = await controller.convertToMap();
+    await controller.manuallyKillConstructor();
     Get.toNamed(
-      AppRoutes.chatRoomOneScreen,
+        AppRoutes.chatRoomOneScreen,
+        arguments: mapOfArguments
     );
   }
 
   /// Navigates to the noticeOneScreen when the action is triggered.
-  onTapTxtSkipForNow() {
+  onTapTxtSkipForNow() async {
+    await controller.manuallyKillConstructor();
     Get.toNamed(
       AppRoutes.userProfileScreen,
     );

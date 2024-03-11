@@ -31,16 +31,17 @@ class CustomPhoneNumber extends StatelessWidget {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary,
+              color: appTheme.whiteA700,
               borderRadius: BorderRadius.circular(
                 10.h,
               ),
+              border: Border.all(color: Colors.black)
             ),
             child: Padding(
               padding: EdgeInsets.fromLTRB(13.h, 12.v, 14.h, 14.v),
               child: Text(
                 "+${country.phoneCode}",
-                style: CustomTextStyles.bodyLargeDMSans,
+                style: theme.textTheme.bodyLarge,
               ),
             ),
           ),
@@ -52,6 +53,7 @@ class CustomPhoneNumber extends StatelessWidget {
               width: 189.h,
               controller: controller,
               hintText: "lbl_890_0000_0000".tr,
+              fillColor: appTheme.whiteA700,
             ),
           ),
         ),

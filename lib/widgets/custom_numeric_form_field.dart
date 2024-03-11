@@ -76,8 +76,8 @@ class CustomNumericFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return alignment != null
         ? Align(
-      alignment: alignment ?? Alignment.center,
-      child: textFormFieldWidget,
+          alignment: alignment ?? Alignment.center,
+            child: textFormFieldWidget,
     )
         : textFormFieldWidget;
   }
@@ -88,7 +88,7 @@ class CustomNumericFormField extends StatelessWidget {
       controller: controller,
       focusNode: focusNode ?? FocusNode(),
       autofocus: autofocus!,
-      style: textStyle ?? CustomTextStyles.bodyLargeDMSans,
+      style: textStyle ?? theme.textTheme.bodyLarge,
       obscureText: obscureText!,
       textInputAction: textInputAction,
       keyboardType: TextInputType.number,
@@ -102,7 +102,7 @@ class CustomNumericFormField extends StatelessWidget {
   );
   InputDecoration get decoration => InputDecoration(
     hintText: hintText ?? "",
-    hintStyle: hintStyle ?? CustomTextStyles.bodyLargeDMSansLightgreen200,
+    hintStyle: hintStyle ?? CustomTextStyles.bodyLargeSecondaryContainer,
     prefixIcon: prefix,
     prefixIconConstraints: prefixConstraints,
     suffixIcon: suffix,
@@ -114,12 +114,18 @@ class CustomNumericFormField extends StatelessWidget {
     border: borderDecoration ??
         OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.h),
-          borderSide: BorderSide.none,
+          borderSide:  BorderSide(
+            color: Colors.black,
+            width: 1,
+          ),
         ),
     enabledBorder: borderDecoration ??
         OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.h),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color: Colors.black,
+            width: 1,
+          ),
         ),
     focusedBorder: borderDecoration ??
         OutlineInputBorder(

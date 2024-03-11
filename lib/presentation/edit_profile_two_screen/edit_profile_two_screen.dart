@@ -35,32 +35,35 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                               controller: controller.answerProfessionController,
                               hintText: "lbl_type_here".tr,
                               textInputAction: TextInputAction.done),
-                          SizedBox(height: 65.v),
+                          SizedBox(height: 50.v),
                           _buildEducation(),
-                          SizedBox(height: 66.v),
+                          SizedBox(height: 50.v),
                           _buildReligion(),
-                          SizedBox(height: 66.v),
+                          SizedBox(height: 50.v),
                           Align(
                               alignment: Alignment.centerLeft,
                               child: Text("msg_what_is_your_height".tr,
                                   style: theme.textTheme.bodyLarge)),
-                          SizedBox(height: 30.v),
+                          SizedBox(height: 50.v),
                           CustomNumericFormField(
                               controller: controller.answerHeightController,
                               hintText: "lbl_height_in_cm".tr,
                               textInputAction: TextInputAction.done),
-                          SizedBox(height: 65.v),
+                          SizedBox(height: 50.v),
                           _buildDrinking(),
-                          SizedBox(height: 65.v),
+                          SizedBox(height: 50.v),
                           _buildSmoking(),
-                          SizedBox(height: 65.v),
+                          SizedBox(height: 50.v),
                           _buildMbti(),
-                          SizedBox(height: 64.v),
+                          SizedBox(height: 30.v),
                           CustomElevatedButton(
-                              text: "lbl_save_my_profile".tr,
-                              onPressed: () {
-                                onTapSaveMyProfile();
-                              })
+                            text: "lbl_save_my_profile".tr,
+                            onPressed: () {
+                              onTapSaveMyProfile();
+                            },
+                            buttonStyle: CustomButtonStyles.fillBlack,
+                          ),
+                          SizedBox(height: 30.v),
                         ]))))));
   }
 
@@ -177,7 +180,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
           hintText: controller.religionDropDownValue.value == "" ? "lbl_religion".tr
               : controller.religionDropDownValue.value,
           items:
-          controller.editProfileTwoModelObj.value.religionDropdownItemList!.value,
+          controller.editProfileTwoModelObj.value.religionDropdownItemList.value,
           onChanged: (value) {
             controller.onSelectReligion(value);
           }))
@@ -299,7 +302,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
           hintText: controller.mbtiDropDownValue.value == "" ? "lbl_mbti".tr
               : controller.mbtiDropDownValue.value,
           items:
-              controller.editProfileTwoModelObj.value.mbtiDropdownItemList!.value,
+              controller.editProfileTwoModelObj.value.mbtiDropdownItemList.value,
           onChanged: (value) {
             controller.onSelectMBTI(value);
           })
@@ -309,10 +312,7 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
 
   /// Navigates to the previous screen.
   onTapVector() {
-    Get.toNamed(
-      AppRoutes.editProfileScreen,
-      arguments: controller.phoneNumber
-    );
+    Get.back();
   }
 
   /// Navigates to the editProfileScreen when the action is triggered.

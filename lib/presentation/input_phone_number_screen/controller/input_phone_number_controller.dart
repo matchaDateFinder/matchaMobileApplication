@@ -1,5 +1,4 @@
 import 'package:matchaapplication/core/app_export.dart';
-import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
 import 'package:matchaapplication/presentation/input_phone_number_screen/models/input_phone_number_model.dart';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/utils/utils.dart';
@@ -10,14 +9,7 @@ import 'package:flutter/material.dart';
 /// This class manages the state of the InputPhoneNumberScreen, including the
 /// current inputPhoneNumberModelObj
 class InputPhoneNumberController extends GetxController {
-  late final FirestoreService _firestore;
-  late final PrefUtils _prefUtils;
-
-  InputPhoneNumberController() {
-    _firestore = FirestoreService();
-    _prefUtils = PrefUtils();
-  }
-
+  FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController phoneNumberController = TextEditingController();
 
   Rx<InputPhoneNumberModel> inputPhoneNumberModelObj =
@@ -37,50 +29,23 @@ class InputPhoneNumberController extends GetxController {
   }
 
   bool validateForm(){
-    if(!phoneNumberController.value.text.isNumericOnly){
-      print("is num only");
-      return false;
-    }
     if(phoneNumberController.value.text.length < 8 || phoneNumberController.value.text.length > 12 ){
-      print("len not valid");
+      Get.defaultDialog(
+          title: "Phone Number Length is not Valid",
+          content: Text("Input phone number length between 8 to 12")
+      );
       return false;
     }
-    if(phoneNumberController == null){
-      print("missing");
+    if(!phoneNumberController.value.text.isNumericOnly){
+      Get.defaultDialog(
+          title: "Only Numeric Input",
+          content: Text("Only Numeric Input")
+      );
       return false;
     }
     fullPhoneNumber = selectedCountry.value.phoneCode + phoneNumberController.value.text;
     userDetail['userPhoneNumber'] = fullPhoneNumber;
     return true;
   }
-
-  Future<bool> checkForExistingUser() async{
-    final userFromFiresToreDB = await _firestore.getUserFromFireStoreByPhoneNumber(fullPhoneNumber);
-    if (userFromFiresToreDB.userName != "userName" && userFromFiresToreDB.userPhoneNumber != "") { // user exists
-      _prefUtils.setLoginStatus(true);
-      _prefUtils.setLocalUser(convertMapPreferences(userFromFiresToreDB));
-      // TODO subscribe the app to all of the related topic in DB
-      return true;
-    }else{ // user does not exist
-      return false;
-    }
-  }
-
-  Map<String,dynamic> convertMapPreferences(UserFireStoreModel userFromFireStore){
-    Map<String, dynamic> userMap = {};
-    userMap["userPhoneNumber"] = userFromFireStore.userPhoneNumber;
-    userMap["photoLink"] = userFromFireStore.userPhotoLink;
-    userMap["userName"] = userFromFireStore.userName;
-    return userMap;
-  }
-
-  Future<List<String>?> _getContactListFromFireStoreDB(List<String>? contactListFromFireStore) async {
-    List<String>? contactList = [];
-    contactListFromFireStore?.forEach((element) {
-      contactList.add(element);
-    });
-    return contactList;
-  }
-
 
 }

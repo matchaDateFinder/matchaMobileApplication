@@ -12,10 +12,52 @@ class AppDecoration {
   static BoxDecoration get fillOnPrimary => BoxDecoration(
         color: theme.colorScheme.onPrimary,
       );
+  static BoxDecoration get fillGray => BoxDecoration(
+    color: appTheme.gray100,
+  );
+  static BoxDecoration get fillLime => BoxDecoration(
+    color: appTheme.lime50,
+  );
+  static BoxDecoration get fillWhiteA => BoxDecoration(
+    color: appTheme.whiteA700,
+  );
+
+  // Outline decorations
+  static BoxDecoration get outlinePrimary => BoxDecoration(
+    color: appTheme.lightGreen300,
+    border: Border.all(
+      color: theme.colorScheme.primary,
+      width: 1.h,
+    ),
+  );
+  static BoxDecoration get outlinePrimary1 => BoxDecoration(
+    border: Border.all(
+      color: theme.colorScheme.primary,
+      width: 1.h,
+    ),
+  );
+  static BoxDecoration get outlinePrimary2 => BoxDecoration(
+    color: appTheme.lightGreen300,
+    border: Border.all(
+      color: theme.colorScheme.primary,
+      width: 1.h,
+    ),
+    borderRadius: BorderRadiusStyle.roundedBorder10
+  );
+  static BoxDecoration get outlineFillPrimary => BoxDecoration(
+    color: theme.colorScheme.onPrimary,
+    border: Border.all(
+      color: appTheme.black,
+      width: 1.h,
+    ),
+  );
 }
 
 class BorderRadiusStyle {
   // Circle borders
+  static BorderRadius get circleBorder108 => BorderRadius.circular(
+    108.h,
+  );
   static BorderRadius get circleBorder32 => BorderRadius.circular(
         32.h,
       );

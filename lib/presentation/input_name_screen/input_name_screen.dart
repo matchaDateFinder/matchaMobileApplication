@@ -1,3 +1,5 @@
+import 'package:matchaapplication/widgets/custom_elevated_button.dart';
+
 import 'controller/input_name_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
@@ -25,16 +27,37 @@ class InputNameScreen extends GetWidget<InputNameController> {
                       CustomTextFormField(
                           controller: controller.inputPlaceholderController,
                           hintText: "lbl_type_here".tr,
-                          textInputAction: TextInputAction.done),
+                          textInputAction: TextInputAction.done,
+                          fillColor: appTheme.whiteA700,
+                          borderDecoration: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.h),
+                            borderSide: BorderSide(
+                              color: theme.colorScheme.primary,
+                              width: 1,
+                            ),
+                          )),
                       Spacer(),
                       Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                              onTap: () {
-                                onTapTxtNext();
-                              },
-                              child: Text("lbl_next".tr,
-                                  style: theme.textTheme.bodyLarge)))
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 5.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              CustomElevatedButton(
+                                height: 40.v,
+                                width: 67.h,
+                                text: "lbl_next".tr,
+                                margin: EdgeInsets.only(left: 8.h),
+                                buttonStyle: CustomButtonStyles.outlinePrimaryTL20,
+                                onPressed: () {
+                                  onTapTxtNext();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ]))));
   }
 

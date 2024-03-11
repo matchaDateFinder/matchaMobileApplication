@@ -1,3 +1,5 @@
+import 'package:matchaapplication/widgets/custom_elevated_button.dart';
+
 import 'controller/input_gender_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:matchaapplication/core/app_export.dart';
@@ -16,13 +18,6 @@ class InputGenderScreen extends GetWidget<InputGenderController> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomImageView(
-                          imagePath: ImageConstant.imgArrowLeftPrimary,
-                          height: 24.adaptSize,
-                          width: 24.adaptSize,
-                          onTap: () {
-                            onTapImgArrowLeft();
-                          }),
                       SizedBox(height: 40.v),
                       Padding(
                           padding: EdgeInsets.only(left: 24.h),
@@ -34,14 +29,33 @@ class InputGenderScreen extends GetWidget<InputGenderController> {
                       SizedBox(height: 32.v),
                       Align(
                           alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                              onTap: () {
-                                onTapTxtNext();
-                              },
-                              child: Padding(
-                                  padding: EdgeInsets.only(right: 24.h),
-                                  child: Text("lbl_next".tr,
-                                      style: theme.textTheme.bodyLarge))))
+                          child: Padding(
+                              padding: EdgeInsets.only(right: 24.h),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  CustomElevatedButton(
+                                    height: 40.v,
+                                    width: 71.h,
+                                    text: "lbl_back".tr,
+                                    buttonStyle: CustomButtonStyles.outlinePrimaryTL201,
+                                    buttonTextStyle: CustomTextStyles.bodyLargePoppins,
+                                    onPressed: () {
+                                      onPressBack();
+                                    },
+                                  ),
+                                  CustomElevatedButton(
+                                    height: 40.v,
+                                    width: 67.h,
+                                    text: "lbl_next".tr,
+                                    margin: EdgeInsets.only(left: 8.h),
+                                    buttonStyle: CustomButtonStyles.outlinePrimaryTL20,
+                                    onPressed: () {
+                                      onTapTxtNext();
+                                    },
+                                  ),
+                                ],
+                              )))
                     ]))));
   }
 
@@ -82,7 +96,7 @@ class InputGenderScreen extends GetWidget<InputGenderController> {
   }
 
   /// Navigates to the previous screen.
-  onTapImgArrowLeft() {
+  onPressBack() {
     Get.back();
   }
 

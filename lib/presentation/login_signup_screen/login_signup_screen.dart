@@ -9,30 +9,146 @@ class LoginSignupScreen extends GetWidget<LoginSignupController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            backgroundColor: appTheme.lightGreen200,
-            body: Container(
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(vertical: 120.v),
-                child: Column(
+      child: Scaffold(
+        body: SizedBox(
+          height: SizeUtils.height,
+          width: double.maxFinite,
+          child: Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 128.v),
+                  decoration: AppDecoration.fillLime,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CustomImageView(
-                          imagePath: ImageConstant.imgLogo1,
-                          height: 360.adaptSize,
-                          width: 360.adaptSize),
-                      Spacer(),
-                      SizedBox(height: 8.v),
+                      SizedBox(height: 29.v),
+                      Padding(
+                        padding: EdgeInsets.only(left: 24.h),
+                        child: Text(
+                          "lbl_matcha".tr,
+                          style: theme.textTheme.displayLarge,
+                        ),
+                      ),
+                      SizedBox(height: 12.v),
+                      Padding(
+                        padding: EdgeInsets.only(left: 24.h),
+                        child: Text(
+                          "msg_find_your_favorite".tr,
+                          style: theme.textTheme.titleLarge,
+                        ),
+                      ),
+                      SizedBox(height: 40.v),
+                      _buildImageMain1(),
+                      SizedBox(height: 21.v),
                       CustomElevatedButton(
-                          text: "msg_login_with_phone".tr,
-                          margin: EdgeInsets.symmetric(horizontal: 48.h),
-                          onPressed: () {
-                            onTapLoginWithPhoneNumber();
-                          })
-                    ]))));
+                        text: "msg_login_with_phone".tr,
+                        margin: EdgeInsets.only(
+                          left: 49.h,
+                          right: 47.h,
+                        ),
+                        buttonTextStyle: CustomTextStyles.bodyLargePoppinsLime50,
+                        buttonStyle: CustomButtonStyles.fillBlack,
+                        alignment: Alignment.center,
+                        onPressed: () {
+                          onTapLoginWithPhoneNumber();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              CustomImageView(
+                imagePath: ImageConstant.imgColor,
+                height: 180.v,
+                width: 272.h,
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: 129.v),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
-  /// Navigates to the inputPhoneNumberScreen when the action is triggered.
+  /// Section Widget
+  Widget _buildImageMain1() {
+    return SizedBox(
+      height: 247.v,
+      width: double.maxFinite,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              height: 225.v,
+              width: 352.h,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      color: Colors.white.withOpacity(0),
+                      height: 225.v,
+                      width: 352.h,
+                      child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              CustomImageView(
+                                imagePath: ImageConstant.imgVectorMatchaLogin,
+                                height: 247.v,
+                                width: 360.h,
+                                alignment: Alignment.center,
+                              ),
+                            ],
+                      ),
+                    ),
+                    // child: SizedBox(
+                    //   height: 225.v,
+                    //   width: 352.h,
+                    //   child: Stack(
+                    //     alignment: Alignment.center,
+                    //     children: [
+                    //       CustomImageView(
+                    //         imagePath: ImageConstant.imgVector225x352,
+                    //         height: 225.v,
+                    //         width: 352.h,
+                    //         alignment: Alignment.center,
+                    //       ),
+                    //       CustomImageView(
+                    //         imagePath: ImageConstant.imgVector1,
+                    //         height: 225.v,
+                    //         width: 352.h,
+                    //         alignment: Alignment.center,
+                    //       ),
+                    //       CustomImageView(
+                    //         imagePath: ImageConstant.imgVector247x360,
+                    //         height: 247.v,
+                    //         width: 360.h,
+                    //         alignment: Alignment.center,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+
+    /// Navigates to the inputPhoneNumberScreen when the action is triggered.
   onTapLoginWithPhoneNumber() {
     Get.toNamed(
       AppRoutes.inputPhoneNumberScreen,

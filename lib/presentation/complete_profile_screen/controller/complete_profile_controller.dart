@@ -17,18 +17,21 @@ class CompleteProfileController extends GetxController {
 
   late final FirestoreService _firestore;
   late final PrefUtils _prefUtils;
+  late final FirebaseAuth _auth;
 
   String photoDownloadURL = '';
 
   CompleteProfileController() {
     _firestore = FirestoreService();
     _prefUtils = PrefUtils();
+    _auth = FirebaseAuth.instance;
   }
   var userDetail = new Map();
 
   @override
   void onInit() async{
     userDetail = Get.arguments;
+    await saveDataToDatabase();
   }
 
   Future<void> saveDataToDatabase() async{
@@ -55,7 +58,9 @@ class CompleteProfileController extends GetxController {
   }
 
   void _saveToFireStoreDB() async {
+    User? currentUser = _auth.currentUser!;
     UserFireStoreModel _userFireStoreDBModel = new UserFireStoreModel(
+        userId: currentUser.uid,
         userName: userDetail['fullName'],
         userPhoneNumber: userDetail['userPhoneNumber'],
         userPhotoLink: photoDownloadURL,
@@ -70,6 +75,7 @@ class CompleteProfileController extends GetxController {
         userDrinking: '',
         userMBTI: '',
         userContactList: contactListInit,
+        lastRecommendationIsGiven: Timestamp.fromDate(DateTime.now().subtract(Duration(days:1)))
     );
     await _firestore.addUserToFireStore(_userFireStoreDBModel);
   }

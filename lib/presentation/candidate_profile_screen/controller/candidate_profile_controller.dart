@@ -1,9 +1,8 @@
-import 'package:isar/isar.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/matchFireStoreModel/matchFireStore.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/chatRoomFireStoreModel/chatRoomFireStore.dart';
-import 'package:matchaapplication/data/models/chatModel/chatRoom.dart';
 import 'package:matchaapplication/presentation/candidate_profile_screen/models/candidate_profile_model.dart';
 
 /// A controller class for the CandidateProfileScreen.
@@ -19,6 +18,8 @@ class CandidateProfileController extends GetxController {
   var userProfession = ''.obs;
   var mutualName = ''.obs;
 
+  RxList listOfMutuals = [].obs;
+
   Rx<CandidateProfileModel> candidateProfileModelObj =
       CandidateProfileModel().obs;
 
@@ -29,6 +30,8 @@ class CandidateProfileController extends GetxController {
   var candidatePhoneNumber;
   var candidateAge;
 
+  Map<String,String> argumentForNoticeTwo = {};
+
   CandidateProfileController() {
     _firestore = FirestoreService();
     _prefUtils = PrefUtils();
@@ -36,26 +39,49 @@ class CandidateProfileController extends GetxController {
 
   @override
   void onInit() async{
+    super.onInit();
     phoneNumber = _prefUtils.getUserPhoneNumber();
     user = await _firestore.getUserFromFireStoreByPhoneNumber(phoneNumber);
     if(user != null){
-      DateTime dt1 = user!.lastRecommendationIsGiven.toDate();
-      if(dt1.year == 1970 || DateTime.now().day-dt1.day > 1){
-        List<String> potentialMatch = await getPotentialMatch();
+      DateTime lastRecommDate = user!.lastRecommendationIsGiven.toDate();
+      if(lastRecommDate.year == 1970 || (daysBetween(lastRecommDate, DateTime.now()) >= 1)){
+        Set<String> potentialMatch = await getPotentialMatch();
         Set<String> existingMatchFilter = await checkExistingMatchRow(potentialMatch);
-        if(existingMatchFilter.length == 0 ){
-          // TODO create a function to fetch random pairing from database
-        }
         if(existingMatchFilter.length > 0){
           candidateProfile = await _firestore.getUserFromFireStoreByPhoneNumber(existingMatchFilter.first);
           candidateAge = calculateAge(DateTime.now(), candidateProfile!.userBirthday.toDate());
           candidateName = candidateProfile!.userName;
           candidatePhoneNumber = candidateProfile!.userPhoneNumber;
           nameAge.value = candidateName + ' - ' + candidateAge.toString();
-          userPhotoPath.value = candidateProfile!.userPhotoDownloadLink;
+          userPhotoPath.value = candidateProfile!.userPhotoLink;
           userProfession.value = candidateProfile!.userProfession;
           await candidateProfileModelObj.value.setItemTag(candidateProfile);
           candidateProfileModelObj.refresh();
+          // TODO attach mutual name
+          List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
+          user.userContactList.forEach((userContact) {
+            if(candidateProfile.userContactList.contains(userContact)){
+              String temp = '';
+              contacts.forEach((contact) {
+                contact.phones.forEach((number) {
+                  if(number.number == userContact){
+                    temp = contact.displayName;
+                  }
+                });
+              });
+              if(temp == ''){
+                listOfMutuals.value.add(userContact);
+              }else{
+                listOfMutuals.value.add(temp);
+              }
+            }
+          });
+          if(listOfMutuals.value.length == 1){
+            mutualName.value = "Friends with " + listOfMutuals.value.first;
+          }else{
+            mutualName.value = "Friends with " + listOfMutuals.value.first +
+                " and " + (listOfMutuals.value.length-1).toString() + " Others";
+          }
         }
       }else{
         await manuallyKillConstructor();
@@ -67,13 +93,20 @@ class CandidateProfileController extends GetxController {
   }
 
   Future<void> manuallyKillConstructor() async {
-    // TODO clean up photo file from user device
     Get.delete<CandidateProfileController>();
   }
 
-  Future<List<String>> getPotentialMatch() async {
-    List<String> result = [];
-    List<UserFireStoreModel> listOfUserFromContactList = await _firestore.getListOfMutualConnectionByPhoneNumberList(user?.userContactList, user?.userPhoneNumber);
+  Future<Set<String>> getPotentialMatch() async {
+    Set<String> result = new Set();
+    if(user?.userContactList.length > 0){
+      List<UserFireStoreModel> listOfUserFromContactList = await _firestore.getListOfMutualConnectionByPhoneNumberList(user?.userContactList, user?.userPhoneNumber);
+      listOfUserFromContactList.forEach((element) {
+        if(element.userGender != user?.userGender){
+          result.add(element.userPhoneNumber);
+        }
+      });
+    }
+    List<UserFireStoreModel> listOfUserFromContactList = await _firestore.getListOfPotentialMatchByPhoneNumber(user?.userPhoneNumber);
     listOfUserFromContactList.forEach((element) {
       if(element.userGender != user?.userGender){
         result.add(element.userPhoneNumber);
@@ -82,7 +115,7 @@ class CandidateProfileController extends GetxController {
     return result;
   }
 
-  Future<Set<String>> checkExistingMatchRow(List<String> listOfPhoneNumber) async {
+  Future<Set<String>> checkExistingMatchRow(Set<String> listOfPhoneNumber) async {
     Set<String> result = new Set();
     List<String> fromOnlineDB = await _firestore.getMatchListByPhoneNumber(phoneNumber, listOfPhoneNumber);
     result.addAll(fromOnlineDB);
@@ -104,17 +137,9 @@ class CandidateProfileController extends GetxController {
     bool result = false;
     List<MatchFireStoreModel> listOfMatch = await _firestore.checkIfMatchExistsInFirestoreDB(phoneNumber, candidatePhoneNumber);
     if(listOfMatch.length > 0){
-      // TODO ketika nemu entry di firestore
-      print("match exist");
       await _firestore.updateMatchingInFireStore(listOfMatch[0], reaction);
       if(listOfMatch[0].user1Reaction == true && reaction == true){
         result = true;
-        // ChatRoom newChatRoomIsar = ChatRoom()
-        // ..participantsNumber = [phoneNumber, candidatePhoneNumber]
-        // ..chatCount = 0
-        // ..chatUnreadCount = 0
-        // ..chatBoxStatus = 0;
-        // await _isar.createNewChatRoom(newChatRoomIsar);
         ChatRoomFireStoreModel newChatRoomFireStore = ChatRoomFireStoreModel(
             participantsNumber: [phoneNumber, candidatePhoneNumber],
             participantsName: [user.userName, candidateName],
@@ -126,10 +151,13 @@ class CandidateProfileController extends GetxController {
 
         // TODO subscribe to the the topic
 
+        argumentForNoticeTwo["userPhotoLink"] = user.userPhotoLink;
+        argumentForNoticeTwo["candidatePhotoLink"] = userPhotoPath.value;
+        argumentForNoticeTwo["userPhoneNumber"] = user.userPhoneNumber;
+        argumentForNoticeTwo["receiverPhoneNumber"] = candidatePhoneNumber;
+        argumentForNoticeTwo["receiverName"] = candidateName;
       }
     }else{
-      // TODO ketika tidak nemu entry di firestore
-      print("match does not exist");
       MatchFireStoreModel newMatch = MatchFireStoreModel(user1Name: user.userName, user1PhoneNumber: phoneNumber, user2Name: candidateName, user2PhoneNumber: candidatePhoneNumber, user1Reaction: reaction, hasBeenVisitedByUser1: true);
       await _firestore.addMatchToFireStore(newMatch);
     }
@@ -137,7 +165,11 @@ class CandidateProfileController extends GetxController {
     return result;
   }
 
-
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return (to.difference(from).inHours / 24).round();
+  }
 
 
 

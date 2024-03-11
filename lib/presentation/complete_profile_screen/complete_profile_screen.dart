@@ -12,57 +12,65 @@ class CompleteProfileScreen extends GetWidget<CompleteProfileController> {
         child: Scaffold(
             body: Container(
                 width: double.maxFinite,
-                padding: EdgeInsets.only(left: 24.h, top: 64.v, right: 24.h),
+                padding: EdgeInsets.symmetric(horizontal: 48.h),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CustomImageView(
-                          imagePath: ImageConstant.imgArrowLeftPrimary,
-                          height: 24.adaptSize,
-                          width: 24.adaptSize,
-                          onTap: () {
-                            onTapImgArrowLeft();
-                          }),
-                      SizedBox(height: 38.v),
-                      Container(
-                          width: 177.h,
-                          margin: EdgeInsets.only(left: 24.h),
-                          child: Text("msg_boost_your_first".tr,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.headlineSmall)),
-                      SizedBox(height: 29.v),
+                      SizedBox(height: 33.v),
+                      SizedBox(
+                        width: 150.h,
+                        child: Text(
+                          "msg_boost_your_first".tr,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.titleLarge!.copyWith(
+                            height: 1.60,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15.v),
                       Container(
                           width: 226.h,
-                          margin: EdgeInsets.only(left: 24.h, right: 61.h),
-                          child: Text("msg_complete_your_profile".tr,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyles.bodyLargeGray700)),
+                          margin: EdgeInsets.only(right: 37.h),
+                          child: Text(
+                            "msg_complete_your_profile".tr,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: CustomTextStyles.bodyLargePoppins.copyWith(
+                              height: 1.50,
+                            ),
+                          ),
+                      ),
                       SizedBox(height: 45.v),
+                      SizedBox(height: 29.v),
                       CustomImageView(
-                          imagePath: ImageConstant.imgImageCompleteprofile,
-                          height: 178.v,
-                          width: 176.h,
-                          alignment: Alignment.center),
-                      SizedBox(height: 47.v),
+                        imagePath: ImageConstant.imgCompleteMatchaProfile,
+                        height: 197.v,
+                        width: 264.h,
+                      ),
+                      SizedBox(height: 42.v),
                       CustomElevatedButton(
                           text: "msg_complete_my_profile".tr,
                           margin: EdgeInsets.symmetric(horizontal: 24.h),
                           onPressed: () {
                             onTapCompleteMyProfile();
                           },
-                          alignment: Alignment.center),
-                      SizedBox(height: 25.v),
-                      Align(
                           alignment: Alignment.center,
-                          child: GestureDetector(
-                              onTap: () {
-                                onTapTxtSkipForNow();
-                              },
-                              child: Text("lbl_skip_for_now".tr,
-                                  style: theme.textTheme.bodyLarge))),
-                      SizedBox(height: 5.v)
+                          buttonTextStyle: CustomTextStyles.bodyLargePoppinsLightgreen50,
+                          buttonStyle: CustomButtonStyles.fillBlack
+                      ),
+                      SizedBox(height: 8.v),
+                      CustomElevatedButton(
+                          text: "msg_maybe_later".tr,
+                          margin: EdgeInsets.symmetric(horizontal: 24.h),
+                          onPressed: () {
+                            onTapTxtSkipForNow();
+                          },
+                          alignment: Alignment.center,
+                          buttonStyle: CustomButtonStyles.outlinePrimaryTL241,
+                          buttonTextStyle: CustomTextStyles.bodyLargePoppins,
+                      ),
                     ]))));
   }
 
@@ -73,7 +81,7 @@ class CompleteProfileScreen extends GetWidget<CompleteProfileController> {
 
   /// Navigates to the editProfileTwoScreen when the action is triggered.
   onTapCompleteMyProfile() async {
-    await controller.saveDataToDatabase();
+    // await controller.saveDataToDatabase();
     Get.toNamed(
       AppRoutes.editProfileTwoScreen,
       arguments: controller.userDetail['userPhoneNumber'],
@@ -82,7 +90,7 @@ class CompleteProfileScreen extends GetWidget<CompleteProfileController> {
 
   /// Navigates to the candidateProfileScreen when the action is triggered.
   onTapTxtSkipForNow() async {
-    await controller.saveDataToDatabase();
+    // await controller.saveDataToDatabase();
     Get.toNamed(
       AppRoutes.userProfileScreen,
       arguments: controller.userDetail['userPhoneNumber'],
