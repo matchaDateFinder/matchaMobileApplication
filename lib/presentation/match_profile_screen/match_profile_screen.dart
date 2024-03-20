@@ -64,6 +64,7 @@ class MatchProfileScreen extends GetWidget<MatchProfileController> {
           Obx(() => Wrap(
               runSpacing: 8.v,
               spacing: 8.h,
+              alignment: WrapAlignment.center,
               children: List<Widget>.generate(
                   controller.matchProfileModelObj.value.userTagItemList.value
                       .length, (index) {

@@ -17,6 +17,9 @@ class UserFireStoreModel {
   late String? userMBTI;
   late List<String>? userContactList;
   late Timestamp? lastRecommendationIsGiven;
+  late String? userLookingFor;
+  late String? userMarriageTarget;
+  late String userToken;
 
   UserFireStoreModel({
     required this.userId,
@@ -26,6 +29,7 @@ class UserFireStoreModel {
     required this.userPhotoSize,
     required this.userGender,
     required this.userBirthday,
+    required this.userToken,
     this.userProfession,
     this.userEducation,
     this.userReligion,
@@ -34,7 +38,9 @@ class UserFireStoreModel {
     this.userDrinking,
     this.userMBTI,
     this.userContactList,
-    this.lastRecommendationIsGiven
+    this.lastRecommendationIsGiven,
+    this.userLookingFor,
+    this.userMarriageTarget
   });
 
   UserFireStoreModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
@@ -57,6 +63,9 @@ class UserFireStoreModel {
       userContactList!.add(element.toString());
     });
     lastRecommendationIsGiven = documentSnapshot["lastRecommendationIsGiven"];
+    userToken = documentSnapshot["userToken"];
+    userLookingFor = documentSnapshot["userLookingFor"];
+    userMarriageTarget = documentSnapshot["userMarriageTarget"];
   }
 
 }

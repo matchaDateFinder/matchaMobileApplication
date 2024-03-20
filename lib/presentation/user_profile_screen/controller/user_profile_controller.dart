@@ -29,7 +29,7 @@ class UserProfileController extends GetxController {
     _prefUtils = PrefUtils();
     user = UserFireStoreModel(userId:"", userName: "", userPhoneNumber: "",
         userPhotoLink: "", userPhotoSize: "",
-        userGender: "", userBirthday: Timestamp.now());
+        userGender: "", userBirthday: Timestamp.now(), userToken: "");
   }
 
   @override

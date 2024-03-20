@@ -19,6 +19,8 @@ class EditProfileTwoController extends GetxController {
 
   TextEditingController answerHeightController = TextEditingController();
 
+  // TextEditingController answerMarriageTargetController = TextEditingController();
+
   Rx<EditProfileTwoModel> editProfileTwoModelObj = EditProfileTwoModel().obs;
 
   Rx<String> religionDropDownValue = "".obs;
@@ -30,6 +32,12 @@ class EditProfileTwoController extends GetxController {
   Rx<String> smokingRadioGroup = "".obs;
 
   Rx<String> mbtiDropDownValue = "".obs;
+
+  Rx<String> lookingForDropDownValue = "".obs;
+
+  Rx<bool> isMarriageChosen = false.obs;
+
+  Rx<String> marriageTargetDropDownValue = "".obs;
 
   final phoneNumber = Get.arguments;
 
@@ -85,6 +93,27 @@ class EditProfileTwoController extends GetxController {
         }
       }
     }
+    if(userData.userLookingFor != ""){
+      for (var element in editProfileTwoModelObj.value.lookingForDropdownItemList.value) {
+        element.isSelected = false;
+        if (element.title == userData.userLookingFor) {
+          element.isSelected = true;
+          lookingForDropDownValue.value = element.title;
+          element.value = element.title;
+        }
+      }
+      if(userData.userLookingFor == "Marriage"){
+        isMarriageChosen.value = true;
+        for (var element in editProfileTwoModelObj.value.marriagePlanDropdownItemList.value) {
+          element.isSelected = false;
+          if (element.title == userData.userMarriageTarget) {
+            element.isSelected = true;
+            marriageTargetDropDownValue.value = element.title;
+            element.value = element.title;
+          }
+        }
+      }
+    }
   }
 
   onSelectReligion(dynamic value) {
@@ -109,6 +138,33 @@ class EditProfileTwoController extends GetxController {
     editProfileTwoModelObj.value.mbtiDropdownItemList.refresh();
   }
 
+  onSelectLookingFor(dynamic value){
+    for (var element in editProfileTwoModelObj.value.lookingForDropdownItemList.value) {
+      element.isSelected = false;
+      if (element.id == value.id) {
+        element.isSelected = true;
+        lookingForDropDownValue.value = element.title;
+      }
+    }
+    if(value.id == 3){
+      isMarriageChosen.value = true;
+    }else{
+      isMarriageChosen.value = false;
+    }
+    editProfileTwoModelObj.value.lookingForDropdownItemList.refresh();
+  }
+
+  onSelectMarriageTarget(dynamic value) {
+    for (var element in editProfileTwoModelObj.value.marriagePlanDropdownItemList.value) {
+      element.isSelected = false;
+      if (element.id == value.id) {
+        element.isSelected = true;
+        marriageTargetDropDownValue.value = element.title;
+      }
+    }
+    editProfileTwoModelObj.value.marriagePlanDropdownItemList.refresh();
+  }
+
   Future<void> saveUserProfile() async{
     if (answerProfessionController.value.text == ""){
       userData.userProfession = "";
@@ -128,8 +184,22 @@ class EditProfileTwoController extends GetxController {
     }
     userData.userSmoking = smokingRadioGroup.value.tr;
     userData.userDrinking = drinkingRadioGroup.value.tr;
-    userData.userMBTI = mbtiDropDownValue.value;
-      await _saveUserProfileToFireStoreDB();
+    if (mbtiDropDownValue.value == ""){
+      userData.userMBTI = "";
+    }else{
+      userData.userMBTI = mbtiDropDownValue.value;
+    }
+    if (lookingForDropDownValue.value == ""){
+      userData.userLookingFor = "";
+    }else{
+      userData.userLookingFor = lookingForDropDownValue.value;
+    }
+    if (isMarriageChosen.value){
+      userData.userMarriageTarget = marriageTargetDropDownValue.value;
+    }else{
+      userData.userMarriageTarget = '';
+    }
+    await _saveUserProfileToFireStoreDB();
     Get.delete<EditProfileTwoController>();
   }
 
@@ -153,6 +223,16 @@ class EditProfileTwoController extends GetxController {
       });
     }
     return result;
+  }
+
+  bool validateMarriageTarget(){
+    print(isMarriageChosen.value);
+    print(marriageTargetDropDownValue.value);
+    if(isMarriageChosen.value && marriageTargetDropDownValue.value != ''){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 }

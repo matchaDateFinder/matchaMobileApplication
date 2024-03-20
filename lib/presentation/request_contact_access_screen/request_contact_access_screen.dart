@@ -104,7 +104,34 @@ class RequestContactAccessScreen
                       RichText(
                         textAlign: TextAlign.justify,
                         text: TextSpan(
-                            text:"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
+                            text:"""Matcha App User Contact Data Privacy Terms
+
+                            1. Introduction
+                        Welcome to Matcha! We are committed to protecting your privacy and handling your contact data with transparency and care.
+
+                        2. Collection of Contact Data
+                        When you use Matcha, we may require access to your contact data. This includes, but is not limited to, your contact list on your mobile device. We collect this data solely for the purpose of enhancing your experience on our platform.
+
+                        3. Use of Contact Data
+                        The contact data we collect will be used exclusively for finding mutual connections to provide potential matches within the Matcha app. We believe this creates a more meaningful and secure matching experience for you.
+
+                        4. Consent
+                        By accepting these terms, you provide explicit consent for Matcha to access, collect, and use your contact data for the aforementioned purpose. You can withdraw this consent at any time through the app settings, but please be aware that this may impact the functionality and your experience on the Matcha app.
+
+                        5. Data Sharing and Disclosure
+                        Matcha does not sell or rent your contact data to third parties. We will only share your contact data with third parties when it is necessary to provide our service or when legally required.
+
+                        6. Data Security
+                        We implement robust security measures to protect your contact data against unauthorized access, alteration, disclosure, or destruction. However, please be aware that no digital platform can guarantee 100% security.
+
+                        7. Changes to Privacy Terms
+                        Matcha reserves the right to modify these privacy terms at any time. We will notify you of any significant changes and seek your consent where applicable.
+
+                        8. Contact Us
+                        If you have any questions or concerns about our use of your contact data, please contact us through our app support or at [support email].
+
+                            By using Matcha, you acknowledge that you have read, understood, and agreed to these terms.
+                        """,
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,

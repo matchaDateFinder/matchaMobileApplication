@@ -80,7 +80,9 @@ class MatchProfileController extends GetxController {
         }
       }
     });
-    if(listOfMutuals.value.length == 1){
+    if(listOfMutuals.value.length == 0){
+      mutualName.value = "";
+    }else if(listOfMutuals.value.length == 1){
       mutualName.value = "Friends with " + listOfMutuals.value.first;
     }else{
       mutualName.value = "Friends with " + listOfMutuals.value.first +

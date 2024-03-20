@@ -56,7 +56,6 @@ class CandidateProfileController extends GetxController {
           userPhotoPath.value = candidateProfile!.userPhotoLink;
           userProfession.value = candidateProfile!.userProfession;
           await candidateProfileModelObj.value.setItemTag(candidateProfile);
-          candidateProfileModelObj.refresh();
           // TODO attach mutual name
           List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
           user.userContactList.forEach((userContact) {
@@ -76,7 +75,9 @@ class CandidateProfileController extends GetxController {
               }
             }
           });
-          if(listOfMutuals.value.length == 1){
+          if(listOfMutuals.value.length == 0){
+            mutualName.value = "";
+          }else if(listOfMutuals.value.length == 1){
             mutualName.value = "Friends with " + listOfMutuals.value.first;
           }else{
             mutualName.value = "Friends with " + listOfMutuals.value.first +
@@ -89,6 +90,7 @@ class CandidateProfileController extends GetxController {
           AppRoutes.noticeOneScreen,
         );
       }
+      candidateProfileModelObj.refresh();
     }
   }
 

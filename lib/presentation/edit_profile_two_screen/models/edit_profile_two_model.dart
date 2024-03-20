@@ -15,7 +15,6 @@ class EditProfileTwoModel {
     SelectionPopupModel(
       id: 1,
       title: "Islam",
-      isSelected: true,
     ),
     SelectionPopupModel(
       id: 2,
@@ -45,7 +44,6 @@ class EditProfileTwoModel {
     SelectionPopupModel(
       id: 1,
       title: "INTJ",
-      isSelected: true,
     ),
     SelectionPopupModel(
       id: 2,
@@ -107,5 +105,39 @@ class EditProfileTwoModel {
       id: 16,
       title: "ESFP",
     )
+  ]);
+
+  Rx<List<SelectionPopupModel>> lookingForDropdownItemList = Rx([
+    SelectionPopupModel(
+      id: 1,
+      title: "Still figuring out",
+    ),
+    SelectionPopupModel(
+      id: 2,
+      title: "Serious relationships",
+    ),
+    SelectionPopupModel(
+      id: 3,
+      title: "Marriage",
+    ),
+  ]);
+
+  Rx<List<SelectionPopupModel>> marriagePlanDropdownItemList = Rx([
+    SelectionPopupModel(
+      id: 1,
+      title: "<1 years",
+    ),
+    SelectionPopupModel(
+      id: 2,
+      title: "1-3 years",
+    ),
+    SelectionPopupModel(
+      id: 3,
+      title: "3-5 years",
+    ),
+    SelectionPopupModel(
+      id: 4,
+      title: ">5 years",
+    ),
   ]);
 }

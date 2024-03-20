@@ -55,7 +55,9 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
                           _buildSmoking(),
                           SizedBox(height: 50.v),
                           _buildMbti(),
-                          SizedBox(height: 30.v),
+                          SizedBox(height: 50.v),
+                          _buildWhatAreYouLookingFor(),
+                          _buildMarriageTarget(),
                           CustomElevatedButton(
                             text: "lbl_save_my_profile".tr,
                             onPressed: () {
@@ -310,6 +312,61 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
     ]);
   }
 
+  Widget _buildWhatAreYouLookingFor() {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text("msg_what_are_you_looking_for".tr, style: theme.textTheme.bodyLarge),
+      SizedBox(height: 30.v),
+      Obx(() => CustomDropDown(
+          icon: Container(
+              margin: EdgeInsets.fromLTRB(30.h, 12.v, 16.h, 12.v),
+              decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(10.h)),
+              child: CustomImageView(
+                  imagePath: ImageConstant.imgArrowdown,
+                  height: 24.adaptSize,
+                  width: 24.adaptSize)),
+          hintText: controller.lookingForDropDownValue.value == "" ? "lbl_looking_for".tr
+              : controller.lookingForDropDownValue.value,
+          items:
+          controller.editProfileTwoModelObj.value.lookingForDropdownItemList.value,
+          onChanged: (value) {
+            controller.onSelectLookingFor(value);
+          })
+      )
+    ]);
+  }
+
+  Widget _buildMarriageTarget() {
+    return Obx(() => controller.isMarriageChosen.value ?
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SizedBox(height: 50.v),
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Text("msg_what_is_your_marriage_target_year".tr,
+                style: theme.textTheme.bodyLarge)),
+        SizedBox(height: 50.v),
+        CustomDropDown(
+          icon: Container(
+              margin: EdgeInsets.fromLTRB(30.h, 12.v, 16.h, 12.v),
+              decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(10.h)),
+              child: CustomImageView(
+                  imagePath: ImageConstant.imgArrowdown,
+                  height: 24.adaptSize,
+                  width: 24.adaptSize)),
+          hintText: controller.marriageTargetDropDownValue.value == "" ? "lbl_marriage_target_in_year".tr
+              : controller.marriageTargetDropDownValue.value,
+          items:
+          controller.editProfileTwoModelObj.value.marriagePlanDropdownItemList.value,
+          onChanged: (value) {
+            controller.onSelectMarriageTarget(value);
+        }),
+        SizedBox(height: 30.v),
+      ]) : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SizedBox(height: 50.v),
+      ]));
+  }
+
   /// Navigates to the previous screen.
   onTapVector() {
     Get.back();
@@ -317,10 +374,17 @@ class EditProfileTwoScreen extends GetWidget<EditProfileTwoController> {
 
   /// Navigates to the editProfileScreen when the action is triggered.
   onTapSaveMyProfile() async {
-    await controller.saveUserProfile();
-    Get.toNamed(
-      AppRoutes.editProfileScreen,
-      arguments: controller.phoneNumber
-    );
+    if(controller.validateMarriageTarget()){
+      await controller.saveUserProfile();
+      Get.toNamed(
+          AppRoutes.editProfileScreen,
+          arguments: controller.phoneNumber
+      );
+    }else{
+      Get.defaultDialog(
+          title: "Marriage target is not selected",
+          content: Text("Please select your marriage target")
+      );
+    }
   }
 }

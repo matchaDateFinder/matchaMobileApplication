@@ -47,7 +47,6 @@ class OtpController extends GetxController with CodeAutoFill {
     listenForCode();
     _startTimer(initialTimerValue);
     sendOTPCodeToPhone("+"+fullPhoneNumber);
-    // sendOTPCodeToPhone("+61435916475");
   }
 
   @override
@@ -93,9 +92,7 @@ class OtpController extends GetxController with CodeAutoFill {
     buttonState.value = false;
     remainingSeconds = 60;
     _startTimer(remainingSeconds);
-    // TODO logic for sending OTP to this number
     sendOTPCodeToPhone("+"+fullPhoneNumber);
-    // sendOTPCodeToPhone("+61435916475");
   }
 
   Future<bool> checkForExistingUser() async {
@@ -103,7 +100,6 @@ class OtpController extends GetxController with CodeAutoFill {
     if (userFromFiresToreDB.userName != "userName" && userFromFiresToreDB.userPhoneNumber != "") { // user exists
       _prefUtils.setLoginStatus(true);
       _prefUtils.setLocalUser(convertMapPreferences(userFromFiresToreDB));
-      // TODO reupload and replace contact list from phone to DB
       List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
       Set<String?> newListOfContact = new Set<String?>();
       contacts.forEach((element) {
@@ -115,7 +111,6 @@ class OtpController extends GetxController with CodeAutoFill {
         newListOfContact.add(element);
       });
       await _firestore.updateUserContactList(userFromFiresToreDB.userId, newListOfContact.toList());
-      // TODO subscribe the app to all of the related topic in DB
       return true;
     }else{ // user does not exist
       return false;
@@ -146,7 +141,7 @@ class OtpController extends GetxController with CodeAutoFill {
             AppRoutes.userProfileScreen,
             arguments: fullPhoneNumber
           );
-        }else{ // non existing user means register
+        }else{
           await setOnboardingCheckpoint();
           await manuallyKillConstructor();
           Get.toNamed(
@@ -155,7 +150,6 @@ class OtpController extends GetxController with CodeAutoFill {
           );
         }
       });
-      // Navigate to the next screen after successful login
     } catch (e) {
       Get.snackbar("Error", "Failed to verify OTP");
     }

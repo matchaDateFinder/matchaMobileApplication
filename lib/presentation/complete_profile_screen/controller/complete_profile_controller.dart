@@ -75,7 +75,10 @@ class CompleteProfileController extends GetxController {
         userDrinking: '',
         userMBTI: '',
         userContactList: contactListInit,
-        lastRecommendationIsGiven: Timestamp.fromDate(DateTime.now().subtract(Duration(days:1)))
+        lastRecommendationIsGiven: Timestamp.fromDate(DateTime.now().subtract(Duration(days:1))),
+        userToken: 'placeholderToken',
+        userLookingFor: '',
+        userMarriageTarget: '',
     );
     await _firestore.addUserToFireStore(_userFireStoreDBModel);
   }

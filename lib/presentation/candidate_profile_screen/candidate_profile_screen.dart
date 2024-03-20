@@ -17,7 +17,7 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.onPrimary,
-        // appBar: _buildAppBar(),
+        appBar: _buildAppBar(),
         body: SizedBox(
           width: double.maxFinite,
           child: SingleChildScrollView(
@@ -155,9 +155,8 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
 
   /// Section Widget
   Widget _buildCandidateProfile() {
-    if(controller.candidateProfileModelObj.value.candidateTagItemList.value
-        .length > 0){
-      return Container(
+    return Obx(() => controller.candidateProfileModelObj.value.candidateTagItemList.value.length > 0 ?
+      Container(
           padding: EdgeInsets.symmetric(horizontal: 10.h),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,6 +166,7 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
                 Obx(() => Wrap(
                     runSpacing: 8.v,
                     spacing: 8.h,
+                    alignment: WrapAlignment.center,
                     children: List<Widget>.generate(
                         controller.candidateProfileModelObj.value.candidateTagItemList.value
                             .length, (index) {
@@ -176,9 +176,7 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
                     })))
               ]
           )
-      );
-    }else{
-      return Container(
+      ) : Container(
         padding: EdgeInsets.symmetric(horizontal: 4.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,7 +191,7 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
             Align(
               alignment: Alignment.center,
               child: SizedBox(
-                width: 216.h,
+                width: 230.h, // how can this be responsive?
                 child: Text(
                   "msg_looks_like_this".tr,
                   maxLines: 2,
@@ -207,8 +205,8 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
             ),
           ],
         ),
-      );
-    }
+      )
+    );
   }
 
   /// Section Widget

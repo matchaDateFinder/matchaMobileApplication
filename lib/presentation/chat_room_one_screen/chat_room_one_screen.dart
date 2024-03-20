@@ -182,16 +182,16 @@ class ChatRoomOneScreen extends GetWidget<ChatRoomOneController> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              CustomImageView(
-                  imagePath: ImageConstant.imgFramePrimary24x24,
-                  height: 24.adaptSize,
-                  width: 24.adaptSize,
-                  margin: EdgeInsets.symmetric(vertical: 4.v)),
-              CustomImageView(
-                  imagePath: ImageConstant.imgFrame24x24,
-                  height: 24.adaptSize,
-                  width: 24.adaptSize,
-                  margin: EdgeInsets.only(left: 8.h, top: 4.v, bottom: 4.v)),
+              // CustomImageView(
+              //     imagePath: ImageConstant.imgFramePrimary24x24,
+              //     height: 24.adaptSize,
+              //     width: 24.adaptSize,
+              //     margin: EdgeInsets.symmetric(vertical: 4.v)),
+              // CustomImageView(
+              //     imagePath: ImageConstant.imgFrame24x24,
+              //     height: 24.adaptSize,
+              //     width: 24.adaptSize,
+              //     margin: EdgeInsets.only(left: 8.h, top: 4.v, bottom: 4.v)),
               Padding(
                   padding: EdgeInsets.only(left: 8.h),
                   child: CustomTextFormField(

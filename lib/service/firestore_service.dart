@@ -38,13 +38,18 @@ class FirestoreService extends ChangeNotifier{
       'userMBTI': userModel.userMBTI,
       'userContactList': userModel.userContactList,
       'lastRecommendationIsGiven' : userModel.lastRecommendationIsGiven,
+      'userToken': userModel.userToken,
+      'userLookingFor' : userModel.userLookingFor,
+      'userMarriageTarget' : userModel.userMarriageTarget
     });
   }
 
   Future<UserFireStoreModel> getUserFromFireStoreByPhoneNumber(String phoneNumber) async {
     final userRef = firebaseFirestore.collection("userData");
     final query = userRef.where("userPhoneNumber", isEqualTo: phoneNumber);
-    UserFireStoreModel userDataResult = new UserFireStoreModel(userName: "userName", userPhoneNumber: "", userPhotoLink: "userPhotoLink", userPhotoSize: "userPhotoSize", userGender: "userGender", userBirthday: Timestamp(0,0), userId: '');
+    UserFireStoreModel userDataResult = new UserFireStoreModel(userName: "userName", userPhoneNumber: "",
+        userPhotoLink: "userPhotoLink", userPhotoSize: "userPhotoSize", userGender: "userGender",
+        userBirthday: Timestamp(0,0), userId: '', userToken: "");
     await query.get().then(
           (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
@@ -66,6 +71,8 @@ class FirestoreService extends ChangeNotifier{
       'userSmoking' : userData.userSmoking,
       'userDrinking' : userData.userDrinking,
       'userMBTI' : userData.userMBTI,
+      'userLookingFor' : userData.userLookingFor,
+      'userMarriageTarget' : userData.userMarriageTarget
     });
   }
 
@@ -122,9 +129,6 @@ class FirestoreService extends ChangeNotifier{
           (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
           UserFireStoreModel temp = UserFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot);
-          //possible scenario
-          // 1. user does not have contact list and potential match have contact list
-          // 2. user does not have contact list and potential match also dont have contact list
           if(temp.userContactList!.length > 0){
             if(!(temp.userContactList!.contains(phoneNumber))){
                 listOfUser.add(temp);
