@@ -1,4 +1,8 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:get/get.dart';
+import 'package:matchaapplication/core/app_export.dart';
+import 'package:matchaapplication/routes/app_routes.dart';
+
 
 // For checking internet connectivity
 abstract class NetworkInfoI {
@@ -10,10 +14,15 @@ abstract class NetworkInfoI {
 }
 
 class NetworkInfo implements NetworkInfoI {
+
+  late final PrefUtils _prefUtils;
+
   Connectivity connectivity;
 
   NetworkInfo(this.connectivity) {
     connectivity = this.connectivity;
+    connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    _prefUtils = PrefUtils();
   }
 
   ///checks internet is connected or not
@@ -23,8 +32,10 @@ class NetworkInfo implements NetworkInfoI {
   Future<bool> isConnected() async {
     final result = await connectivity.checkConnectivity();
     if (result != ConnectivityResult.none) {
+      print("connection is on");
       return true;
     }
+    print("connection is off");
     return false;
   }
 
@@ -38,4 +49,13 @@ class NetworkInfo implements NetworkInfoI {
   @override
   Stream<ConnectivityResult> get onConnectivityChanged =>
       connectivity.onConnectivityChanged;
+
+  void _updateConnectionStatus(ConnectivityResult connectivityResult) {
+    if (connectivityResult == ConnectivityResult.none) {
+      _prefUtils.setErrorType("networkConnection");
+      Get.toNamed(
+        AppRoutes.errorScreen,
+      );
+    }
+  }
 }

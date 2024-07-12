@@ -80,7 +80,10 @@ class RequestContactAccessScreen
         arguments: Get.arguments,
       );
     }else{
-      print('permission denied');
+      Get.defaultDialog(
+          title: "Contact access was not given",
+          content: Text("Please give Matcha access to your Contact List")
+      );
     }
   }
 

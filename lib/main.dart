@@ -14,6 +14,7 @@ Future<void> main() async {
     );
     FirestoreService();
     PrefUtils();
+    await MessagingService().initNotifications();
     runApp(MyApp());
   });
 }

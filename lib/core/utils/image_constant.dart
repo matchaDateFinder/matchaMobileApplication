@@ -157,4 +157,12 @@ class ImageConstant {
   static String imgMatchaExplanation = '$imagePath/image-matchaparty_1.png';
 
   static String imgMatchaNoticeThatsItForToday = '$imagePath/image-notice_1.png';
+
+  static String imgMatchaTitle = '$imagePath/image_matcha_title.png';
+
+  static String imageContactAccess2 = '$imagePath/image-contactaccess_2.png';
+
+  static String imageGalleryAccess = '$imagePath/image_gallery_access.png';
+
+  static String imageInternetAccess = '$imagePath/internet_access.png';
 }

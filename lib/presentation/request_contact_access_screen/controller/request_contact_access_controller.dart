@@ -21,7 +21,12 @@ class RequestContactAccessController extends GetxController {
     if (permissionStatus == PermissionStatus.granted) {
       return true;
     } else {
-      _handleInvalidPermissions(permissionStatus);
+      if(_handleInvalidPermanentPermissions(permissionStatus) == "permanentDeny"){
+        _prefUtils.setErrorType("contactAccess");
+        Get.toNamed(
+          AppRoutes.errorScreen,
+        );
+      }
       return false;
     }
   }
@@ -37,12 +42,11 @@ class RequestContactAccessController extends GetxController {
     }
   }
 
-  void _handleInvalidPermissions(PermissionStatus permissionStatus) {
-    if (permissionStatus == PermissionStatus.denied) {
-      print('Access to contact data denied');
-    } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
-      print('Permanently Denied - Contact data not available on device');
+  String _handleInvalidPermanentPermissions(PermissionStatus permissionStatus) {
+    if (permissionStatus == PermissionStatus.permanentlyDenied) {
+      return "permanentDeny";
     }
+    return "granted";
   }
 
   Future<void> setOnboardingCheckpoint() async {

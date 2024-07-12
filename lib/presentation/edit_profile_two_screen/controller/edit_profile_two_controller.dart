@@ -226,8 +226,6 @@ class EditProfileTwoController extends GetxController {
   }
 
   bool validateMarriageTarget(){
-    print(isMarriageChosen.value);
-    print(marriageTargetDropDownValue.value);
     if(isMarriageChosen.value && marriageTargetDropDownValue.value != ''){
       return true;
     }else{

@@ -18,17 +18,13 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
                 padding: EdgeInsets.symmetric(horizontal: 26.h, vertical: 42.v),
                 child:
                     Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                      SizedBox(height: 87.v),
-                      Text("lbl_congratulation".tr,
+                      SizedBox(height: 30.v),
+                      Text("lbl_it_s_a_match_a".tr,
                         style: theme.textTheme.headlineLarge
                       ),
-                      SizedBox(height: 38.v),
+                      SizedBox(height: 10.v),
                       _buildEightyNineStack(),
-                      SizedBox(height: 39.v),
-                      Text("lbl_it_s_a_match_a".tr,
-                        style: theme.textTheme.headlineLarge,
-                      ),
-                      SizedBox(height: 64.v),
+                      SizedBox(height: 10.v),
                       CustomElevatedButton(
                           text: "msg_ask_for_a_matcha".tr,
                           margin: EdgeInsets.symmetric(horizontal: 21.h),
@@ -37,13 +33,15 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
                           },
                           buttonStyle: CustomButtonStyles.fillBlack,
                       ),
-                      SizedBox(height: 17.v),
-                      GestureDetector(
-                          onTap: () {
-                            onTapTxtSkipForNow();
-                          },
-                          child: Text("lbl_skip_for_now".tr,
-                              style: theme.textTheme.bodyLarge))
+                      SizedBox(height: 10.v),
+                      CustomElevatedButton(
+                        text: "lbl_skip_for_now".tr,
+                        margin: EdgeInsets.symmetric(horizontal: 21.h),
+                        onPressed: () {
+                          onTapTxtSkipForNow();
+                        },
+                        buttonStyle: CustomButtonStyles.outlinePrimary,
+                      ),
                 ])),
             bottomNavigationBar: _buildBottomBar()));
   }
@@ -51,30 +49,30 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
   /// Section Widget
   Widget _buildEightyNineStack() {
     return SizedBox(
-        height: 228.v,
-        width: 306.h,
-        child: Stack(alignment: Alignment.topLeft, children: [
+        height: 320.v,
+        width: 320.h,
+        child: Stack(alignment: Alignment.center, children: [
+          // Align(
+          //     alignment: Alignment.bottomRight,
+          //     child: Container(
+          //         height: 144.v,
+          //         width: 161.h,
+          //         padding: EdgeInsets.all(8.h),
+          //         decoration: BoxDecoration(
+          //             image: DecorationImage(
+          //                 image: fs.Svg(ImageConstant.imgUser2),
+          //                 fit: BoxFit.cover)),
+          //         child: CustomImageView(
+          //             imagePath: controller.userPhotoLink,
+          //             height: 128.adaptSize,
+          //             width: 128.adaptSize,
+          //             radius: BorderRadius.circular(64.h),
+          //             alignment: Alignment.centerLeft))),
           Align(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.center,
               child: Container(
-                  height: 144.v,
-                  width: 161.h,
-                  padding: EdgeInsets.all(8.h),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: fs.Svg(ImageConstant.imgUser2),
-                          fit: BoxFit.cover)),
-                  child: CustomImageView(
-                      imagePath: controller.userPhotoLink,
-                      height: 128.adaptSize,
-                      width: 128.adaptSize,
-                      radius: BorderRadius.circular(64.h),
-                      alignment: Alignment.centerLeft))),
-          Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                  height: 144.v,
-                  width: 175.h,
+                  height: 320.v,
+                  width: 320.h,
                   padding: EdgeInsets.all(8.h),
                   decoration: BoxDecoration(
                       image: DecorationImage(
@@ -82,8 +80,8 @@ class NoticeTwoScreen extends GetWidget<NoticeTwoController> {
                           fit: BoxFit.cover)),
                   child: CustomImageView(
                       imagePath: controller.candidatePhotoLink,
-                      height: 128.adaptSize,
-                      width: 128.adaptSize,
+                      height: 320.adaptSize,
+                      width: 320.adaptSize,
                       radius: BorderRadius.circular(64.h),
                       alignment: Alignment.centerRight)))
         ]));

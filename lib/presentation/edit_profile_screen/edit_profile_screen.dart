@@ -290,7 +290,14 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
   }
 
   _onPictureSelection() async {
-    controller.getImage();
+    if(await controller.askPermissions()){
+      controller.getImage();
+    }else{
+      Get.defaultDialog(
+          title: "Gallery access was not given",
+          content: Text("Please give Matcha access to your Gallery and Camera")
+      );
+    }
   }
 
 }

@@ -41,7 +41,9 @@ class CompleteProfileController extends GetxController {
     List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
     contacts.forEach((element) {
       element.phones.forEach((elementA) {
-        contactListInit!.add(elementA.number);
+        if(elementA.number.length>8){
+          contactListInit!.add(elementA.number);
+        }
       });
     });
     _saveToFireStoreDB();
@@ -76,7 +78,7 @@ class CompleteProfileController extends GetxController {
         userMBTI: '',
         userContactList: contactListInit,
         lastRecommendationIsGiven: Timestamp.fromDate(DateTime.now().subtract(Duration(days:1))),
-        userToken: 'placeholderToken',
+        userToken: _prefUtils.getDeviceToken()!,
         userLookingFor: '',
         userMarriageTarget: '',
     );

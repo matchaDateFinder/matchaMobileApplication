@@ -28,6 +28,14 @@ final Map<String, String> enUs = {
   "msg_come_back_again_for": "come back again\nfor tomorrow!",
   "msg_that_s_it_for_today": "That's it for today, ",
 
+  // Error Screen Message
+  "lbl_internet_error" : "Network Error",
+  "lbl_no_contact_access_error" : "No Contact Access Error",
+  "lbl_no_camera_access_error" : "No Gallery Access Error",
+  "msg_internet_error": "Please connect to the internet",
+  "msg_no_contact_access_error": "Please allow Matcha to access \nyour contacts so we can match \nyou with the best matches!",
+  "msg_no_camera_access_error": "Please allow Matcha to access \nyour gallery so you can choose \nthe best picture for your profiles!",
+
   // Edit Profile Screen
   "lbl_add": "Add",
   "lbl_drinking": "Drinking",
@@ -60,7 +68,7 @@ final Map<String, String> enUs = {
   // Notice Two Screen
   "lbl_congratulation": "Congratulations",
   "lbl_it_s_a_match_a": "It’s a Match-a!",
-  "msg_ask_for_a_matcha": "Ask for a matcha date?",
+  "msg_ask_for_a_matcha": "Say Hi!",
 
   // Verification Screen
   "lbl_verification": "Verification",
@@ -120,7 +128,7 @@ final Map<String, String> enUs = {
   "lbl_profession": "Profession",
   "lbl_religion": "Religion",
   "lbl_send": "Send",
-  "lbl_skip_for_now": "Keep Swiping",
+  "lbl_skip_for_now": "Maybe Later",
   "lbl_socially": "Occasionally",
   "lbl_text_here": "Text here...",
   "lbl_type_here": "Type here...",

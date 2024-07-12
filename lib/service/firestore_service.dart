@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart' as path;
 import 'package:matchaapplication/core/app_export.dart';
@@ -107,17 +107,20 @@ class FirestoreService extends ChangeNotifier{
 
   Future<List<UserFireStoreModel>> getListOfMutualConnectionByPhoneNumberList(List<String> phoneNumberList, String phoneNumber) async {
     List<UserFireStoreModel> listOfUser = [];
+    Iterable<List<String>> phoneNumberListChunks = phoneNumberList.slices(30);
     final userRef = firebaseFirestore.collection("userData");
-    final query = userRef.where("userContactList", arrayContainsAny: phoneNumberList)
-                         .where("userPhoneNumber", isNotEqualTo: phoneNumber);
-    await query.get().then(
-          (querySnapshot) {
-        for (var docSnapshot in querySnapshot.docs) {
-          listOfUser.add(UserFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot));
-        }
-      },
-      onError: (e) => print("Error completing: $e"),
-    );
+    for (var value in phoneNumberListChunks) {
+      final query = userRef.where("userContactList", arrayContainsAny: value)
+          .where("userPhoneNumber", isNotEqualTo: phoneNumber);
+      await query.get().then(
+            (querySnapshot) {
+          for (var docSnapshot in querySnapshot.docs) {
+            listOfUser.add(UserFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot));
+          }
+        },
+        onError: (e) => print("Error completing: $e"),
+      );
+    }
     return listOfUser;
   }
 
@@ -252,21 +255,6 @@ class FirestoreService extends ChangeNotifier{
     return result;
   }
 
-  Future<List<ChatMessageFireStoreModel>> getChatMessage(String chatRoomId, String userPhoneNumber, String matchPhoneNumber) async {
-    List<ChatMessageFireStoreModel> result = [];
-    final chatMessageRef = firebaseFirestore.collection("chatMessage");
-    final query = chatMessageRef.where("chatRoomId", isEqualTo: chatRoomId).where("senderPhoneNumber", whereIn: [userPhoneNumber, matchPhoneNumber]).orderBy("sentDate");
-    await query.get().then(
-          (querySnapshot) {
-        for (var docSnapshot in querySnapshot.docs) {
-          result.add(ChatMessageFireStoreModel.fromDocumentSnapshot(documentSnapshot: docSnapshot));
-        }
-      },
-      onError: (e) => print("Error completing: $e"),
-    );
-    return result;
-  }
-
   Future<void> sendChatMessage(ChatMessageFireStoreModel newChat) async {
     await firebaseFirestore
         .collection('chatMessage')
@@ -355,6 +343,15 @@ class FirestoreService extends ChangeNotifier{
                 .snapshots();
   }
 
+  Stream<QuerySnapshot> getLatestMessageForNotification(String chatRoomId, String userPhoneNumber, String matchPhoneNumber) {
+    return firebaseFirestore
+        .collection("chatMessage")
+        .where("chatRoomId", isEqualTo: chatRoomId)
+        .where("senderPhoneNumber", whereIn: [userPhoneNumber, matchPhoneNumber])
+        .orderBy("sentDate")
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> getChatRoomList(String phoneNumber) {
     return firebaseFirestore
             .collection("chatRoom")
@@ -380,6 +377,12 @@ class FirestoreService extends ChangeNotifier{
   Future<void> updateUserContactList(String? userId, List<String?> newContactList) async {
     firebaseFirestore.collection("userData").doc(userId).update({
       'userContactList' : newContactList,
+    });
+  }
+
+  Future <void> updateDeviceToken(String? userId, String? userToken) async {
+    firebaseFirestore.collection("userData").doc(userId).update({
+      'userToken' : userToken,
     });
   }
 
