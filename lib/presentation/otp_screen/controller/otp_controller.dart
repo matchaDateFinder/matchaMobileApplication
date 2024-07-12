@@ -111,6 +111,7 @@ class OtpController extends GetxController with CodeAutoFill {
         newListOfContact.add(element);
       });
       await _firestore.updateUserContactList(userFromFiresToreDB.userId, newListOfContact.toList());
+      await _firestore.updateDeviceToken(userFromFiresToreDB.userId, _prefUtils.getDeviceToken());
       return true;
     }else{ // user does not exist
       return false;

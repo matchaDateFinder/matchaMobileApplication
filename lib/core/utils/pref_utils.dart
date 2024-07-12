@@ -69,5 +69,20 @@ class PrefUtils {
     _sharedPreferences?.setString("onboardingCheckpoint", value);
   }
 
+  void setErrorType(String value){
+    _sharedPreferences?.setString("errorType", value);
+  }
+
+  String? getErrorType(){
+    return _sharedPreferences?.getString("errorType");
+  }
+
+  void setDeviceToken(String token){
+    _sharedPreferences?.setString("deviceToken", token);
+  }
+
+  String? getDeviceToken(){
+   return _sharedPreferences?.getString("deviceToken");
+  }
 
 }

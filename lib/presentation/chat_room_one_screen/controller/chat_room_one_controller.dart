@@ -20,12 +20,14 @@ class ChatRoomOneController extends GetxController {
   late final String matchPhoneNumber;
   late final String chatRoomId;
   late final String receiverName;
-  late final String receiverPhotoLink;
+  late String receiverPhotoLink;
   late final Stream<QuerySnapshot> messageListContent;
 
   late Map<String, dynamic> matchProfileAttribute;
 
   bool get isTextFieldEnable => textHereController.text.isNotEmpty;
+
+  var fetchImageFlag = false;
 
   ChatRoomOneController() {
     var arguments = Get.arguments;
@@ -37,7 +39,13 @@ class ChatRoomOneController extends GetxController {
     matchPhoneNumber = arguments["receiverPhoneNumber"];
     chatRoomId = arguments["chatRoomId"];
     receiverName = arguments["receiverName"];
-    receiverPhotoLink = arguments["receiverPhotoLink"];
+    if(arguments["receiverPhotoLink"] == null){
+      fetchImageFlag = true;
+      receiverPhotoLink = "";
+    }else{
+      receiverPhotoLink = arguments["receiverPhotoLink"];
+      print(receiverPhotoLink);
+    }
     messageListContent = _firestore.getMessage(chatRoomId, userPhoneNumber, matchPhoneNumber);
     matchProfileAttribute = new Map<String,dynamic>();
   }
@@ -63,6 +71,10 @@ class ChatRoomOneController extends GetxController {
     matchProfileAttribute["userMBTI"] = matchProfile!.userMBTI;
     matchProfileAttribute["userContactList"] = matchProfile!.userContactList;
     matchProfileAttribute["chatRoomId"] = chatRoomId;
+    if(fetchImageFlag){
+      receiverPhotoLink = matchProfile!.userPhotoLink;
+      print(receiverPhotoLink);
+    }
     await _firestore.updateChatRoom(chatRoomId, userPhoneNumber, "openChat");
   }
 

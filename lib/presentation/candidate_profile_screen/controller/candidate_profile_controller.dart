@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:matchaapplication/core/app_export.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/matchFireStoreModel/matchFireStore.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/userFireStoreModel/userFireStore.dart';
 import 'package:matchaapplication/data/models/fireStoreModel/chatRoomFireStoreModel/chatRoomFireStore.dart';
 import 'package:matchaapplication/presentation/candidate_profile_screen/models/candidate_profile_model.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /// A controller class for the CandidateProfileScreen.
 ///
@@ -41,56 +43,70 @@ class CandidateProfileController extends GetxController {
   void onInit() async{
     super.onInit();
     phoneNumber = _prefUtils.getUserPhoneNumber();
-    user = await _firestore.getUserFromFireStoreByPhoneNumber(phoneNumber);
-    if(user != null){
-      DateTime lastRecommDate = user!.lastRecommendationIsGiven.toDate();
-      if(lastRecommDate.year == 1970 || (daysBetween(lastRecommDate, DateTime.now()) >= 1)){
-        Set<String> potentialMatch = await getPotentialMatch();
-        Set<String> existingMatchFilter = await checkExistingMatchRow(potentialMatch);
-        if(existingMatchFilter.length > 0){
-          candidateProfile = await _firestore.getUserFromFireStoreByPhoneNumber(existingMatchFilter.first);
-          candidateAge = calculateAge(DateTime.now(), candidateProfile!.userBirthday.toDate());
-          candidateName = candidateProfile!.userName;
-          candidatePhoneNumber = candidateProfile!.userPhoneNumber;
-          nameAge.value = candidateName + ' - ' + candidateAge.toString();
-          userPhotoPath.value = candidateProfile!.userPhotoLink;
-          userProfession.value = candidateProfile!.userProfession;
-          await candidateProfileModelObj.value.setItemTag(candidateProfile);
-          // TODO attach mutual name
-          List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
-          user.userContactList.forEach((userContact) {
-            if(candidateProfile.userContactList.contains(userContact)){
-              String temp = '';
-              contacts.forEach((contact) {
-                contact.phones.forEach((number) {
-                  if(number.number == userContact){
-                    temp = contact.displayName;
-                  }
+    if(await askPermissions()){
+      user = await _firestore.getUserFromFireStoreByPhoneNumber(phoneNumber);
+      if(user != null){
+        DateTime lastRecommDate = user!.lastRecommendationIsGiven.toDate();
+        if(lastRecommDate.year == 1970 || (daysBetween(lastRecommDate, DateTime.now()) >= 1)){
+          Set<String> potentialMatch = await getPotentialMatch();
+          Set<String> existingMatchFilter = await checkExistingMatchRow(potentialMatch);
+          if(existingMatchFilter.length > 0){
+            candidateProfile = await _firestore.getUserFromFireStoreByPhoneNumber(existingMatchFilter.first);
+            candidateAge = calculateAge(DateTime.now(), candidateProfile!.userBirthday.toDate());
+            candidateName = candidateProfile!.userName;
+            candidatePhoneNumber = candidateProfile!.userPhoneNumber;
+            nameAge.value = candidateName + ' - ' + candidateAge.toString();
+            userPhotoPath.value = candidateProfile!.userPhotoLink;
+            userProfession.value = candidateProfile!.userProfession;
+            await candidateProfileModelObj.value.setItemTag(candidateProfile);
+            List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
+            user.userContactList.forEach((userContact) {
+              if(candidateProfile.userContactList.contains(userContact)){
+                String temp = '';
+                contacts.forEach((contact) {
+                  contact.phones.forEach((number) {
+                    if(number.number == userContact){
+                      temp = contact.displayName;
+                    }
+                  });
                 });
-              });
-              if(temp == ''){
-                listOfMutuals.value.add(userContact);
-              }else{
-                listOfMutuals.value.add(temp);
+                if(temp == ''){
+                  listOfMutuals.value.add(userContact);
+                }else{
+                  listOfMutuals.value.add(temp);
+                }
               }
+            });
+            if(listOfMutuals.value.length == 0){
+              mutualName.value = "";
+            }else if(listOfMutuals.value.length == 1){
+              mutualName.value = "Friends with " + listOfMutuals.value.first;
+            }else{
+              mutualName.value = "Friends with " + listOfMutuals.value.first +
+                  " and " + (listOfMutuals.value.length-1).toString() + " Others";
             }
-          });
-          if(listOfMutuals.value.length == 0){
-            mutualName.value = "";
-          }else if(listOfMutuals.value.length == 1){
-            mutualName.value = "Friends with " + listOfMutuals.value.first;
           }else{
-            mutualName.value = "Friends with " + listOfMutuals.value.first +
-                " and " + (listOfMutuals.value.length-1).toString() + " Others";
+            // TODO tanya ke reyhan, kalau secara database memang sudah "habis" perlu gimana?
           }
+        }else{
+          await manuallyKillConstructor();
+          Get.toNamed(
+            AppRoutes.noticeOneScreen,
+          );
         }
-      }else{
-        await manuallyKillConstructor();
-        Get.toNamed(
-          AppRoutes.noticeOneScreen,
-        );
+        candidateProfileModelObj.refresh();
       }
-      candidateProfileModelObj.refresh();
+    }else{
+      await manuallyKillConstructor();
+      Get.defaultDialog(
+          title: "Contact access was not given",
+          content: Text("Please give Matcha access to your Contact List")
+      );
+      Get.toNamed(
+        AppRoutes.userProfileScreen,
+        arguments: phoneNumber
+      );
+
     }
   }
 
@@ -173,6 +189,38 @@ class CandidateProfileController extends GetxController {
     return (to.difference(from).inHours / 24).round();
   }
 
+  Future<bool> askPermissions() async {
+    PermissionStatus permissionStatus = await _getContactPermission();
+    if (permissionStatus == PermissionStatus.granted) {
+      return true;
+    } else {
+      if(_handleInvalidPermanentPermissions(permissionStatus) == "permanentDeny"){
+        _prefUtils.setErrorType("contactAccess");
+        Get.toNamed(
+          AppRoutes.errorScreen,
+        );
+      }
+      return false;
+    }
+  }
+
+  Future<PermissionStatus> _getContactPermission() async {
+    PermissionStatus permission = await Permission.contacts.status;
+    if (permission != PermissionStatus.granted &&
+        permission != PermissionStatus.permanentlyDenied) {
+      PermissionStatus permissionStatus = await Permission.contacts.request();
+      return permissionStatus;
+    } else {
+      return permission;
+    }
+  }
+
+  String _handleInvalidPermanentPermissions(PermissionStatus permissionStatus) {
+    if (permissionStatus == PermissionStatus.permanentlyDenied) {
+      return "permanentDeny";
+    }
+    return "granted";
+  }
 
 
 }

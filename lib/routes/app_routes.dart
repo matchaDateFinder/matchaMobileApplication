@@ -1,5 +1,6 @@
 import 'package:matchaapplication/presentation/edit_profile_two_screen/edit_profile_two_screen.dart';
 import 'package:matchaapplication/presentation/edit_profile_two_screen/binding/edit_profile_two_binding.dart';
+import 'package:matchaapplication/presentation/error_screen/error_screen.dart';
 import 'package:matchaapplication/presentation/explanation_of_mutual_screen/binding/explanation_of_mutual_binding.dart';
 import 'package:matchaapplication/presentation/match_profile_screen/match_profile_screen.dart';
 import 'package:matchaapplication/presentation/match_profile_screen/binding/match_profile_binding.dart';
@@ -38,6 +39,8 @@ import 'package:matchaapplication/presentation/login_signup_screen/binding/login
 import 'package:matchaapplication/presentation/otp_screen/otp_screen.dart';
 import 'package:matchaapplication/presentation/otp_screen/binding/otp_binding.dart';
 import 'package:matchaapplication/presentation/explanation_of_mutual_screen/explanation_of_mutual_screen.dart';
+import 'package:matchaapplication/presentation/error_screen/error_screen.dart';
+import 'package:matchaapplication/presentation/error_screen/binding/error_binding.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
@@ -95,6 +98,8 @@ class AppRoutes {
   static const String otpVerifyScreen = '/otp_screen';
 
   static const String explanationOfMutualScreen = '/explanation_of_mutual_screen';
+
+  static const String errorScreen = '/error_screen';
 
   static List<GetPage> pages = [
     GetPage(
@@ -242,6 +247,13 @@ class AppRoutes {
         page: () => ExplanationOfMutualScreen(),
         bindings: [
           ExplanationOfMutualBinding()
+        ]
+    ),
+    GetPage(
+        name: errorScreen,
+        page: () => ErrorScreen(),
+        bindings: [
+          ErrorBinding()
         ]
     )
   ];

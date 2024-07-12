@@ -7,6 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+
 /// A controller class for the EditProfileScreen.
 ///
 /// This class manages the state of the EditProfileScreen, including the
@@ -17,6 +20,8 @@ class EditProfileController extends GetxController {
   late final PrefUtils _prefUtils;
   final userPhoneNumber = Get.arguments;
   FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final deviceInfoPlugin = DeviceInfoPlugin();
 
   Rx<String>  userNameAge = ''.obs;
   Rx<String>  userProfession = ''.obs;
@@ -93,7 +98,6 @@ class EditProfileController extends GetxController {
   }
 
   void getImage() async{
-    // TODO check for camera/gallery permission
     final pickedFile = await ImagePicker().pickImage(
         source: ImageSource.gallery,
         imageQuality: 100
@@ -128,4 +132,48 @@ class EditProfileController extends GetxController {
     );
   }
 
+  Future<bool> askPermissions() async {
+    PermissionStatus permissionGalleryStatus = await _getContactGalleryPermission();
+    if (permissionGalleryStatus == PermissionStatus.granted) {
+      return true;
+    } else {
+      if(_handleInvalidPermanentPermissions(permissionGalleryStatus) == "permanentDeny"){
+        _prefUtils.setErrorType("galleryAccess");
+        Get.toNamed(
+          AppRoutes.errorScreen,
+        );
+      }
+      return false;
+    }
+  }
+
+  Future<PermissionStatus> _getContactGalleryPermission() async {
+    final deviceInfo = await DeviceInfoPlugin().androidInfo;
+    if (deviceInfo.version.sdkInt <= 32) {
+      PermissionStatus permission = await Permission.storage.status;
+      if (permission != PermissionStatus.granted &&
+          permission != PermissionStatus.permanentlyDenied) {
+        PermissionStatus permissionStatus = await Permission.storage.request();
+        return permissionStatus;
+      } else {
+        return permission;
+      }
+    } else {
+      PermissionStatus permission = await Permission.photos.status;
+      if (permission != PermissionStatus.granted &&
+          permission != PermissionStatus.permanentlyDenied) {
+        PermissionStatus permissionStatus = await Permission.photos.request();
+        return permissionStatus;
+      } else {
+        return permission;
+      }
+    }
+  }
+
+  String _handleInvalidPermanentPermissions(PermissionStatus permissionStatus) {
+    if (permissionStatus == PermissionStatus.permanentlyDenied) {
+      return "permanentDeny";
+    }
+    return "granted";
+  }
 }

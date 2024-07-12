@@ -9,6 +9,7 @@ class LoginSignupController extends GetxController {
   Rx<LoginSignupModel> loginSignupModelObj = LoginSignupModel().obs;
 
   late final PrefUtils _prefUtils;
+  Connectivity connectivity = Connectivity();
 
   LoginSignupController(){
     _prefUtils = PrefUtils();
@@ -16,30 +17,38 @@ class LoginSignupController extends GetxController {
 
   @override
   void onInit() async{
-    if(_prefUtils.getLogInStatus() == true){
-      String phoneNumber = _prefUtils.getUserPhoneNumber()!;
-      Future.delayed(Duration.zero, () {
-        Get.toNamed(
-            AppRoutes.userProfileScreen,
-            arguments: phoneNumber);
-      });
-    }else{
-      if(_prefUtils.getOnboardingCheckpoint() == "afterOTP"){
+    if(await NetworkInfo(connectivity).isConnected()){
+      if(_prefUtils.getLogInStatus() == true){
         String phoneNumber = _prefUtils.getUserPhoneNumber()!;
         Future.delayed(Duration.zero, () {
           Get.toNamed(
-              AppRoutes.explanationOfMatchaScreen,
+              AppRoutes.userProfileScreen,
               arguments: phoneNumber);
         });
-      }else if(_prefUtils.getOnboardingCheckpoint() == "afterContactAccess"){
-        String phoneNumber = _prefUtils.getUserPhoneNumber()!;
-        Future.delayed(Duration.zero, () {
-          Get.toNamed(
-              AppRoutes.inputNameScreen,
-              arguments: phoneNumber);
-        });
+      }else{
+        if(_prefUtils.getOnboardingCheckpoint() == "afterOTP"){
+          String phoneNumber = _prefUtils.getUserPhoneNumber()!;
+          Future.delayed(Duration.zero, () {
+            Get.toNamed(
+                AppRoutes.explanationOfMatchaScreen,
+                arguments: phoneNumber);
+          });
+        }else if(_prefUtils.getOnboardingCheckpoint() == "afterContactAccess"){
+          String phoneNumber = _prefUtils.getUserPhoneNumber()!;
+          Future.delayed(Duration.zero, () {
+            Get.toNamed(
+                AppRoutes.inputNameScreen,
+                arguments: phoneNumber);
+          });
+        }
       }
+    }else{
+      _prefUtils.setErrorType("networkConnection");
+      Get.toNamed(
+        AppRoutes.errorScreen
+      );
     }
+
     super.onInit();
   }
 }

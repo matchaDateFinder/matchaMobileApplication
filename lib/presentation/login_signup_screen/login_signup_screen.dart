@@ -26,7 +26,7 @@ class LoginSignupScreen extends GetWidget<LoginSignupController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 29.v),
+                      SizedBox(height: 20.v),
                       Padding(
                         padding: EdgeInsets.only(left: 24.h),
                         child: Text(
@@ -34,7 +34,7 @@ class LoginSignupScreen extends GetWidget<LoginSignupController> {
                           style: theme.textTheme.displayLarge,
                         ),
                       ),
-                      SizedBox(height: 12.v),
+                      SizedBox(height: 10.v),
                       Padding(
                         padding: EdgeInsets.only(left: 24.h),
                         child: Text(
@@ -63,7 +63,7 @@ class LoginSignupScreen extends GetWidget<LoginSignupController> {
                 ),
               ),
               CustomImageView(
-                imagePath: ImageConstant.imgColor,
+                imagePath: ImageConstant.imgMatchaTitle,
                 height: 180.v,
                 width: 272.h,
                 alignment: Alignment.topLeft,
@@ -110,33 +110,6 @@ class LoginSignupScreen extends GetWidget<LoginSignupController> {
                             ],
                       ),
                     ),
-                    // child: SizedBox(
-                    //   height: 225.v,
-                    //   width: 352.h,
-                    //   child: Stack(
-                    //     alignment: Alignment.center,
-                    //     children: [
-                    //       CustomImageView(
-                    //         imagePath: ImageConstant.imgVector225x352,
-                    //         height: 225.v,
-                    //         width: 352.h,
-                    //         alignment: Alignment.center,
-                    //       ),
-                    //       CustomImageView(
-                    //         imagePath: ImageConstant.imgVector1,
-                    //         height: 225.v,
-                    //         width: 352.h,
-                    //         alignment: Alignment.center,
-                    //       ),
-                    //       CustomImageView(
-                    //         imagePath: ImageConstant.imgVector247x360,
-                    //         height: 247.v,
-                    //         width: 360.h,
-                    //         alignment: Alignment.center,
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                   ),
                 ],
               ),
