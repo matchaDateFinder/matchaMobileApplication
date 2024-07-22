@@ -81,7 +81,7 @@ class CompleteProfileScreen extends GetWidget<CompleteProfileController> {
 
   /// Navigates to the editProfileTwoScreen when the action is triggered.
   onTapCompleteMyProfile() async {
-    // await controller.saveDataToDatabase();
+    await controller.saveDataToDatabase();
     Get.toNamed(
       AppRoutes.editProfileTwoScreen,
       arguments: controller.userDetail['userPhoneNumber'],
@@ -90,7 +90,7 @@ class CompleteProfileScreen extends GetWidget<CompleteProfileController> {
 
   /// Navigates to the candidateProfileScreen when the action is triggered.
   onTapTxtSkipForNow() async {
-    // await controller.saveDataToDatabase();
+    await controller.saveDataToDatabase();
     Get.toNamed(
       AppRoutes.userProfileScreen,
       arguments: controller.userDetail['userPhoneNumber'],

@@ -24,3 +24,4 @@ export 'package:firebase_storage/firebase_storage.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:matchaapplication/firebase_options.dart';
 export 'package:matchaapplication/service/messaging_service.dart';
+export 'package:firebase_app_check/firebase_app_check.dart';

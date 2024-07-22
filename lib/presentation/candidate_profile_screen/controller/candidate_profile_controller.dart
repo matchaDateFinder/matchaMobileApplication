@@ -87,6 +87,8 @@ class CandidateProfileController extends GetxController {
             }
           }else{
             // TODO tanya ke reyhan, kalau secara database memang sudah "habis" perlu gimana?
+            // lempar ke screen error atau ke screen that's it for today
+            // tapi ganti tulisan nya aja jadi "sorry we ran out of matches, come back again tomorrow!"
           }
         }else{
           await manuallyKillConstructor();

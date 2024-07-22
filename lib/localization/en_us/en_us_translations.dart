@@ -50,7 +50,7 @@ final Map<String, String> enUs = {
   "lbl_165_cm": "165 cm",
   "lbl_edit_my_profile": "Edit my profile",
   "lbl_intp": "INTP",
-  "msg_it_s_seems_like": "It’s seems like you haven’t complete \nyour profile. Complete now!",
+  "msg_it_s_seems_like": "It’s seems like you haven’t complete your profile. Complete now!",
 
   // Input Phone Number Screen
   "lbl_62": "+62",

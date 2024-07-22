@@ -45,6 +45,5 @@ class CandidateProfileModel {
       mbtiTag.attributeIcon?.value = ImageConstant.imgIcon16Puzzlepiece;
       candidateTagItemList.value.add(mbtiTag);
     }
-  
   }
 }

@@ -20,3 +20,10 @@ form paling jelek dari notification nya adalah cuma bisa di foreground doang tap
 ### Future References
 - https://medium.com/@duytq94/flutter-chat-app-extended-push-notification-messages-a26c669f4675
 - 
+
+### Release notes
+- tutorial for signing the app https://medium.com/@DeyvissonDev/signing-flutter-apps-for-android-and-ios-the-easygoing-guide-dd9d0dc9f65c
+- don't push the matcha.keystore to github but will be posted in discord chat
+
+- to sign the apk to abb(application bundle)
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore matcha.keystore D:\project\Matcha\stateManagementTest\matchaapplication-v1.0.7-getx\build\app\outputs\bundle\release\app-release.aab matchaKey

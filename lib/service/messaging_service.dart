@@ -27,6 +27,7 @@ class MessagingService {
     );
 
     // fetch FCM token for this device
+    print("get token");
     final fCMToken = await _firebaseMessaging.getToken();
 
     // put token to the shared preferences

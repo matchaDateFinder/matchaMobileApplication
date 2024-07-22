@@ -84,7 +84,7 @@ class NoticeOneScreen extends GetWidget<NoticeOneController> {
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
       case BottomBarEnum.chatBottomType:
-        return AppRoutes.chatFunctionTabContainerPage;
+        return AppRoutes.chatFunctionContainerScreen;
       case BottomBarEnum.matchBottomType:
         return AppRoutes.candidateProfileScreen;
       case BottomBarEnum.profileBottomType:

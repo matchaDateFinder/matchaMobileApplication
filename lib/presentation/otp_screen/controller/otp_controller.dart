@@ -128,6 +128,7 @@ class OtpController extends GetxController with CodeAutoFill {
 
   Future<void> setOnboardingCheckpoint() async {
     _prefUtils.setUserPhoneNumber(fullPhoneNumber);
+    print(_prefUtils.getUserPhoneNumber());
     _prefUtils.setOnboardingCheckpoint("afterOTP");
   }
 

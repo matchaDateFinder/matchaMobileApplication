@@ -27,27 +27,26 @@ class UserProfileController extends GetxController {
   UserProfileController() {
     _firestoreService = FirestoreService();
     _prefUtils = PrefUtils();
-    user = UserFireStoreModel(userId:"", userName: "", userPhoneNumber: "",
-        userPhotoLink: "", userPhotoSize: "",
-        userGender: "", userBirthday: Timestamp.now(), userToken: "");
   }
 
   @override
   void onInit() async {
+    super.onInit();
     phoneNumber = _prefUtils.getUserPhoneNumber();
+    print(phoneNumber);
     user = await _firestoreService.getUserFromFireStoreByPhoneNumber(phoneNumber);
     userName = user.userName;
     photoPathFromDB = user.userPhotoLink;
     userAge = calculateAge(DateTime.now(), user.userBirthday.toDate());
     nameAge.value = userName + ' - ' + userAge.toString();
     userPhotoPath.value = photoPathFromDB;
-    if(userProfession.value != null || user.userProfession != ""){
+    if(user.userProfession != ""){
       userProfession.value = user.userProfession!;
     }
     await userProfileModelObj.value.setItemTag(user);
     userProfileModelObj.refresh();
     // TODO check if there is a new contact in phone and if exists then upload it to DB
-    }
+  }
 
   @override
   void onClose() {

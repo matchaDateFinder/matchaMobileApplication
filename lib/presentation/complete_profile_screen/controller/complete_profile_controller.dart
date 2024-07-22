@@ -26,12 +26,12 @@ class CompleteProfileController extends GetxController {
     _prefUtils = PrefUtils();
     _auth = FirebaseAuth.instance;
   }
+
   var userDetail = new Map();
 
   @override
   void onInit() async{
     userDetail = Get.arguments;
-    await saveDataToDatabase();
   }
 
   Future<void> saveDataToDatabase() async{
