@@ -128,7 +128,6 @@ class OtpController extends GetxController with CodeAutoFill {
 
   Future<void> setOnboardingCheckpoint() async {
     _prefUtils.setUserPhoneNumber(fullPhoneNumber);
-    print(_prefUtils.getUserPhoneNumber());
     _prefUtils.setOnboardingCheckpoint("afterOTP");
   }
 
@@ -147,7 +146,7 @@ class OtpController extends GetxController with CodeAutoFill {
           await setOnboardingCheckpoint();
           await manuallyKillConstructor();
           Get.toNamed(
-            AppRoutes.explanationOfMatchaScreen, // TODO change to explanationOfMatchaScreen
+            AppRoutes.explanationOfMatchaScreen,
             arguments: fullPhoneNumber
           );
         }

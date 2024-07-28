@@ -119,6 +119,7 @@ final Map<String, String> enUs = {
   "lbl_istj": "ISTJ",
   "lbl_mbti": "MBTI",
   "lbl_looking_for": "Looking For",
+  "lbl_marriage_target": "Marriage Target",
   "lbl_mutual_info": "Mutual Info",
   "lbl_name": "Name",
   "lbl_name_age": "Name, Age",

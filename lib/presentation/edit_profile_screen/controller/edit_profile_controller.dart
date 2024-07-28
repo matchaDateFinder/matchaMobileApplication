@@ -17,6 +17,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 class EditProfileController extends GetxController {
   Rx<EditProfileModel> editProfileModelObj = EditProfileModel().obs;
   late final FirestoreService _firestoreService;
+  late final AgeService _ageService;
   late final PrefUtils _prefUtils;
   final userPhoneNumber = Get.arguments;
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -31,11 +32,14 @@ class EditProfileController extends GetxController {
   Rx<String>  userDrinking = ''.obs;
   Rx<String>  userSmoking = ''.obs;
   Rx<String>  userMBTI = ''.obs;
+  Rx<String>  userLookingFor = ''.obs;
+  Rx<String>  userMarriageTarget = ''.obs;
   var photoLink = "".obs;
   var newLocalPhotoLink = "".obs;
 
   EditProfileController() {
     _firestoreService = FirestoreService();
+    _ageService = AgeService();
     _prefUtils = PrefUtils();
   }
 
@@ -50,7 +54,7 @@ class EditProfileController extends GetxController {
     phoneNumber  = _prefUtils.getUserPhoneNumber();
     user = await _firestoreService.getUserFromFireStoreByPhoneNumber(phoneNumber);
     String userName = user.userName;
-    int userAge = calculateAge(DateTime.now(), user.userBirthday.toDate());
+    int userAge = _ageService.calculateAge(user.userBirthday.toDate());
     userNameAge.value = userName + ' - ' + userAge.toString();
     userProfession.value = user.userProfession!;
     userEducation.value = user.userEducation!;
@@ -59,6 +63,8 @@ class EditProfileController extends GetxController {
     userDrinking.value = user.userDrinking!;
     userSmoking.value = user.userSmoking!;
     userMBTI.value = user.userMBTI!;
+    userLookingFor.value = user.userLookingFor!;
+    userMarriageTarget.value = user.userMarriageTarget!;
     photoLink.value = user.userPhotoLink;
     newLocalPhotoLink.value = user.userPhotoLink;
   }
@@ -81,20 +87,8 @@ class EditProfileController extends GetxController {
 
   Future<void> logOutFromTheApp() async {
     _prefUtils.setLoginStatus(false);
-    // TODO unsubscribe to all of the topic
     _prefUtils.clearPreferencesData();
     _auth.signOut();
-  }
-
-  int calculateAge(DateTime today, DateTime dob) {
-    final year = today.year - dob.year;
-    final mth = today.month - dob.month;
-    if(mth < 0){
-      return year-1;
-    }
-    else {
-      return year;
-    }
   }
 
   void getImage() async{

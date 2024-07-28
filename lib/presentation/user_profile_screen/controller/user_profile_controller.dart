@@ -10,6 +10,7 @@ import 'package:matchaapplication/presentation/user_profile_screen/models/user_p
 class UserProfileController extends GetxController {
   late final FirestoreService _firestoreService;
   late final PrefUtils _prefUtils;
+  late final AgeService _ageService;
 
   Rx<UserProfileModel> userProfileModelObj = UserProfileModel().obs;
 
@@ -27,17 +28,17 @@ class UserProfileController extends GetxController {
   UserProfileController() {
     _firestoreService = FirestoreService();
     _prefUtils = PrefUtils();
+    _ageService = AgeService();
   }
 
   @override
   void onInit() async {
     super.onInit();
     phoneNumber = _prefUtils.getUserPhoneNumber();
-    print(phoneNumber);
     user = await _firestoreService.getUserFromFireStoreByPhoneNumber(phoneNumber);
     userName = user.userName;
     photoPathFromDB = user.userPhotoLink;
-    userAge = calculateAge(DateTime.now(), user.userBirthday.toDate());
+    userAge = _ageService.calculateAge(user.userBirthday.toDate());
     nameAge.value = userName + ' - ' + userAge.toString();
     userPhotoPath.value = photoPathFromDB;
     if(user.userProfession != ""){
@@ -57,17 +58,6 @@ class UserProfileController extends GetxController {
   void dispose() {
     Get.delete<UserProfileController>();
     super.dispose();
-  }
-
-  int calculateAge(DateTime today, DateTime dob) {
-    final year = today.year - dob.year;
-    final mth = today.month - dob.month;
-    if(mth < 0){
-      return year-1;
-    }
-    else {
-      return year;
-    }
   }
 
   Future<void> manuallyKillConstructor() async {

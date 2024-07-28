@@ -44,5 +44,17 @@ class MatchProfileModel {
       mbtiTag.attributeIcon?.value = ImageConstant.imgIcon16Puzzlepiece;
       userTagItemList.value.add(mbtiTag);
     }
+    if(user.userLookingFor != ""){
+      TagItemModel lookingForTag = new TagItemModel();
+      lookingForTag.attributevalue?.value = user.userLookingFor!;
+      lookingForTag.attributeIcon?.value = ImageConstant.imgIcon16Puzzlepiece;
+      userTagItemList.value.add(lookingForTag);
+      if(user.userLookingFor == "Marriage" && user.userMarriageTarget != ""){
+        TagItemModel marriageTargetTag = new TagItemModel();
+        marriageTargetTag.attributevalue?.value = user.userMarriageTarget!;
+        marriageTargetTag.attributeIcon?.value = ImageConstant.imgIcon16Puzzlepiece;
+        userTagItemList.value.add(marriageTargetTag);
+      }
+    }
   }
 }

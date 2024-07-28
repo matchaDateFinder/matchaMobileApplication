@@ -27,7 +27,6 @@ class MessagingService {
     );
 
     // fetch FCM token for this device
-    print("get token");
     final fCMToken = await _firebaseMessaging.getToken();
 
     // put token to the shared preferences
@@ -108,7 +107,6 @@ void notificationTapBackground(NotificationResponse notificationResponse) async 
 
 void showNotification(RemoteMessage message) async {
   var notification = message.data;
-  print(notification);
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
     'your channel id',
     'your channel name',

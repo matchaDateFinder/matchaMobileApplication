@@ -103,7 +103,7 @@ class UserProfileScreen extends GetWidget<UserProfileController> {
                     width: 280.h,
                     margin: EdgeInsets.symmetric(horizontal: 25.h),
                     child: Text("msg_it_s_seems_like".tr,
-                        maxLines: 2,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         style: CustomTextStyles.bodyMediumPoppins

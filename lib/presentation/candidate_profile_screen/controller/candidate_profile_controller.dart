@@ -14,6 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 class CandidateProfileController extends GetxController {
   late final FirestoreService _firestore;
   late final PrefUtils _prefUtils;
+  late final AgeService _ageService;
 
   var userPhotoPath = ''.obs;
   var nameAge = ''.obs;
@@ -37,6 +38,7 @@ class CandidateProfileController extends GetxController {
   CandidateProfileController() {
     _firestore = FirestoreService();
     _prefUtils = PrefUtils();
+    _ageService = AgeService();
   }
 
   @override
@@ -52,7 +54,7 @@ class CandidateProfileController extends GetxController {
           Set<String> existingMatchFilter = await checkExistingMatchRow(potentialMatch);
           if(existingMatchFilter.length > 0){
             candidateProfile = await _firestore.getUserFromFireStoreByPhoneNumber(existingMatchFilter.first);
-            candidateAge = calculateAge(DateTime.now(), candidateProfile!.userBirthday.toDate());
+            candidateAge = _ageService.calculateAge(candidateProfile!.userBirthday.toDate());
             candidateName = candidateProfile!.userName;
             candidatePhoneNumber = candidateProfile!.userPhoneNumber;
             nameAge.value = candidateName + ' - ' + candidateAge.toString();
@@ -89,6 +91,10 @@ class CandidateProfileController extends GetxController {
             // TODO tanya ke reyhan, kalau secara database memang sudah "habis" perlu gimana?
             // lempar ke screen error atau ke screen that's it for today
             // tapi ganti tulisan nya aja jadi "sorry we ran out of matches, come back again tomorrow!"
+            await manuallyKillConstructor();
+            Get.toNamed(
+              AppRoutes.noticeOneScreen,
+            );
           }
         }else{
           await manuallyKillConstructor();
@@ -142,17 +148,6 @@ class CandidateProfileController extends GetxController {
     return result;
   }
 
-  int calculateAge(DateTime today, DateTime dob) {
-    final year = today.year - dob.year;
-    final mth = today.month - dob.month;
-    if(mth < 0){
-      return year-1;
-    }
-    else {
-      return year;
-    }
-  }
-
   Future<bool> saveUserReaction(bool reaction) async {
     bool result = false;
     List<MatchFireStoreModel> listOfMatch = await _firestore.checkIfMatchExistsInFirestoreDB(phoneNumber, candidatePhoneNumber);
@@ -167,10 +162,6 @@ class CandidateProfileController extends GetxController {
             unreadMessagesCountFromParticipantB: {candidatePhoneNumber:0}
         );
         await _firestore.createNewChatRoomInFireStore(newChatRoomFireStore);
-        // TODO create a new row in online db that stores topicName and userParticipants
-
-        // TODO subscribe to the the topic
-
         argumentForNoticeTwo["userPhotoLink"] = user.userPhotoLink;
         argumentForNoticeTwo["candidatePhotoLink"] = userPhotoPath.value;
         argumentForNoticeTwo["userPhoneNumber"] = user.userPhoneNumber;

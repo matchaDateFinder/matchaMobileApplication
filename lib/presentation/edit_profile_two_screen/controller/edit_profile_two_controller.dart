@@ -150,6 +150,7 @@ class EditProfileTwoController extends GetxController {
       isMarriageChosen.value = true;
     }else{
       isMarriageChosen.value = false;
+      marriageTargetDropDownValue.value = '';
     }
     editProfileTwoModelObj.value.lookingForDropdownItemList.refresh();
   }
@@ -226,10 +227,14 @@ class EditProfileTwoController extends GetxController {
   }
 
   bool validateMarriageTarget(){
-    if(isMarriageChosen.value && marriageTargetDropDownValue.value != ''){
-      return true;
+    if(isMarriageChosen.value){
+      if(marriageTargetDropDownValue.value != ''){
+        return true;
+      }else{
+        return false;
+      }
     }else{
-      return false;
+      return true;
     }
   }
 

@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 /// This class manages the state of the InputAgeScreen, including the
 /// current inputAgeModelObj
 class InputAgeController extends GetxController {
+  late final AgeService _ageService;
+
   Rx<InputAgeModel> inputAgeModelObj = InputAgeModel().obs;
   var selectedDate = DateTime.now().obs;
-
   TextEditingController inputPlaceholderController = TextEditingController();
   SelectionPopupModel? selectedDropDownValue;
 
@@ -24,6 +25,10 @@ class InputAgeController extends GetxController {
   }
 
   var userDetail = new Map();
+
+  InputAgeController() {
+    _ageService = AgeService();
+  }
 
   @override
   void onInit(){
@@ -40,8 +45,20 @@ class InputAgeController extends GetxController {
       initialDate: selectedDate.value,
       firstDate: DateTime(1970),
       lastDate: DateTime.now());
-    if(pickedDate != null && pickedDate!=selectedDate.value){
-      selectedDate.value = pickedDate;
+    if(pickedDate != null && pickedDate != selectedDate.value){
+      if(!_ageService.isAdultAge(pickedDate!)){
+        Get.defaultDialog(
+          title: "Age must be above 18 years old",
+          content: Text("Age must be above 18 years old"),
+        );
+      }else{
+        selectedDate.value = pickedDate;
+      }
+    }else{
+      Get.defaultDialog(
+        title: "Date of birth is missing",
+        content: Text("Date of birth is missing"),
+      );
     }
   }
 

@@ -205,6 +205,20 @@ class EditProfileScreen extends GetWidget<EditProfileController> {
                   attributeImage: ImageConstant.imgIcon16Puzzlepiece,
                   attributeTitle: "lbl_mbti".tr,
                   attributeValue: controller.userMBTI.value =='' ? "lbl_add".tr : controller.userMBTI.value))),
+          SizedBox(height: 16.v),
+          Obx(() => Padding(
+              padding: EdgeInsets.only(right: 1.h),
+              child: _buildAttribute(
+                  attributeImage: ImageConstant.imgIcon16Puzzlepiece,
+                  attributeTitle: "lbl_looking_for".tr,
+                  attributeValue: controller.userLookingFor.value =='' ? "lbl_add".tr : controller.userLookingFor.value))),
+          SizedBox(height: 16.v),
+          Obx(() => Padding(
+              padding: EdgeInsets.only(right: 1.h),
+              child: _buildAttribute(
+                  attributeImage: ImageConstant.imgIcon16Puzzlepiece,
+                  attributeTitle: "lbl_marriage_target".tr,
+                  attributeValue: controller.userMarriageTarget.value =='' ? "lbl_add".tr : controller.userMarriageTarget.value))),
           // SizedBox(height: 16.v),
           // Padding(
           //     padding: EdgeInsets.only(right: 1.h),

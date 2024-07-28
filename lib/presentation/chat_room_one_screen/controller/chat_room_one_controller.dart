@@ -44,7 +44,6 @@ class ChatRoomOneController extends GetxController {
       receiverPhotoLink = "";
     }else{
       receiverPhotoLink = arguments["receiverPhotoLink"];
-      print(receiverPhotoLink);
     }
     messageListContent = _firestore.getMessage(chatRoomId, userPhoneNumber, matchPhoneNumber);
     matchProfileAttribute = new Map<String,dynamic>();
@@ -73,7 +72,6 @@ class ChatRoomOneController extends GetxController {
     matchProfileAttribute["chatRoomId"] = chatRoomId;
     if(fetchImageFlag){
       receiverPhotoLink = matchProfile!.userPhotoLink;
-      print(receiverPhotoLink);
     }
     await _firestore.updateChatRoom(chatRoomId, userPhoneNumber, "openChat");
   }

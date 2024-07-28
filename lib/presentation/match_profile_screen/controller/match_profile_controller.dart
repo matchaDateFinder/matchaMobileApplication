@@ -9,6 +9,7 @@ import 'package:matchaapplication/presentation/match_profile_screen/models/match
 class MatchProfileController extends GetxController {
   Rx<MatchProfileModel> matchProfileModelObj = MatchProfileModel().obs;
   late final FirestoreService _firestore;
+  late final AgeService _ageService;
 
   RxString userPhoneNumber = ''.obs;
   RxString userGender = ''.obs;
@@ -37,13 +38,14 @@ class MatchProfileController extends GetxController {
 
   MatchProfileController() {
     _firestore = FirestoreService();
+    _ageService = AgeService();
     var arguments = Get.arguments;
     userName = arguments["userName"];
     userPhoneNumber.value = arguments["userPhoneNumber"];
     userPhotoDownloadLink = arguments["userPhotoDownloadLink"];
     userGender.value = arguments["userGender"];
     userBirthday = arguments["userBirthday"];
-    userAge = calculateAge(DateTime.now(), userBirthday);
+    userAge = _ageService.calculateAge(userBirthday);
     userProfession.value = arguments["userProfession"];
     userEducation.value = arguments["userEducation"];
     userReligion.value = arguments["userReligion"];
@@ -99,17 +101,6 @@ class MatchProfileController extends GetxController {
   void dispose() {
     Get.delete<MatchProfileController>();
     super.dispose();
-  }
-
-  int calculateAge(DateTime today, DateTime dob) {
-    final year = today.year - dob.year;
-    final mth = today.month - dob.month;
-    if(mth < 0){
-      return year-1;
-    }
-    else {
-      return year;
-    }
   }
 
   Future<void> manuallyKillConstructor() async {
