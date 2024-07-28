@@ -2,7 +2,7 @@
 ## Terjawab 
 
 ## list of todo doubts and question
-1. chat notification
+1. we need a privacy policy website
 
 flutter pub cache repair
 flutter pub get
