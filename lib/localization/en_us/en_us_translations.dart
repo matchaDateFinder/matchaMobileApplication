@@ -78,7 +78,7 @@ final Map<String, String> enUs = {
   "msg_resend_otp_in_00_00": "Resend OTP in ",
 
   // Chat Room Two Screen
-  "msg_hi_nice_to_matcha": "Hi, nice to matcha u!",
+  "msg_hi_nice_to_matcha": "Hallo, nice to matcha u!",
 
   // Input Gender Screen
   "lbl_man": "Man", "lbl_woman": "Woman",
