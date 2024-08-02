@@ -176,11 +176,10 @@ class ChatRoomOneScreen extends GetWidget<ChatRoomOneController> {
   /// Section Widget
   Widget _buildChatBar() {
     return Container(
-        margin: EdgeInsets.only(left: 23.h, right: 23.h, bottom: 16.v),
+        margin: EdgeInsets.only(bottom: 16.v),
         decoration: AppDecoration.fillLightGreen,
         child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
             children: [
               // CustomImageView(
               //     imagePath: ImageConstant.imgFramePrimary24x24,
@@ -196,7 +195,7 @@ class ChatRoomOneScreen extends GetWidget<ChatRoomOneController> {
                   padding: EdgeInsets.only(left: 8.h),
                   child: CustomTextFormField(
                       focusNode: controller.focusNode,
-                      width: 200.h,
+                      width: 250.h,
                       controller: controller.textHereController,
                       hintText: "lbl_text_here".tr,
                       textInputAction: TextInputAction.done,

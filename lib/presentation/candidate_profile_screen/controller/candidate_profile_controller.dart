@@ -88,18 +88,17 @@ class CandidateProfileController extends GetxController {
                   " and " + (listOfMutuals.value.length-1).toString() + " Others";
             }
           }else{
-            // TODO tanya ke reyhan, kalau secara database memang sudah "habis" perlu gimana?
-            // lempar ke screen error atau ke screen that's it for today
-            // tapi ganti tulisan nya aja jadi "sorry we ran out of matches, come back again tomorrow!"
             await manuallyKillConstructor();
             Get.toNamed(
               AppRoutes.noticeOneScreen,
+              arguments: "noMatchInDB"
             );
           }
         }else{
           await manuallyKillConstructor();
           Get.toNamed(
             AppRoutes.noticeOneScreen,
+            arguments: "lastMatchLessThanADay"
           );
         }
         candidateProfileModelObj.refresh();

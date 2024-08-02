@@ -27,6 +27,7 @@ final Map<String, String> enUs = {
   // Notice One Screen
   "msg_come_back_again_for": "come back again\nfor tomorrow!",
   "msg_that_s_it_for_today": "That's it for today, ",
+  "msg_no_match": "Sorry we ran out of matches,\ncome back again tomorrow!",
 
   // Error Screen Message
   "lbl_internet_error" : "Network Error",

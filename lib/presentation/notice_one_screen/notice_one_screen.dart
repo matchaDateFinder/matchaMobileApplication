@@ -25,10 +25,14 @@ class NoticeOneScreen extends GetWidget<NoticeOneController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(height: 93.v),
-              Text(
-                "msg_that_s_it_for_today".tr,
-                style: theme.textTheme.headlineLarge,
+              Obx(() =>
+                SizedBox(height: controller.sizedBox.value.v),
+              ),
+              Obx(() =>
+                Text(
+                  controller.notificationText.value,
+                  style: theme.textTheme.headlineLarge,
+                ),
               ),
               SizedBox(height: 67.v),
               CustomImageView(

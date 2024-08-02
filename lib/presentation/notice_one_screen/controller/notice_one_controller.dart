@@ -14,6 +14,8 @@ class NoticeOneController extends GetxController {
 
   Timer? _timer;
   final textToShow = "msg_next_profile_in".tr.obs;
+  RxString notificationText = ''.obs;
+  RxInt sizedBox = 0.obs;
   int remainingSeconds = 1;
 
   var user;
@@ -21,6 +23,8 @@ class NoticeOneController extends GetxController {
   var timeToNextCandidateInSeconds;
   var timeHour = 0;
   var timeMinutes = 0;
+
+  final source = Get.arguments;
 
   NoticeOneController() {
     _firestore = FirestoreService();
@@ -32,10 +36,18 @@ class NoticeOneController extends GetxController {
     phoneNumber = _prefUtils.getUserPhoneNumber();
     user = await _firestore.getUserFromFireStoreByPhoneNumber(phoneNumber);
     if(user != null){
-      DateTime lastRecomDate = user!.lastRecommendationIsGiven.toDate();
-      int lastRecomDateInMiliSeconds = lastRecomDate.millisecondsSinceEpoch;
-      timeToNextCandidateInSeconds = (3600*24)-((DateTime.now().millisecondsSinceEpoch-lastRecomDateInMiliSeconds)~/1000);
-      _startTimer(timeToNextCandidateInSeconds);
+      if(source == "noMatchInDB"){
+        textToShow.value = "please come back tomorrow";
+        notificationText.value = "msg_no_match".tr;
+        sizedBox.value = 50;
+      }else if(source == "lastMatchLessThanADay"){
+        DateTime lastRecomDate = user!.lastRecommendationIsGiven.toDate();
+        int lastRecomDateInMiliSeconds = lastRecomDate.millisecondsSinceEpoch;
+        timeToNextCandidateInSeconds = (3600*24)-((DateTime.now().millisecondsSinceEpoch-lastRecomDateInMiliSeconds)~/1000);
+        _startTimer(timeToNextCandidateInSeconds);
+        notificationText.value = "msg_that_s_it_for_today".tr;
+        sizedBox.value = 93;
+      }
     }
     super.onInit();
   }

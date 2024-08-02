@@ -236,6 +236,7 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
     if(!(await controller.saveUserReaction(false))){
       Get.toNamed(
         AppRoutes.noticeOneScreen,
+        arguments: "lastMatchLessThanADay"
       );
     }
   }
@@ -251,6 +252,7 @@ class CandidateProfileScreen extends GetWidget<CandidateProfileController> {
     }else{
       Get.toNamed(
         AppRoutes.noticeOneScreen,
+        arguments: "lastMatchLessThanADay"
       );
     }
   }
